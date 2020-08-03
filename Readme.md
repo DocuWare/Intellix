@@ -1,5 +1,5 @@
-# DocuWare Intelligent Indexing installation instructions
+# DocuWare Intelligent Indexing On-Premise V2
 
-Install Intelligent Indexing v2 on-premise. Please read ./doc/installation_de.md.
+Please read the installation manual in the [doc](https://github.com/DocuWare/Intellix/tree/master/doc) folder.
 
 If you have questions, please contact the DocuWare Support.
