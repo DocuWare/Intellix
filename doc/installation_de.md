@@ -265,8 +265,6 @@ Die restlichen Intelligent Indexing Setup-Dateien dürfen nicht verändert werde
   - `Read-IntellixConfiguration.ps1`: Dieses Skript wird von den anderen Skripten verwendet, um die Konfigurationsdatei zu lesen
 - Datenbankskript `init_database.sql`, um die Datenbank zu initialisieren
 - Die `docker-compose.yml` Datei, die die Docker Umgebung benötigt, um das Zusammenspiel der Docker Container zu steuern
-- Die `docker_registry_password.txt` Datei, die von den Skripten benötigt wird, um die Docker Images herunterladen zu können
-
 
 ### Manuelle Einrichtung des Datenbankservers
 

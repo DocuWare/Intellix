@@ -1,19 +1,36 @@
-# Install NuGet Provider
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+.\Read-IntellixConfiguration.ps1
+md Temp
 
-# Install Docker
-Install-Module DockerMsftProvider -Force
-Install-Package Docker -ProviderName DockerMsftProvider -Force
+# Install IIS
+Install-WindowsFeature -name Web-Server -IncludeManagementTools
 
-# Install Docker-Compose
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $Env:ProgramFiles\Docker\docker-compose.exe
+# Install WebPiCmd
+Invoke-WebRequest 'http://download.microsoft.com/download/C/F/F/CFF3A0B8-99D4-41A2-AE1A-496C08BEB904/WebPlatformInstaller_amd64_en-US.msi' -OutFile ./Temp/WebPlatformInstaller_amd64_en-US.msi
+Start-Process ./Temp/WebPlatformInstaller_amd64_en-US.msi '/qn' -PassThru | Wait-Process
+
+# Install ARR
+& $Env:Programfiles'\Microsoft\Web Platform Installer\WebpiCmd.exe' /Install /Products:'UrlRewrite2' /AcceptEULA /Log:./Temp/WebpiCmd_UrlRewrite.log
+& $Env:Programfiles'\Microsoft\Web Platform Installer\WebpiCmd.exe' /Install /Products:'ARRv3_0' /AcceptEULA /Log:./Temp/WebpiCmd_ARR.log
+
+# Create server farm in IIS
+& $Env:WinDir\system32\inetsrv\appcmd.exe set config -section:webFarms /+"[name='Intellix']" /commit:apphost
+& $Env:WinDir\system32\inetsrv\appcmd.exe set config -section:webFarms /+"[name='Intellix'].[address='localhost']" /commit:apphost
+& $Env:WinDir\system32\inetsrv\appcmd.exe set config -section:webFarms -"[name='Intellix'].[address='localhost'].applicationRequestRouting.httpPort:8080" /commit:apphost
+
+# Create URL Rewrite Rule in IIS
+& $Env:WinDir\system32\inetsrv\appcmd.exe set config -section:system.webServer/rewrite/globalRules /+"[name='ARR_Intellix_loadbalance', patternSyntax='Wildcard',stopProcessing='True']" /commit:apphost
+& $Env:WinDir\system32\inetsrv\appcmd.exe set config -section:system.webServer/rewrite/globalRules /"[name='ARR_Intellix_loadbalance',patternSyntax='Wildcard',stopProcessing='True']".match.url:"*"  /commit:apphost
+& $Env:WinDir\system32\inetsrv\appcmd.exe set config -section:system.webServer/rewrite/globalRules /"[name='ARR_Intellix_loadbalance',patternSyntax='Wildcard',stopProcessing='True']".action.type:"Rewrite" /"[name='ARR_Intellix_loadbalance',patternSyntax='Wildcard',stopProcessing='True']".action.url:"http://Intellix/{R:0}"  /commit:apphost
+
+
+
+
 
 # SIG # Begin signature block
 # MIIcdQYJKoZIhvcNAQcCoIIcZjCCHGICAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU/P99X7n/vnJhvSNPFP7yvIXn
-# PdSgghebMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUCWJq6dguLdq52FGZgeitdUDL
+# PVugghebMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
 # AQUFADCBizELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2FwZTEUMBIG
 # A1UEBxMLRHVyYmFudmlsbGUxDzANBgNVBAoTBlRoYXd0ZTEdMBsGA1UECxMUVGhh
 # d3RlIENlcnRpZmljYXRpb24xHzAdBgNVBAMTFlRoYXd0ZSBUaW1lc3RhbXBpbmcg
@@ -144,22 +161,22 @@ Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.25.4/do
 # MC4GA1UEAxMnU3ltYW50ZWMgQ2xhc3MgMyBTSEEyNTYgQ29kZSBTaWduaW5nIENB
 # AhBxjEA+6RvB3HxpyzGvjEDFMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQow
 # CKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcC
-# AQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRw6KwWIJSOXSMnjfTT
-# 41tklkoZiDANBgkqhkiG9w0BAQEFAASCAQBszFhgtkY4PXcMI+Oc1b1wQ34WWpE+
-# fgAXfe5a7VmfOQ/ESVivsK6aXPafqeS72fjmcgWV6Dzd4SjpVdnIcTWNnE+tq6Yu
-# vI4hjVSmMMNiasMq/GH4aTzhMy1tTc0g7EMIcfmHx8H2NARmpUynab1vSPKJoEwg
-# b7ZAY19l/OhbyonJbiKpw0fHPhLQ1qHOofctOaKr10Z9o5UAiK9ZOUt1E9sPytFH
-# ag95pyWMUSYfr6Mhlq0Otl9FzlriT+H65m/SW+jB+ndlpP3goyht6vuj5wWt+1Vq
-# RmwTbiUs5zzGJbs1cN5M89pqQOcc3qQyBYme8dYYW4d2hROnR0GK1hLRoYICCzCC
+# AQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQ0tFlyaz7tl75KtnKk
+# JLxaivyZWjANBgkqhkiG9w0BAQEFAASCAQBkRlBcRHqhxfONCT7jI2T9imdJ+ybO
+# RUhT8CVszFJCAWhpFCGZGYjSP7ucmRYm4eaTsFrzUm6m1TK/ugmPocEBiNrol+WT
+# NTgc8P8jPFWCfaVo6o4zc/GJdTwmOyFY+DXolVl75oWcR2wnujKKKATijjD6krId
+# hn1bmNlfNVo6D4AneAWbVmSVcWGlxw4BgFkmp9DSa0jXQIv5hj4xGuQJog1QoWFu
+# ksjvDiXRbeBs1A5jB9sjo5MMM7WYk6KgmpnyotW9qnrnBvViUbl5sstc1s14acl1
+# hqNGMbrpHtpv+Ru+3MtzmBLXvddpXzug+bFipT+HwxSmILSssABgFr3uoYICCzCC
 # AgcGCSqGSIb3DQEJBjGCAfgwggH0AgEBMHIwXjELMAkGA1UEBhMCVVMxHTAbBgNV
 # BAoTFFN5bWFudGVjIENvcnBvcmF0aW9uMTAwLgYDVQQDEydTeW1hbnRlYyBUaW1l
 # IFN0YW1waW5nIFNlcnZpY2VzIENBIC0gRzICEA7P9DjI/r81bgTYapgbGlAwCQYF
 # Kw4DAhoFAKBdMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
-# MQ8XDTIwMDgwMzE0NTA1OVowIwYJKoZIhvcNAQkEMRYEFJEYoX9SFVQbTu6SLmKe
-# fpPvQGaMMA0GCSqGSIb3DQEBAQUABIIBAEchHRZdgdYKCnykzSRBnXi0EI7Ow2wc
-# vG8eGVFBVHUu5QRU+niAe0lNdwmYVR72RIgw+te/WH9H6a07GGQBNJzZqrKOCWkF
-# mP0YpQ55LxRk/FdeeMLtz4B0pzRl1uUw7vsBgapQv+yUGirjIuJyqcP1xztPstJQ
-# 5d0G+lMr2AIU6N0UcUxhqCWVK7Dw9gPEF5GAc4FnPLzPPieqamqT/bVhK8njUfS/
-# bpuVNeY75sWLLUeyWF8hCkgYtjacSMLO0L7r9+ZwyHqOgvOO9oPgD/x0RNFq8t2S
-# wJdOFbYgvd3DHtycT3H6zWhw5Ec8JZN+/hoCxbzH2BvC34ZHHTW6vts=
+# MQ8XDTIwMDgwMzE0NTA1OVowIwYJKoZIhvcNAQkEMRYEFKZ+SzTKfNV5K0mALD+9
+# V57bpXjSMA0GCSqGSIb3DQEBAQUABIIBADHLa9oAgBOjDC0nQ8BivkUiJ5nsjYJP
+# TGjBblK3YkOmZtIuKVHv55V2NLQ6gv7z/cgC6BbMmAJG5cp7toXmHVjshhWfEece
+# njIe92HesyOS6LefNQzEMJbr0rvxa222FMx28xhO9YuQG1y6i0yNqK7vcpA/G0d1
+# w/ho/cpfGLaAKFxJd6AbZ2u6lb1BFlQdc3e8SmPn7zmzmPAP3gdLm7+a5rQnNqj7
+# tTFd9bRzn4YMgDsnNs8WMZJc+EcQwgG2xAMvi+TaRdj9oqPSqOm61+ONYYLLCZ7c
+# s5a1q4ssqT9KHPNy6eX2QvWy4o9w2uwNNgNBD/SZrehOHDMhdLpd0ew=
 # SIG # End signature block

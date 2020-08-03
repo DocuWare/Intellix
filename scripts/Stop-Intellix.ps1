@@ -1,19 +1,12 @@
-# Install NuGet Provider
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+.\Read-IntellixConfiguration.ps1
 
-# Install Docker
-Install-Module DockerMsftProvider -Force
-Install-Package Docker -ProviderName DockerMsftProvider -Force
-
-# Install Docker-Compose
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $Env:ProgramFiles\Docker\docker-compose.exe
+docker-compose -f docker-compose.yml down -t 60
 
 # SIG # Begin signature block
 # MIIcdQYJKoZIhvcNAQcCoIIcZjCCHGICAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU/P99X7n/vnJhvSNPFP7yvIXn
-# PdSgghebMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUPuqivDnrF1uXwykWPalBLnBc
+# PymgghebMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
 # AQUFADCBizELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2FwZTEUMBIG
 # A1UEBxMLRHVyYmFudmlsbGUxDzANBgNVBAoTBlRoYXd0ZTEdMBsGA1UECxMUVGhh
 # d3RlIENlcnRpZmljYXRpb24xHzAdBgNVBAMTFlRoYXd0ZSBUaW1lc3RhbXBpbmcg
@@ -144,22 +137,22 @@ Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.25.4/do
 # MC4GA1UEAxMnU3ltYW50ZWMgQ2xhc3MgMyBTSEEyNTYgQ29kZSBTaWduaW5nIENB
 # AhBxjEA+6RvB3HxpyzGvjEDFMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQow
 # CKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcC
-# AQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRw6KwWIJSOXSMnjfTT
-# 41tklkoZiDANBgkqhkiG9w0BAQEFAASCAQBszFhgtkY4PXcMI+Oc1b1wQ34WWpE+
-# fgAXfe5a7VmfOQ/ESVivsK6aXPafqeS72fjmcgWV6Dzd4SjpVdnIcTWNnE+tq6Yu
-# vI4hjVSmMMNiasMq/GH4aTzhMy1tTc0g7EMIcfmHx8H2NARmpUynab1vSPKJoEwg
-# b7ZAY19l/OhbyonJbiKpw0fHPhLQ1qHOofctOaKr10Z9o5UAiK9ZOUt1E9sPytFH
-# ag95pyWMUSYfr6Mhlq0Otl9FzlriT+H65m/SW+jB+ndlpP3goyht6vuj5wWt+1Vq
-# RmwTbiUs5zzGJbs1cN5M89pqQOcc3qQyBYme8dYYW4d2hROnR0GK1hLRoYICCzCC
+# AQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBSMoWeA7YFBVqkicQ0B
+# 2MuC9iFksDANBgkqhkiG9w0BAQEFAASCAQAVvT+EhBn/xdQxxwtKZ//zqGDFoIdu
+# AhFXW1+X27+cNfcD+4PXKps/zJ2XlLh6LOE/v2V2EvILjAkjbRIaqVGP8bPyfKLx
+# zepJOOowvHxRBXZ0jbGeNT0h4UoBMGYn96V5swc8DaEKyTunXtwcg5cZmcH26CHW
+# szl8zRgVNMNs0hidnmCkIa362eySicxba2D/Pzli4Lxfo2OiAvOSiHrOjfshkI1Y
+# 7TJMnEtb71jfS111jmU5QnC3cHgaQ6o4ps6hHcTpmINKVBuDX5xgOw1eJnhnVFvT
+# aY5bzpwo8NAvt8wN7xuStcbnhs1t8WdCUSewFTI5P56EGu4vg9VkXhFBoYICCzCC
 # AgcGCSqGSIb3DQEJBjGCAfgwggH0AgEBMHIwXjELMAkGA1UEBhMCVVMxHTAbBgNV
 # BAoTFFN5bWFudGVjIENvcnBvcmF0aW9uMTAwLgYDVQQDEydTeW1hbnRlYyBUaW1l
 # IFN0YW1waW5nIFNlcnZpY2VzIENBIC0gRzICEA7P9DjI/r81bgTYapgbGlAwCQYF
 # Kw4DAhoFAKBdMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
-# MQ8XDTIwMDgwMzE0NTA1OVowIwYJKoZIhvcNAQkEMRYEFJEYoX9SFVQbTu6SLmKe
-# fpPvQGaMMA0GCSqGSIb3DQEBAQUABIIBAEchHRZdgdYKCnykzSRBnXi0EI7Ow2wc
-# vG8eGVFBVHUu5QRU+niAe0lNdwmYVR72RIgw+te/WH9H6a07GGQBNJzZqrKOCWkF
-# mP0YpQ55LxRk/FdeeMLtz4B0pzRl1uUw7vsBgapQv+yUGirjIuJyqcP1xztPstJQ
-# 5d0G+lMr2AIU6N0UcUxhqCWVK7Dw9gPEF5GAc4FnPLzPPieqamqT/bVhK8njUfS/
-# bpuVNeY75sWLLUeyWF8hCkgYtjacSMLO0L7r9+ZwyHqOgvOO9oPgD/x0RNFq8t2S
-# wJdOFbYgvd3DHtycT3H6zWhw5Ec8JZN+/hoCxbzH2BvC34ZHHTW6vts=
+# MQ8XDTIwMDgwMzE0NTEwMFowIwYJKoZIhvcNAQkEMRYEFENEtQa/7IrBEH3Rg8rG
+# Ib7tw4siMA0GCSqGSIb3DQEBAQUABIIBAEEFZGNT8jhvBTZeDD0Llrwnmwe/3vS2
+# h4AQZJy0+aKGxHXdg0V3nyQ6Ugcv9H8pLl1RpzkLNHAuF/I9+wBFpP4pz4G24ih4
+# YMZg6z+03aSKQhtMGoe5WA6mcVHDFwZ3oURC/P99Oh5731gXpBzVkl+cIJVtfty9
+# UB+u1XoYiMeBZGM8PHRaSnH/jBqJa9Q2bYQIAMgid4gV3FD4vJlXqE3dj5acx2Kh
+# 3t/xOLMBVonp52Mr5ipUZPCYqzDVOoEGV4Y00nCvdelM/0WoHehlSkZz892Dp5pP
+# Z0WjMZP8hrW6HiMQ/1z2022Kta9mf8M71+gFSs9Kd7i2EDNI5YlfJk0=
 # SIG # End signature block

@@ -1,19 +1,98 @@
-# Install NuGet Provider
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+param(
+	[Parameter(Mandatory=$true)]
+    [string] $dbIntellixUser,
+	[Parameter(Mandatory=$true)]
+    [string] $dbIntellixUserPassword,
+    [string] $serverInstance = "SQLEXPRESS"
+	[Parameter(Mandatory=$true)]
+	[string] $intellixAdminUser,
+	[Parameter(Mandatory=$true)]
+    [string] $intellixAdminUserPassword
+)
 
-# Install Docker
-Install-Module DockerMsftProvider -Force
-Install-Package Docker -ProviderName DockerMsftProvider -Force
+$dataSource = '.\' + $serverInstance
 
-# Install Docker-Compose
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $Env:ProgramFiles\Docker\docker-compose.exe
+
+Write-Host "Creating database..."
+sqlcmd -S $dataSource -i .\init_database.sql 1>.\init_database.log 2>.\init_database.err
+if($LASTEXITCODE -ne 0) {
+    Write-Error "Creating database failed. Please check init_database.log and init_database.err for details."
+    exit $LASTEXITCODE
+}
+
+
+Write-Host "Creating Intelligent Indexing admin user..."
+$intellixAdminUserCmd = "
+USE intellixv2
+go
+
+IF NOT EXISTS(select * from users where Name=N'$intellixAdminUser')
+BEGIN
+	Execute AddUser N'$intellixAdminUser', N'$intellixAdminUserPassword'; 
+
+    declare @adminUserRoleId int
+
+	set @adminUserRoleId = (select Id from Roles where name = N'Administrator');
+	insert into UserRoles(UserId, RoleId)
+	select u.Id, @adminUserRoleId from 
+		(select * from Users where name = N'$intellixAdminUser') u left outer join 
+		(select * from UserRoles where RoleId = @adminUserRoleId) ur on u.Id = ur.UserId 
+		where ur.UserId is null
+END
+
+"
+
+sqlcmd -b -S $dataSource -Q $intellixAdminUserCmd 1>>.\init_database.log 2>>.\init_database.err
+if($LASTEXITCODE -ne 0) {
+    Write-Error "Creating the Intelligent Indexing Service administation user failed."
+    exit $LASTEXITCODE
+}
+Write-Host "Creating user $dbIntellixUser for Intelligent Indexing database..."
+$createUserCmd = `
+    "USE intellixv2`n" + `
+    "GO`n" + `
+    "CREATE LOGIN [$dbIntellixUser] WITH PASSWORD=N'$dbIntellixUserPassword', DEFAULT_DATABASE=intellixv2`n" + `
+    "GO`n" + `
+    "ALTER LOGIN [$dbIntellixUser] ENABLE`n" + 
+    "GO`n" + `
+    "CREATE USER [$dbIntellixUser] FOR LOGIN [$dbIntellixUser]`n" + 
+    "GO`n" + `
+    "exec sp_addrolemember 'db_owner', '$dbIntellixUser'"
+
+sqlcmd -b -S $dataSource -Q $createUserCmd
+if($LASTEXITCODE -ne 0) {
+    Write-Error "Creating the Intelligent Indexing database user failed."
+    exit $LASTEXITCODE
+}
+
+
+Write-Host "Enabling SQL Server Authentication..."
+sqlcmd -S $dataSource -Q "EXEC xp_instance_regwrite N'HKEY_LOCAL_MACHINE', N'Software\Microsoft\MSSQLServer\MSSQLServer', N'LoginMode', REG_DWORD, 2"
+
+
+Write-Host "Enabling TCP/IP and set port to 1433..."
+Import-Module SQLPS -DisableNameChecking -Force
+$wmi = New-Object ('Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer') $env:COMPUTERNAME
+$uri = "ManagedComputer[@Name='$env:COMPUTERNAME']/ ServerInstance[@Name='$serverInstance']/ServerProtocol[@Name='Tcp']"
+$tcp = $wmi.GetSmoObject($uri)
+$tcp.IsEnabled = $true
+$wmi.GetSmoObject($uri + "/IPAddress[@Name='IPAll']").IPAddressProperties[0].Value = ""
+$wmi.GetSmoObject($uri + "/IPAddress[@Name='IPAll']").IPAddressProperties[1].Value = "1433"
+$tcp.Alter()
+
+
+Write-Host "Restarting SQL Server..."
+$wmi.Services | Where-Object { $_.Type -eq 'SqlServer' } | ForEach-Object { Restart-Service $_.Name }
+
+
+Write-Host "Updating firewall rules..."
+netsh advfirewall firewall add rule name="SQLPort 1433" dir=in action=allow protocol=TCP localport=1433
 
 # SIG # Begin signature block
 # MIIcdQYJKoZIhvcNAQcCoIIcZjCCHGICAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU/P99X7n/vnJhvSNPFP7yvIXn
-# PdSgghebMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU9LvE4EOSTJZWgLlZV4SfORRx
+# 2jugghebMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
 # AQUFADCBizELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2FwZTEUMBIG
 # A1UEBxMLRHVyYmFudmlsbGUxDzANBgNVBAoTBlRoYXd0ZTEdMBsGA1UECxMUVGhh
 # d3RlIENlcnRpZmljYXRpb24xHzAdBgNVBAMTFlRoYXd0ZSBUaW1lc3RhbXBpbmcg
@@ -144,22 +223,22 @@ Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.25.4/do
 # MC4GA1UEAxMnU3ltYW50ZWMgQ2xhc3MgMyBTSEEyNTYgQ29kZSBTaWduaW5nIENB
 # AhBxjEA+6RvB3HxpyzGvjEDFMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQow
 # CKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcC
-# AQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRw6KwWIJSOXSMnjfTT
-# 41tklkoZiDANBgkqhkiG9w0BAQEFAASCAQBszFhgtkY4PXcMI+Oc1b1wQ34WWpE+
-# fgAXfe5a7VmfOQ/ESVivsK6aXPafqeS72fjmcgWV6Dzd4SjpVdnIcTWNnE+tq6Yu
-# vI4hjVSmMMNiasMq/GH4aTzhMy1tTc0g7EMIcfmHx8H2NARmpUynab1vSPKJoEwg
-# b7ZAY19l/OhbyonJbiKpw0fHPhLQ1qHOofctOaKr10Z9o5UAiK9ZOUt1E9sPytFH
-# ag95pyWMUSYfr6Mhlq0Otl9FzlriT+H65m/SW+jB+ndlpP3goyht6vuj5wWt+1Vq
-# RmwTbiUs5zzGJbs1cN5M89pqQOcc3qQyBYme8dYYW4d2hROnR0GK1hLRoYICCzCC
+# AQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBS7NSxI+i0D6bNJUPiP
+# OhtDcuEBYDANBgkqhkiG9w0BAQEFAASCAQA/szhlqb3Eg56I3/B8/97bsUwNjFxg
+# WSPvIWQZzatQzIGHr9S6+6SMTsmHKqnLF2+3furHMAun8gBYUI/wDfnD2x+8EIfo
+# AYCR6XQY6zm4mVVy6o7yhAq0FzDE6gZOYroYBl2mkhhpFr3vBbr70NWYILbwvQak
+# RZ1VO9iqDwC8/mixauzT2/jUOAR6X+CpMSriFLP8Mox3tFmnBz6mJV1WIGv/7B8x
+# KixFvDgT8nMVmLPEfnW2XUc78h213YVOTUB7K/lU/3dyY+PGzOYskTVm10tqFopG
+# 5J5NWpuMCnza9sZiq6hVEj0Wl+OyNIMMkrF3C+M6WSlMOP0nOKtAw5cPoYICCzCC
 # AgcGCSqGSIb3DQEJBjGCAfgwggH0AgEBMHIwXjELMAkGA1UEBhMCVVMxHTAbBgNV
 # BAoTFFN5bWFudGVjIENvcnBvcmF0aW9uMTAwLgYDVQQDEydTeW1hbnRlYyBUaW1l
 # IFN0YW1waW5nIFNlcnZpY2VzIENBIC0gRzICEA7P9DjI/r81bgTYapgbGlAwCQYF
 # Kw4DAhoFAKBdMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
-# MQ8XDTIwMDgwMzE0NTA1OVowIwYJKoZIhvcNAQkEMRYEFJEYoX9SFVQbTu6SLmKe
-# fpPvQGaMMA0GCSqGSIb3DQEBAQUABIIBAEchHRZdgdYKCnykzSRBnXi0EI7Ow2wc
-# vG8eGVFBVHUu5QRU+niAe0lNdwmYVR72RIgw+te/WH9H6a07GGQBNJzZqrKOCWkF
-# mP0YpQ55LxRk/FdeeMLtz4B0pzRl1uUw7vsBgapQv+yUGirjIuJyqcP1xztPstJQ
-# 5d0G+lMr2AIU6N0UcUxhqCWVK7Dw9gPEF5GAc4FnPLzPPieqamqT/bVhK8njUfS/
-# bpuVNeY75sWLLUeyWF8hCkgYtjacSMLO0L7r9+ZwyHqOgvOO9oPgD/x0RNFq8t2S
-# wJdOFbYgvd3DHtycT3H6zWhw5Ec8JZN+/hoCxbzH2BvC34ZHHTW6vts=
+# MQ8XDTIwMDgwMzE0NTA1OVowIwYJKoZIhvcNAQkEMRYEFGVWLsXSitUNKBOrIqPC
+# nyp98WTXMA0GCSqGSIb3DQEBAQUABIIBAEN9uqK0uKp3PSFO6edSs7aG2p8z38mP
+# vGvCEDnUXG2cUP4l3M0ih818fT+Xr7I/0VFBd4JD8mwOGfa3sXptkELFDhrzjUB6
+# vYQLMw2lQhD6P1z9nGHxtSyIRShBcbeq+sSOJNxNuQ7sszFv3r0Qgnvvql9qdtOo
+# M5fQIIigLp+UN0sKuUMXscSxcWBhoZHhXT3wXTC6QbzRAERFKimYA4XaRDwo8l2t
+# i4838feEI3jwJA0s7j9VTfDTGVm8aY2rX5Ts6pa3AJRNV7dpkphEGylYWU/KcVaX
+# zTJ5GNfODCzmkavO6nlG3zMb7afkb3/feDdeiRJBTfs4CHuyISf2oI8=
 # SIG # End signature block

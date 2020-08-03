@@ -1,19 +1,24 @@
-# Install NuGet Provider
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+#Export settings as environment variables to make it available in the compose file
+Write-Host "Reading Configuration..."
+$regex="^E_?" #Only settings starting with "E_" needs to be exported as environment variables
+foreach($line in Get-Content .\configuration.env) #read configuration.env
+{
+    if($line -match $regex)
+    {
+       $arr =$line.Split("=") #separate settingname from setting value
+       $setting=$arr[0]
+       $value=$arr[1]
+       Set-Item -Path Env:$setting -Value $value
+    }
+}
 
-# Install Docker
-Install-Module DockerMsftProvider -Force
-Install-Package Docker -ProviderName DockerMsftProvider -Force
-
-# Install Docker-Compose
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-Windows-x86_64.exe" -UseBasicParsing -OutFile $Env:ProgramFiles\Docker\docker-compose.exe
-
+Set-Item -Path Env:E_IntellixImageVersion -Value 2
+Set-Item -Path Env:E_SolRImageVersion -Value 8
 # SIG # Begin signature block
 # MIIcdQYJKoZIhvcNAQcCoIIcZjCCHGICAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU/P99X7n/vnJhvSNPFP7yvIXn
-# PdSgghebMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUgN1RhvTfzxMfRNcXnuY6euvU
+# tH+gghebMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
 # AQUFADCBizELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2FwZTEUMBIG
 # A1UEBxMLRHVyYmFudmlsbGUxDzANBgNVBAoTBlRoYXd0ZTEdMBsGA1UECxMUVGhh
 # d3RlIENlcnRpZmljYXRpb24xHzAdBgNVBAMTFlRoYXd0ZSBUaW1lc3RhbXBpbmcg
@@ -144,22 +149,22 @@ Invoke-WebRequest "https://github.com/docker/compose/releases/download/1.25.4/do
 # MC4GA1UEAxMnU3ltYW50ZWMgQ2xhc3MgMyBTSEEyNTYgQ29kZSBTaWduaW5nIENB
 # AhBxjEA+6RvB3HxpyzGvjEDFMAkGBSsOAwIaBQCgeDAYBgorBgEEAYI3AgEMMQow
 # CKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcC
-# AQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRw6KwWIJSOXSMnjfTT
-# 41tklkoZiDANBgkqhkiG9w0BAQEFAASCAQBszFhgtkY4PXcMI+Oc1b1wQ34WWpE+
-# fgAXfe5a7VmfOQ/ESVivsK6aXPafqeS72fjmcgWV6Dzd4SjpVdnIcTWNnE+tq6Yu
-# vI4hjVSmMMNiasMq/GH4aTzhMy1tTc0g7EMIcfmHx8H2NARmpUynab1vSPKJoEwg
-# b7ZAY19l/OhbyonJbiKpw0fHPhLQ1qHOofctOaKr10Z9o5UAiK9ZOUt1E9sPytFH
-# ag95pyWMUSYfr6Mhlq0Otl9FzlriT+H65m/SW+jB+ndlpP3goyht6vuj5wWt+1Vq
-# RmwTbiUs5zzGJbs1cN5M89pqQOcc3qQyBYme8dYYW4d2hROnR0GK1hLRoYICCzCC
+# AQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBTzW4gO1hmsbh07rWiq
+# F11CaccwnjANBgkqhkiG9w0BAQEFAASCAQCthNM7iudyAzkG9DorNU49nUxTiBuy
+# 6VsR0+r+Ryo1N5+qSxIgOJnppnxcKouQs2WS2c3FmHPO1yTpuR2gPyffzneGJosw
+# pQn9fru3uw8dnaSN8WY61lupyVSnAPmgygFAN9pDvL24uTVSwXri2xVaQ8nu6Dj0
+# kGcLK3moWOGmmJUwXA7/6W43VnKsjBzqwSRU2AweTgpUBZFm+c5kSG1MJ96jR2Aw
+# pIhwNxTkJgwx/MLgecBf0SOK1jSRNcDU5ctL/B9GbU0ULzJ2vMJezSrInbFlKm+W
+# j6E0SM9AIJ3f31zX50/VO31EF1b2gEdViTVHVy65sq7VWVOW0wjK4fdNoYICCzCC
 # AgcGCSqGSIb3DQEJBjGCAfgwggH0AgEBMHIwXjELMAkGA1UEBhMCVVMxHTAbBgNV
 # BAoTFFN5bWFudGVjIENvcnBvcmF0aW9uMTAwLgYDVQQDEydTeW1hbnRlYyBUaW1l
 # IFN0YW1waW5nIFNlcnZpY2VzIENBIC0gRzICEA7P9DjI/r81bgTYapgbGlAwCQYF
 # Kw4DAhoFAKBdMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkF
-# MQ8XDTIwMDgwMzE0NTA1OVowIwYJKoZIhvcNAQkEMRYEFJEYoX9SFVQbTu6SLmKe
-# fpPvQGaMMA0GCSqGSIb3DQEBAQUABIIBAEchHRZdgdYKCnykzSRBnXi0EI7Ow2wc
-# vG8eGVFBVHUu5QRU+niAe0lNdwmYVR72RIgw+te/WH9H6a07GGQBNJzZqrKOCWkF
-# mP0YpQ55LxRk/FdeeMLtz4B0pzRl1uUw7vsBgapQv+yUGirjIuJyqcP1xztPstJQ
-# 5d0G+lMr2AIU6N0UcUxhqCWVK7Dw9gPEF5GAc4FnPLzPPieqamqT/bVhK8njUfS/
-# bpuVNeY75sWLLUeyWF8hCkgYtjacSMLO0L7r9+ZwyHqOgvOO9oPgD/x0RNFq8t2S
-# wJdOFbYgvd3DHtycT3H6zWhw5Ec8JZN+/hoCxbzH2BvC34ZHHTW6vts=
+# MQ8XDTIwMDgwMzE0NTEwMFowIwYJKoZIhvcNAQkEMRYEFGJV87H2O21yfoLf+/Qv
+# KMdjqKQRMA0GCSqGSIb3DQEBAQUABIIBAIlVeNQ7AFN/YACXyWcleU/Yw0qFGXz5
+# kZqXpIRjnq3o2OYuXN4jyHO8U4WFVKwg6kS+b1XBypmWXwfLOKTRFTIDR/xrlKnk
+# CQNcyv4BclVta+kb1OvQoHME1rGbSbsHN6Axb8OhzGbrttbJMsoZE85CHyU2FCil
+# Sg8sMnzUJqtW6KQSejf/EaYojKaTeA5g3OdHmRiNs8BHuwN9vsCims4lX3BqgbAP
+# hfMKYsLydg+1mWLtuw7jiBbqaqLf0o1GdHM8BxfQU/FVy7Fce7MfovbN0SIjzdGd
+# 7qdGfsGlAWuZbSaFBqLYHx9EuEAaHWhsuZg0FGyC+yHjlDx0KrF4sEo=
 # SIG # End signature block
