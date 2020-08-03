@@ -1,3 +1,7 @@
+# Beta Test
+
+Diese Version von Intelligent Indexing ist nur für den geschlossenen Beta Test gedacht und darf nicht produktiv eingesetzt werden.
+
 # Installationsanleitung Intelligent Indexing V2
 
 # Einleitung
@@ -121,6 +125,8 @@ Dabei müssen Sie folgende Parameter angeben:
 Zusätzlich können Sie über den optionalen Parameter `serverInstance` die Server Instanz ändern. Voreingestellt ist der Wert `SQLEXPRESS`.
 
 Das Skript wird den Datenbankserver neustarten. Falls Sie das nicht möchten oder die Einrichtung an Ihre Situation anpassen müssen, finden Sie im [Anhang](###Manuelle-Einrichtung-des-Datenbankservers) eine Übersicht, welche Schritte ausgeführt werden und wie diese manuell im SQL Server Management Studio durchgeführt werden können.
+
+Falls Sie eine alte Version von Intelligent Indexing On-Premise auf demselben Datenbankserver betreiben, können Sie Intelligent Indexing V2 parallel dazu installieren. Die alte Version verwendet die Datenbank `intellix`, die aktuelle Version die Datenbank `intellixv2`.
 
 
 ## Konfiguration von Intelligent Indexing
