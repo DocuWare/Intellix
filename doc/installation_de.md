@@ -76,6 +76,8 @@ Intelligent Indexing läuft in Docker Containern. Dazu muss zuerst eine Docker U
 .\Install-Docker.ps1
 ```
 
+Falls Sie dabei eine Fehlermeldung sehen, setzen Sie temporär die Execution Policy auf `Unrestricted` (siehe Abschnitt [Skripte ausführen erlauben](#skripte-ausführen-erlauben)), führen das Skript nochmal aus und setzen die Execution Policy wieder zurück (z.B. auf `AllSigned`).
+
 Starten Sie anschließend den Host-Rechner neu.
 
 Warten Sie nach dem Neustart ca. eine Minute und führen Sie anschließend in der Powershell als Administrator im Installationsverzeichnis folgenden Befehl aus, um die Docker Installation zu testen:
