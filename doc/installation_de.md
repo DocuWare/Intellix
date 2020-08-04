@@ -42,13 +42,13 @@ Zusätzlich wird eine SQL Server Datenbank benötigt, die außerhalb der Docker 
 
 Die Installation gliedert sich in folgende Schritte:
 
-- [Skripte ausführen erlauben](##skripte-ausführen-erlauben)
-- [Installation der Docker Umgebung](##installation-der-docker-umgebung)
-- [Installation des Datenbankservers](##installation-des-datenbankservers)
-- [Installation des Webservers IIS](##installation-des-webservers-iis)
-- [Verwaltung von Intelligent Indexing](##verwaltung-von-intelligent-indexing)
-- [Intelligent Indexing lizenzieren](##intelligent-indexing-lizenzieren)
-- [Verbindung zu DocuWare](##verbindung-zu-docuWare)
+- [Skripte ausführen erlauben](#skripte-ausführen-erlauben)
+- [Installation der Docker Umgebung](#installation-der-docker-umgebung)
+- [Installation des Datenbankservers](#installation-des-datenbankservers)
+- [Installation des Webservers IIS](#installation-des-webservers-iis)
+- [Verwaltung von Intelligent Indexing](#verwaltung-von-intelligent-indexing)
+- [Intelligent Indexing lizenzieren](#intelligent-indexing-lizenzieren)
+- [Verbindung zu DocuWare](#verbindung-zu-docuWare)
 
 ## Skripte ausführen erlauben
 
@@ -114,11 +114,11 @@ Falls Sie einen neu aufgesetzten SQL Server verwenden, können Sie die Datenbank
 
 Dabei müssen Sie folgende Parameter angeben:
 
-- `dbIntellixUser` und `dbIntellixUserPassword`: Das sind die Zugangsdaten für die Datenbank, mit denen Intelligent Indexing auf die Datenbank zugreifen wird. Diese Werte müssen Sie im Abschnitt [Konfiguration von Intelligent Indexing](###konfiguration-von-intelligent-indexing) in die Konfigurationsdatei eintragen. Der SQL Server setzt ein starkes Passwort voraus. Details dazu finden Sie unter [https://docs.microsoft.com/de-de/sql/relational-databases/security/password-policy?view=sql-server-ver15](https://docs.microsoft.com/de-de/sql/relational-databases/security/password-policy?view=sql-server-ver15)
+- `dbIntellixUser` und `dbIntellixUserPassword`: Das sind die Zugangsdaten für die Datenbank, mit denen Intelligent Indexing auf die Datenbank zugreifen wird. Diese Werte müssen Sie im Abschnitt [Konfiguration von Intelligent Indexing](#konfiguration-von-intelligent-indexing) in die Konfigurationsdatei eintragen. Der SQL Server setzt ein starkes Passwort voraus. Details dazu finden Sie unter [https://docs.microsoft.com/de-de/sql/relational-databases/security/password-policy?view=sql-server-ver15](https://docs.microsoft.com/de-de/sql/relational-databases/security/password-policy?view=sql-server-ver15)
 - `serverInstance`: Dieser Wert legt den Namen der Datenbankserver Instanz, z.B. `SQLEXPRESS`, fest.
-- `intellixAdminUser` und `intellixAdminUserPassword`: Das sind die Zugangsdaten, mit denen DocuWare auf Intelligent Indexing zugreifen wird. Diese Werte müssen Sie im Abschnitt [Verbindung zu DocuWare](##verbindung-zu-docuWare) in die Intelligent Indexing Verbindungsdatei eintragen. Das Passwort sollte sicher sein, aber keines der folgenden 5 Sonderzeichen enthalten, da diese in der Verbindungsdatei zu Problemen führen können: & < > " '
+- `intellixAdminUser` und `intellixAdminUserPassword`: Das sind die Zugangsdaten, mit denen DocuWare auf Intelligent Indexing zugreifen wird. Diese Werte müssen Sie im Abschnitt [Verbindung zu DocuWare](#verbindung-zu-docuWare) in die Intelligent Indexing Verbindungsdatei eintragen. Das Passwort sollte sicher sein, aber keines der folgenden 5 Sonderzeichen enthalten, da diese in der Verbindungsdatei zu Problemen führen können: & < > " '
 
-Das Skript wird den Datenbankserver neustarten. Falls Sie das nicht möchten oder die Einrichtung an Ihre Situation anpassen müssen, finden Sie im [Anhang](###manuelle-einrichtung-des-datenbankservers) eine Übersicht, welche Schritte ausgeführt werden und wie diese manuell im SQL Server Management Studio durchgeführt werden können.
+Das Skript wird den Datenbankserver neustarten. Falls Sie das nicht möchten oder die Einrichtung an Ihre Situation anpassen müssen, finden Sie im [Anhang](#manuelle-einrichtung-des-datenbankservers) eine Übersicht, welche Schritte ausgeführt werden und wie diese manuell im SQL Server Management Studio durchgeführt werden können.
 
 Falls Sie eine alte Version von Intelligent Indexing On-Premise auf demselben Datenbankserver betreiben, können Sie Intelligent Indexing V2 parallel dazu installieren. Die alte Version verwendet die Datenbank `intellix`, die aktuelle Version die Datenbank `intellixv2`.
 
@@ -133,7 +133,7 @@ Zur Installation führen Sie das folgende Skript in einer Powershell als Adminis
 ```
 Das Skript installiert den Webserver IIS mit den Komponenten `UrlRewrite` und `ARR`. Es konfiguriert den Webserver so, dass Inteligent Indexing ohne Angabe eines Ports (Defaultport `80`) unter `http`  erreichbar ist.
 
-Falls Sie eine Verbindung über `https` verwenden wollen, müssen Sie in der Oberfläche des IIS unter `Sites` -> `Default Web Site` rechts auf `Bindings...` klicken und dort unter dem `https` Binding ein gültiges Zertifikat hinterlegen und das Zertifikat in den entsprechenden Zertifikatsspeichern ablegen. In der Verbindungsdatei (siehe [Verbindung zu DocuWare](##verbindung-zu-docuWare)) können Sie dann `https` statt `http` eintragen.
+Falls Sie eine Verbindung über `https` verwenden wollen, müssen Sie in der Oberfläche des IIS unter `Sites` -> `Default Web Site` rechts auf `Bindings...` klicken und dort unter dem `https` Binding ein gültiges Zertifikat hinterlegen und das Zertifikat in den entsprechenden Zertifikatsspeichern ablegen. In der Verbindungsdatei (siehe [Verbindung zu DocuWare](#verbindung-zu-docuWare)) können Sie dann `https` statt `http` eintragen.
 
 
 ## Verwaltung von Intelligent Indexing
@@ -142,7 +142,7 @@ Falls Sie eine Verbindung über `https` verwenden wollen, müssen Sie in der Obe
 
 Im Installationsverzeichnis finden Sie eine Datei `configuration.env` zur Konfiguration von Intelligent Indexing. Passen Sie folgende Werte an Ihre Installation an und speichern Sie die Datei anschließend wieder ab:
 
-- `ConnectionStrings:IntellixDatabaseEntities`: Der Connection String für die Datenbankverbindung. Ändern Sie hier die Werte für `Server`, `user id` und `password` entsprechend Ihres Datenbankservers ab. `user id` und `password` entsprechen den Parametern `dbIntellixUser` und `dbIntellixUserPassword`, die sie im Abschnitt [Installation des Datenbankservers](##installation-des-datenbankservers) dem Skript zur Konfiguration der Datenbank übergeben haben. `Server` ist der Name des Datenbankservers. Falls der Datenbankserver auf dem Host-Rechner installiert ist, müssen Sie als Namen für den Rechner wie voreingestellt `$$internalgw$$` verwenden. Falls Sie keinen SQL Server Express oder nicht den Port `1433` verwenden, müssen Sie die Einträge entsprechend ändern. Das Skript zur Einrichtung der Datenbank aus dem Abschnitt [Installation des Datenbankservers](##installation-des-datenbankservers) verwendet den Port `1433`.
+- `ConnectionStrings:IntellixDatabaseEntities`: Der Connection String für die Datenbankverbindung. Ändern Sie hier die Werte für `Server`, `user id` und `password` entsprechend Ihres Datenbankservers ab. `user id` und `password` entsprechen den Parametern `dbIntellixUser` und `dbIntellixUserPassword`, die sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Konfiguration der Datenbank übergeben haben. `Server` ist der Name des Datenbankservers. Falls der Datenbankserver auf dem Host-Rechner installiert ist, müssen Sie als Namen für den Rechner wie voreingestellt `$$internalgw$$` verwenden. Falls Sie keinen SQL Server Express oder nicht den Port `1433` verwenden, müssen Sie die Einträge entsprechend ändern. Das Skript zur Einrichtung der Datenbank aus dem Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) verwendet den Port `1433`.
 - Die nächsten Einträge legen verschiedene Verzeichnisse auf dem Host-Rechner fest. Unter `E_FileStoragePath` werden Dokumentinformationen gespeichert. Unter `E_SolRDataPath` werden die Daten der SolR Volltextsuchmaschine gespeichert. Der Inhalt beider Verzeichnisse wächst pro Dokument und kann mehrere GB betragen. Unter `E_DataProtectionKeysPath` werden Daten zum Verschlüsseln von Cookies abgelegt. Sie können diese Verzeichnisse auch später noch ändern, während Intelligent Indexing gestoppt ist. Dazu müssen Sie auch den Inhalt der Verzeichnisse an die neue Stelle kopieren. Alle diese Verzeichnise sind unabhängig vom Installationsverzeichnis, in dem die Intelligent Indexing Setup-Dateien abgelegt sind.
 
 Änderungen an diesen Werten greifen erst nach einem Neustart von Intelligent Indexing.
@@ -183,7 +183,7 @@ Nach dem Starten von Intelligent Indexing können Sie in einem Browser auf dem H
 http://localhost:8080/Html
 ```
 
-Sie können sich mit dem Benutzernamen und dem Passwort einloggen, die Sie im Abschnitt [Installation des Datenbankservers](##installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben.
+Sie können sich mit dem Benutzernamen und dem Passwort einloggen, die Sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben.
 
 Testen Sie hier auch, ob Sie den Host-Rechner von dem Rechner aus, auf dem DocuWare installiert ist, über einen Browser erreichen können. Ersetzen Sie dazu in der Adresse `localhost/Html` (ohne `8080`) den Wert `localhost` durch den Host-Rechner Namen.
 
@@ -239,9 +239,9 @@ Im [DocuWare Partner Portal](https://login.docuware.com) können Sie die DocuWar
 
 Im Installationsverzeichnis befindet sich die Intelligent Indexing Verbindungsdatei `intelligent-indexing-connection.xml`, mit deren Hilfe DocuWare die Verbindung zu Intelligent Indexing aufbauen kann.
 
-Öffnen Sie diese Datei in einem Texteditor. Tragen Sie in Zeile 3 die Adresse ein, unter der der Host-Rechner von dem Rechner mit der DocuWare Installation aus erreichbar war, aber ohne `Html` am Ende. Der Name des Host-Rechners bzw. dessen statische IP-Adresse muss also statt `localhost` eintragen werden. Falls Sie z.B. Intelligent Indexing von Ihrem DocuWare Rechner unter `http://intellix/Html` erreichen konnten, tragen Sie hier `http://intellix/` ein. Falls Sie den Webserver für eine Verbindung über `https` konfiguriert haben (siehe [Installation des Webservers IIS](##installation-des-webservers-iis)), können Sie hier `https` statt `http` eintragen.
+Öffnen Sie diese Datei in einem Texteditor. Tragen Sie in Zeile 3 die Adresse ein, unter der der Host-Rechner von dem Rechner mit der DocuWare Installation aus erreichbar war, aber ohne `Html` am Ende. Der Name des Host-Rechners bzw. dessen statische IP-Adresse muss also statt `localhost` eintragen werden. Falls Sie z.B. Intelligent Indexing von Ihrem DocuWare Rechner unter `http://intellix/Html` erreichen konnten, tragen Sie hier `http://intellix/` ein. Falls Sie den Webserver für eine Verbindung über `https` konfiguriert haben (siehe [Installation des Webservers IIS](#installation-des-webservers-iis)), können Sie hier `https` statt `http` eintragen.
 
-Tragen Sie in Zeile 4 und 5 den Nutzer und das Passwort ein, die Sie im Abschnitt [Installation des Datenbankservers](##installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben. Die restlichen Werte müssen nicht angepasst werden. Speichern Sie die Datei wieder ab.
+Tragen Sie in Zeile 4 und 5 den Nutzer und das Passwort ein, die Sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben. Die restlichen Werte müssen nicht angepasst werden. Speichern Sie die Datei wieder ab.
 
 Sie können nun die Intelligent Indexing Verbindungsdatei in Ihre DocuWare Installation hochladen, um die Verbindung mit Intelligent Indexing herzustellen. Loggen Sie sich dazu in die DocuWare Administration ein und navigieren Sie zu `DocuWare System` -> `Data Connections` -> `Intelligent Indexing Service connections`. Falls hier schon eine Verbindung eingetragen ist, können Sie diese öffnen und unter Organizations Ihre Organisation entfernen und auf Apply klicken. Dadurch ist die Verbindung Ihres DocuWare Systems zu Ihrem alten Intelligent Indexing System deaktiviert, könnte aber durch erneutes Hinzufügen der Organisation wieder aktiviert werden. Klicken Sie anschließend mit der rechten Maustaste auf `Intelligent Indexing Service connections` auf der linken Seite und wählen `Install Intelligent Indexing Service file` aus. In dem sich öffnenden Dialog wählen Sie die von Ihnen editierte `intelligent-indexing-connection.xml` Datei aus. Klicken Sie anschließend auf Apply und schließen Sie die DocuWare Administration.
 
