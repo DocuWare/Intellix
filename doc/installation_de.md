@@ -6,7 +6,7 @@ Diese Version von Intelligent Indexing ist nur für den geschlossenen Beta Test 
 
 # Einleitung
 
-Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing sowie aller zusätzlich notwendigen Komponenten. Anleitungen zur Konfiguration von Intelligent Indexing und zur Arbeit mit Intelligent Indexing existieren als gesonderte Dokumente im [DocuWare Knowledge Center](help.docuware.com).
+Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing sowie aller zusätzlich notwendigen Komponenten. Anleitungen zur Konfiguration von Intelligent Indexing und zur Arbeit mit Intelligent Indexing existieren als gesonderte Dokumente im [DocuWare Knowledge Center](https://help.docuware.com).
 
 ## Systemvoraussetzungen
 
@@ -78,7 +78,7 @@ Intelligent Indexing läuft in Docker Containern. Dazu muss zuerst eine Docker U
 
 Starten Sie anschließend den Host-Rechner neu.
 
-Führen Sie anschließend in der Powershell als Administrator im Installationsverzeichnis folgenden Befehl aus, um die Docker Installation zu testen:
+Warten Sie nach dem Neustart ca. eine Minute und führen Sie anschließend in der Powershell als Administrator im Installationsverzeichnis folgenden Befehl aus, um die Docker Installation zu testen:
 
 ```powershell
 .\Check-Docker.ps1
