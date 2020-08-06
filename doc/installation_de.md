@@ -58,15 +58,15 @@ Die Powershell Skripte in den Intelligent Indexing Setup-Dateien wurden von Docu
 Get-ExecutionPolicy
 ```
 
-Wird dabei `Restricted` angezeigt, müssen Sie über folgenden Befehl das Ausführen von signierten Skripten erlauben:
+Wird dabei ein anderer Wert als `Restricted` angezeigt, müssen Sie nichts ändern. Wird  `Restricted` angezeigt, müssen Sie über folgenden Befehl das Ausführen von signierten Skripten erlauben:
 
 ``` powershell
 Set-ExecutionPolicy AllSigned
 ```
 
-Bestätigen Sie die Sicherheitsfrage mit dem Buchstaben `J (Ja)`. Das Ausführen von unsignierten Skripten wird dadurch weiterhin verhindert. Wurde ein anderer Wert als Restricted angezeigt, müssen Sie nichts ändern.
+Bestätigen Sie die Sicherheitsfrage wie in der Powershell angegeben. Das Ausführen von unsignierten Skripten wird dadurch weiterhin verhindert. 
 
-Wenn Sie das erste Mal eines der Powershell Skripte aus den Intelligent Indexing Setup-Dateien ausführen, werden Sie evtl. gefragt, ob Sie Skripten von DocuWare vertrauen wollen. Beantworten Sie die Frage mit dem Buchstaben `A (Immer ausführen)`. Dadurch wird das Zertifikat von DocuWare dem Zertifikatsspeicher des Nutzers als vertrauenswürdiger Herausgeber hinzugefügt und diese Frage wird in Zukunft nicht mehr gestellt.
+Wenn Sie das erste Mal eines der Powershell Skripte aus den Intelligent Indexing Setup-Dateien ausführen, werden Sie gefragt, ob Sie Skripten von DocuWare vertrauen wollen. Wählen Sie, dass sie Skripte von DocuWare immer ausführen lassen wollen. Dadurch wird das Zertifikat von DocuWare dem Zertifikatsspeicher des Nutzers als vertrauenswürdiger Herausgeber hinzugefügt und diese Frage wird in Zukunft nicht mehr gestellt.
 
 ## Installation der Docker Umgebung
 
@@ -76,7 +76,9 @@ Intelligent Indexing läuft in Docker Containern. Dazu muss zuerst eine Docker U
 .\Install-Docker.ps1
 ```
 
-Falls Sie dabei eine Fehlermeldung sehen, setzen Sie temporär die Execution Policy auf `Unrestricted` (siehe Abschnitt [Skripte ausführen erlauben](#skripte-ausführen-erlauben)), führen das Skript nochmal aus und setzen die Execution Policy wieder zurück (z.B. auf `AllSigned`).
+Die Warnung, dass die Eigenschaften `version` und `Properties` nicht vorhanden sind, können Sie ignorieren.
+
+Falls Sie eine rote Fehlermeldung sehen, setzen Sie temporär die Execution Policy auf `Unrestricted` (siehe Abschnitt [Skripte ausführen erlauben](#skripte-ausführen-erlauben)), führen das Skript nochmal aus und setzen die Execution Policy wieder zurück (z.B. auf `AllSigned`).
 
 Starten Sie anschließend den Host-Rechner neu.
 
@@ -106,7 +108,7 @@ sehen können. Dadurch ist sichergestellt, dass auch Docker-Compose richtig inst
 
 Intelligent Indexing funktioniert zusammen mit einer SQL Server 2019 Datenbank. Auf älteren Versionen des SQL Server kann die folgende Installation abweichen oder scheitern. Falls Sie für Ihr DocuWare System einen SQL Server 2019 verwenden, können Sie diesen auch für Intelligent Indexing verwenden. Ansonsten müssen Sie einen eigenen SQL Server aufsetzen.
 
-Falls Sie einen eigenen Datenbankserver aufsetzen, können Sie den kostenlosen SQL Server 2019 Express verwenden. Dieser ist allerdings auf 10 GB Speicher beschränkt, was in etwa für 1.000.000 einfache Dokumente Platz bietet. Sie können ihn unter folgendem Link herunterladen: [https://www.microsoft.com/de-de/sql-server/sql-server-downloads](https://www.microsoft.com/de-de/sql-server/sql-server-downloads). Zu Beginn der Installation können Sie die Variante Basic wählen. Installieren Sie am Ende auch das SQL Server Management Studio (SSMS). Danach ist ein Neustart des Rechners nötig.
+Falls Sie einen eigenen Datenbankserver aufsetzen, können Sie den kostenlosen SQL Server 2019 Express verwenden. Dieser ist allerdings auf 10 GB Speicher beschränkt, was in etwa für 1.000.000 einfache Dokumente Platz bietet. Sie können ihn unter folgendem Link herunterladen: [https://www.microsoft.com/de-de/sql-server/sql-server-downloads](https://www.microsoft.com/de-de/sql-server/sql-server-downloads). Zu Beginn der Installation können Sie die Variante Basic wählen. Wählen Sie am Ende der Installation aus, auch das SQL Server Management Studio (SSMS) zu installieren. Danach ist ein Neustart des Rechners nötig.
 
 Falls Sie einen neu aufgesetzten SQL Server verwenden, können Sie die Datenbank über ein Powershell Skript konfigurieren, das sie lokal auf dem Rechner des Datenbankservers ausführen. Gegebenenfalls müssen Sie dazu die Intelligent Indexing Setup-Dateien auf den Rechner mit dem Datenbankserver kopieren. Führen Sie dort als Administrator in einer Powershell folgendes Skript im Installationsverzeichnis aus:
 
@@ -133,7 +135,7 @@ Zur Installation führen Sie das folgende Skript in einer Powershell als Adminis
 ``` powershell
 .\Install-IIS.ps1
 ```
-Das Skript installiert den Webserver IIS mit den Komponenten `UrlRewrite` und `ARR`. Es konfiguriert den Webserver so, dass Inteligent Indexing ohne Angabe eines Ports (Defaultport `80`) unter `http`  erreichbar ist.
+Das Skript installiert den Webserver IIS mit den Komponenten `UrlRewrite` und `ARR`. Es konfiguriert den Webserver so, dass Intelligent Indexing ohne Angabe eines Ports (Defaultport `80`) unter `http`  erreichbar ist.
 
 Falls Sie eine Verbindung über `https` verwenden wollen, müssen Sie in der Oberfläche des IIS unter `Sites` -> `Default Web Site` rechts auf `Bindings...` klicken und dort unter dem `https` Binding ein gültiges Zertifikat hinterlegen und das Zertifikat in den entsprechenden Zertifikatsspeichern ablegen. In der Verbindungsdatei (siehe [Verbindung zu DocuWare](#verbindung-zu-docuWare)) können Sie dann `https` statt `http` eintragen.
 
@@ -245,7 +247,7 @@ Im Installationsverzeichnis befindet sich die Intelligent Indexing Verbindungsda
 
 Tragen Sie in Zeile 4 und 5 den Nutzer und das Passwort ein, die Sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben. Die restlichen Werte müssen nicht angepasst werden. Speichern Sie die Datei wieder ab.
 
-Sie können nun die Intelligent Indexing Verbindungsdatei in Ihre DocuWare Installation hochladen, um die Verbindung mit Intelligent Indexing herzustellen. Loggen Sie sich dazu in die DocuWare Administration ein und navigieren Sie zu `DocuWare System` -> `Data Connections` -> `Intelligent Indexing Service connections`. Falls hier schon eine Verbindung eingetragen ist, können Sie diese öffnen und unter Organizations Ihre Organisation entfernen und auf Apply klicken. Dadurch ist die Verbindung Ihres DocuWare Systems zu Ihrem alten Intelligent Indexing System deaktiviert, könnte aber durch erneutes Hinzufügen der Organisation wieder aktiviert werden. Klicken Sie anschließend mit der rechten Maustaste auf `Intelligent Indexing Service connections` auf der linken Seite und wählen `Install Intelligent Indexing Service file` aus. In dem sich öffnenden Dialog wählen Sie die von Ihnen editierte `intelligent-indexing-connection.xml` Datei aus. Klicken Sie anschließend auf Apply und schließen Sie die DocuWare Administration.
+Sie können nun die Intelligent Indexing Verbindungsdatei in Ihre DocuWare Installation hochladen, um die Verbindung mit Intelligent Indexing herzustellen. Loggen Sie sich dazu in die DocuWare Administration ein und navigieren Sie zu `DocuWare System` -> `Datenverbindungen` -> `Verbindungen Intelligent Indexing Service`. Falls hier schon eine Verbindung eingetragen ist, können Sie diese öffnen und unter Organizations Ihre Organisation entfernen und auf Apply klicken. Dadurch ist die Verbindung Ihres DocuWare Systems zu Ihrem alten Intelligent Indexing System deaktiviert, könnte aber durch erneutes Hinzufügen der Organisation wieder aktiviert werden. Klicken Sie anschließend mit der rechten Maustaste auf `Verbindungen Intelligent Indexing Service` auf der linken Seite und wählen `Installiere Datei von Intelligent Indexing Service` aus. In dem sich öffnenden Dialog wählen Sie die von Ihnen editierte `intelligent-indexing-connection.xml` Datei aus. Klicken Sie anschließend auf Apply und schließen Sie die DocuWare Administration.
 
 ## Anhang
 
