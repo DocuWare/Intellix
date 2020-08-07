@@ -54,13 +54,13 @@ Die Installation gliedert sich in folgende Schritte:
 
 Die Powershell Skripte in den Intelligent Indexing Setup-Dateien wurden von DocuWare signiert. Allerdings verbietet Windows Server 2019 in der Voreinstellung das Ausführen von Powershell Skripten prinzipiell. Um die aktuelle Einstellung zu sehen, führen Sie als Administrator in der Powershell folgenden Befehl aus:
 
-``` powershell
+```
 Get-ExecutionPolicy
 ```
 
 Wird dabei ein anderer Wert als `Restricted` angezeigt, müssen Sie nichts ändern. Wird  `Restricted` angezeigt, müssen Sie über folgenden Befehl das Ausführen von signierten Skripten erlauben:
 
-``` powershell
+```
 Set-ExecutionPolicy AllSigned
 ```
 
@@ -72,7 +72,7 @@ Wenn Sie das erste Mal eines der Powershell Skripte aus den Intelligent Indexing
 
 Intelligent Indexing läuft in Docker Containern. Dazu muss zuerst eine Docker Umgebung installiert werden. Wechseln Sie in einer Powershell als Administrator in das Installationsverzeichnis und führen folgenden Befehl aus:
 
-```powershell
+```
 .\Install-Docker.ps1
 ```
 
@@ -84,7 +84,7 @@ Starten Sie anschließend den Host-Rechner neu.
 
 Warten Sie nach dem Neustart ca. eine Minute und führen Sie anschließend in der Powershell als Administrator im Installationsverzeichnis folgenden Befehl aus, um die Docker Installation zu testen:
 
-```powershell
+```
 .\Check-Docker.ps1
 ```
 
@@ -112,7 +112,7 @@ Falls Sie einen eigenen Datenbankserver aufsetzen, können Sie den kostenlosen S
 
 Falls Sie einen neu aufgesetzten SQL Server verwenden, können Sie die Datenbank über ein Powershell Skript konfigurieren, das sie lokal auf dem Rechner des Datenbankservers ausführen. Gegebenenfalls müssen Sie dazu die Intelligent Indexing Setup-Dateien auf den Rechner mit dem Datenbankserver kopieren. Führen Sie dort als Administrator in einer Powershell folgendes Skript im Installationsverzeichnis aus:
 
-``` powershell
+```
 .\Init-Database.ps1
 ```
 
@@ -132,7 +132,7 @@ Loggen Sie sich als Test über das SQL Server Management Studio auf dem Datenban
 
 Zur Installation führen Sie das folgende Skript in einer Powershell als Administrator im Installationsverzeichnis aus:
 
-``` powershell
+```
 .\Install-IIS.ps1
 ```
 Das Skript installiert den Webserver IIS mit den Komponenten `UrlRewrite` und `ARR`. Es konfiguriert den Webserver so, dass Intelligent Indexing ohne Angabe eines Ports (Defaultport `80`) unter `http`  erreichbar ist.
@@ -155,7 +155,7 @@ Im Installationsverzeichnis finden Sie eine Datei `configuration.env` zur Konfig
 
 Zur Installation führen Sie das folgende Skript in einer Powershell als Administrator im Installationsverzeichnis aus:
 
-```powershell
+```
 .\Update-Intellix.ps1
 ```
 
@@ -165,7 +165,7 @@ Dadurch werden die aktuellen Docker Images von Intelligent Indexing heruntergela
 
 Zum Starten von Intelligent Indexing führen Sie das folgende Skript in einer Powershell als Administrator im Installationsverzeichnis aus:
 
-```powershell
+```
 .\Start-Intellix.ps1
 ```
 
@@ -175,7 +175,7 @@ Beim erstmaligen Starten von Intelligent Indexing werden die Verzeichnisse angel
 
 Über folgendes Skript können Sie überprüfen, welche Docker Container gerade auf dem Host-Rechner laufen:
 
-```powershell
+```
 .\Check-Intellix.ps1
 ```
 
@@ -201,13 +201,13 @@ http://localhost:8983
 
 Zum Loggen von Intelligent Indexing führen Sie das folgende Skript in einer Powershell als Administrator im Installationsverzeichnis aus:
 
-```powershell
+```
 .\Show-IntellixLogs.ps1
 ```
 
 Zum Loggen der SolR Volltextsuchmaschine führen Sie das folgende Skript aus:
 
-```powershell
+```
 .\Show-SolrLogs.ps1
 ```
 
@@ -217,7 +217,7 @@ In beiden Skripten werden Logausgaben live angezeigt. Die Ausgaben könnten durc
 
 Zum Stoppen von Intelligent Indexing führen Sie das folgende Skript in einer Powershell als Administrator im Installationsverzeichnis aus:
 
-```powershell
+```
 .\Stop-Intellix.ps1
 ```
 
@@ -225,7 +225,7 @@ Zum Stoppen von Intelligent Indexing führen Sie das folgende Skript in einer Po
 
 Verwenden Sie folgendes Skript, um zu prüfen, ob Updates / Hotfixes für Intelligent Indexing vorhanden sind und diese gegebenenfalls herunterzuladen:
 
-```powershell
+```
 .\Update-Intellix.ps1
 ```
 
@@ -247,7 +247,7 @@ Im Installationsverzeichnis befindet sich die Intelligent Indexing Verbindungsda
 
 Tragen Sie in Zeile 4 und 5 den Nutzer und das Passwort ein, die Sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben. Die restlichen Werte müssen nicht angepasst werden. Speichern Sie die Datei wieder ab.
 
-Sie können nun die Intelligent Indexing Verbindungsdatei in Ihre DocuWare Installation hochladen, um die Verbindung mit Intelligent Indexing herzustellen. Loggen Sie sich dazu in die DocuWare Administration ein und navigieren Sie zu `DocuWare System` -> `Datenverbindungen` -> `Verbindungen Intelligent Indexing Service`. Falls hier schon eine Verbindung eingetragen ist, können Sie diese öffnen und unter Organizations Ihre Organisation entfernen und auf Apply klicken. Dadurch ist die Verbindung Ihres DocuWare Systems zu Ihrem alten Intelligent Indexing System deaktiviert, könnte aber durch erneutes Hinzufügen der Organisation wieder aktiviert werden. Klicken Sie anschließend mit der rechten Maustaste auf `Verbindungen Intelligent Indexing Service` auf der linken Seite und wählen `Installiere Datei von Intelligent Indexing Service` aus. In dem sich öffnenden Dialog wählen Sie die von Ihnen editierte `intelligent-indexing-connection.xml` Datei aus. Klicken Sie anschließend auf Apply und schließen Sie die DocuWare Administration.
+Sie können nun die Intelligent Indexing Verbindungsdatei in Ihre DocuWare Installation hochladen, um die Verbindung mit Intelligent Indexing herzustellen. Loggen Sie sich dazu in die DocuWare Administration ein und navigieren Sie zu `DocuWare System` -> `Datenverbindungen` -> `Verbindungen Intelligent Indexing Service`. Falls hier schon eine Verbindung eingetragen ist, können Sie diese öffnen und unter Organizations Ihre Organisation entfernen und auf `Übernehmen` klicken. Dadurch ist die Verbindung Ihres DocuWare Systems zu Ihrem alten Intelligent Indexing System deaktiviert, könnte aber durch erneutes Hinzufügen der Organisation wieder aktiviert werden. Klicken Sie anschließend mit der rechten Maustaste auf `Verbindungen Intelligent Indexing Service` auf der linken Seite und wählen `Installiere Datei von Intelligent Indexing Service` aus. In dem sich öffnenden Dialog wählen Sie die von Ihnen editierte `intelligent-indexing-connection.xml` Datei aus. Klicken Sie anschließend auf `Übernehmen` und schließen Sie die DocuWare Administration.
 
 ## Anhang
 
@@ -273,7 +273,7 @@ Die restlichen Intelligent Indexing Setup-Dateien dürfen nicht verändert werde
 
 Folgende Schritte sind nötig, um die Intelligent Indexing Datenbank einzurichten. Diese werden auch von dem Skript `Init-Database.ps1` ausgeführt.
 
-- Führen Sie das Skript `init\_database.sql` im SQL Server Management Studio im `SQLCMD Mode` aus. Dadurch wird die Datenbank `intellixv2` eingerichtet.
+- Führen Sie das Skript `init_database.sql` im SQL Server Management Studio im `SQLCMD Mode` aus. Dadurch wird die Datenbank `intellixv2` eingerichtet.
 - Aktivieren Sie im SQL Server Management Studio den Modus `SQL Server and Windows Authentication mode`.
 - Erzeugen Sie einen Login / User, der auf die Datenbank `intellixv2` zugreifen darf.
 - Aktivieren Sie den Zugriff auf den Datenbankserver über TCP über Port `1433`.
