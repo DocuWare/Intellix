@@ -12,10 +12,12 @@ Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing so
 
 Folgende Voraussetzungen müssen für die Installation erfüllt sein:
 
-- Neu aufgesetztes Windows Server 2019 (Build 1809)
+- Neu aufgesetztes Windows Server 2019 (Build 1809) 
 - 8 Prozessorkerne
 - 16 GB RAM
 - Zugriff auf SQL Server 2019
+
+Intelligent Indexing V2 darf nicht auf einem Server installiert werden, auf dem bereits andere Applikationen vorhanden sind. Insbesondere DocuWare oder eine bestehende Intelligent Indexing Installation sind dann nicht mehr erreichbar.
 
 Intelligent Indexing ist nutzbar in Kombination mit DocuWare ab Version 6.1. Falls Sie für Ihr DocuWare System oder für eine bestehende Intelligent Indexing Installation einen SQL Server 2019 verwenden, können Sie diesen auch für Intelligent Indexing V2 verwenden. Ansonsten müssen Sie einen eigenen SQL Server aufsetzen.
 
@@ -135,6 +137,9 @@ Zur Installation führen Sie das folgende Skript in einer Powershell als Adminis
 ```
 .\Install-IIS.ps1
 ```
+
+Führen Sie das Skript nicht auf einem Server aus, auf dem bereits der IIS eingerichtet ist, da es die Konfiguration im bestehenden IIS verändert und damit bereits vorhandene Applikationen nicht mehr erreicht werden können.
+
 Das Skript installiert den Webserver IIS mit den Komponenten `UrlRewrite` und `ARR`. Es konfiguriert den Webserver so, dass Intelligent Indexing ohne Angabe eines Ports (Defaultport `80`) unter `http`  erreichbar ist.
 
 Falls Sie eine Verbindung über `https` verwenden wollen, müssen Sie in der Oberfläche des IIS unter `Sites` -> `Default Web Site` rechts auf `Bindings...` klicken und dort unter dem `https` Binding ein gültiges Zertifikat hinterlegen und das Zertifikat in den entsprechenden Zertifikatsspeichern ablegen. In der Verbindungsdatei (siehe [Verbindung zu DocuWare](#verbindung-zu-docuWare)) können Sie dann `https` statt `http` eintragen.
