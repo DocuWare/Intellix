@@ -44,8 +44,8 @@ Intelligent Indexing läuft virtualisiert in zwei Docker Containern. Diese laufe
 
 Die Docker Container sind:
 
-- intellix_app: Der Code von Intelligent Indexing
-- intellix_solr: Die SolR Volltextsuchmaschine
+- __intellix_app__: Der Code von Intelligent Indexing
+- __intellix_solr__: Die SolR Volltextsuchmaschine
 
 Zusätzlich wird eine SQL Server Datenbank benötigt, die außerhalb der Docker Container läuft.
 
@@ -87,6 +87,9 @@ Falls Sie die Sperre ganz aufheben wollen, können Sie für den Scope auch `Curr
 Intelligent Indexing läuft in Docker Containern. Dazu muss zuerst eine Docker Umgebung installiert werden. Wechseln Sie in einer Powershell als Administrator in das Installationsverzeichnis und führen folgenden Befehl aus:
 
 ```powershell
+# Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+
 .\Install-Docker.ps1
 ```
 
@@ -127,7 +130,7 @@ Intelligent Indexing funktioniert zusammen mit einer SQL Server 2019 Datenbank. 
 
 Falls Sie einen eigenen Datenbankserver aufsetzen, können Sie den kostenlosen SQL Server 2019 Express verwenden. Dieser ist allerdings auf 10 GB Speicher beschränkt, was in etwa für 1.000.000 einfache Dokumente Platz bietet. Sie können ihn unter folgendem Link herunterladen: [https://www.microsoft.com/de-de/sql-server/sql-server-downloads](https://www.microsoft.com/de-de/sql-server/sql-server-downloads).
 
-Der direkte Download und die Installtion können mit folgenden Kommandos durchgeführt werden:
+Der direkte Download und die Installation können mit folgenden Kommandos durchgeführt werden:
 
 ```powershell
 Invoke-WebRequest https://go.microsoft.com/fwlink/?linkid=866658 -OutFile SQL2019-SSEI-Expr.exe
@@ -229,7 +232,7 @@ Beim erstmaligen Starten von Intelligent Indexing werden die Verzeichnisse angel
 docker ps -a
 ```
 
-Sie sollten für die Docker Container intellix_app und intellix_solr je eine Zeile als Ausgabe erhalten. In der Spalte `Status` können Sie sehen, ob die Docker Container laufen (`Up...`) oder beendet wurden (`Exited...`). Außerdem können Sie in dieser Spalte sehen, ob die Container prinzipiell erreichbar sind. Beim Starten wird hier `(health: starting)` angezeigt. Wenn die Container erfolgreich auf Anfragen antworten, wird `(healthy)` angezeigt.
+Sie sollten für die Docker Container __intellix_app__ und __intellix_solr__ je eine Zeile als Ausgabe erhalten. In der Spalte `Status` können Sie sehen, ob die Docker Container laufen (`Up...`) oder beendet wurden (`Exited...`). Außerdem können Sie in dieser Spalte sehen, ob die Container prinzipiell erreichbar sind. Beim Starten wird hier `(health: starting)` angezeigt. Wenn die Container erfolgreich auf Anfragen antworten, wird `(healthy)` angezeigt.
 
 Nach dem Starten von Intelligent Indexing können Sie in einem Browser auf dem Host-Rechner nach <http://localhost/intellix-v2/Html> navigieren, um die Administrationsoberfläche aufzurufen.
 
