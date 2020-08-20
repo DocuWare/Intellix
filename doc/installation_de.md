@@ -8,7 +8,7 @@ Diese Version von Intelligent Indexing ist nur für den geschlossenen Beta Test 
 
 Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing sowie aller zusätzlich notwendigen Komponenten. Anleitungen zur Konfiguration von Intelligent Indexing und zur Arbeit mit Intelligent Indexing existieren als gesonderte Dokumente im [DocuWare Knowledge Center](https://help.docuware.com).
 
-## Systemvoraussetzungen
+### Systemvoraussetzungen
 
 Folgende Voraussetzungen müssen für die Installation erfüllt sein:
 
@@ -23,7 +23,7 @@ Intelligent Indexing ist nutzbar in Kombination mit DocuWare ab Version 6.1. Fal
 
 Für die im Folgenden beschriebene Installation sind Administratorrechte sowie eine Internetverbindung nötig.
 
-## Überblick über die benötigten Dateien
+### Überblick über die benötigten Dateien
 
 Zum Download der Installationsdateien klicken Sie unter [https://github.com/DocuWare/Intellix](https://github.com/DocuWare/Intellix) auf den grünen Button `Code` und dann auf `Download ZIP`. Zur Installation und Betrieb von Intelligent Indexing wird  der Inhalt des Verzeichnisses `scripts` benötigt. Entpacken Sie die ZIP-Datei und kopieren Sie das Verzeichnis `scripts` an eine Stelle, die Sie dauerhaft verwenden wollen. Dieses Verzeichnis wird im Folgenden als Installationsverzeichnis bezeichnet.
 
@@ -38,7 +38,7 @@ $tmp | Remove-Item
 
 Im Anhang finden Sie eine Übersicht über die einzelnen Dateien. Zusätzlich benötigen Sie Ihre DocuWare Lizenzdatei, welche Sie im [DocuWare Partner Portal](https://login.docuware.com) herunterladen können.
 
-## Docker Containerisierung
+### Docker Containerisierung
 
 Intelligent Indexing läuft virtualisiert in zwei Docker Containern. Diese laufen unabhängig von anderen Anwendungen, die auf Ihrem Host-Rechner installiert sind, und werden vorkonfiguriert ausgeliefert. Der Installationsaufwand für Intelligent Indexing wird dadurch deutlich reduziert.
 
@@ -49,7 +49,7 @@ Die Docker Container sind:
 
 Zusätzlich wird eine SQL Server Datenbank benötigt, die außerhalb der Docker Container läuft.
 
-## Überblick über die Anleitung
+### Überblick über die Anleitung
 
 Die Installation gliedert sich in folgende Schritte:
 
