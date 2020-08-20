@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <IntellixConnectionSetup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CreatedAt="2013-12-05T17:11:32.0919779+01:00" xmlns="http://dev.docuware.com/public/services/intellix">
-	<ServiceUri>http://localhost/</ServiceUri>
+	<ServiceUri>http://localhost/intellix-v2/</ServiceUri>
 	<User>...</User>
 	<Password>...</Password>
 	<ModelspaceName>Default_admin</ModelspaceName>
