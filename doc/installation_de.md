@@ -118,7 +118,7 @@ This message shows that your installation appears to be working correctly.
 
 Prüfen Sie auch, ob Sie in der letzten Zeile der Ausgabe die Zeile
 
-```powershell
+```text
 docker-compose version...
 ```
 
@@ -277,7 +277,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
 ### Update von Intelligent Indexing
 
-Verwenden Sie folgendes Skript, um zu prüfen, ob Updates / Hotfixes für Intelligent Indexing vorhanden sind und diese gegebenenfalls herunterzuladen:
+Verwenden Sie folgendes Skript, um zu prüfen, ob Updates oder Hotfixes für Intelligent Indexing vorhanden sind und diese gegebenenfalls herunterzuladen:
 
 ```powershell
 # Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
