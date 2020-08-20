@@ -12,7 +12,7 @@ Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing so
 
 Folgende Voraussetzungen müssen für die Installation erfüllt sein:
 
-- Neu aufgesetztes Windows Server 2019 (Build 1809) 
+- Neu aufgesetztes Windows Server 2019 (Build 1809)
 - 8 Prozessorkerne
 - 16 GB RAM
 - Zugriff auf SQL Server 2019
