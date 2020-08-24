@@ -80,7 +80,7 @@ Wird dabei `Unrestricted` angezeigt, müssen Sie nichts ändern. Wird ein andere
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 ```
 
-Nach Ausführen des Kommandos können __in der aktuellen Powershell-Sitzng__ alle Kommandos ausgeführt werden. Dieses Kommando müssen Sie in jedem Powershell-Fenster erneut ausführen.
+Nach Ausführen des Kommandos können __in der aktuellen Powershell-Sitzung__ alle Kommandos ausgeführt werden. Dieses Kommando müssen Sie in jedem Powershell-Fenster erneut ausführen.
 
 Falls Sie die Sperre ganz aufheben wollen, können Sie für den Scope auch `CurrentUser` oder `LocalMachine` verwenden.
 
