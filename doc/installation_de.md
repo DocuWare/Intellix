@@ -2,7 +2,7 @@
 
 __Beta Test__
 
-Diese Version von Intelligent Indexing ist nur für den geschlossenen Beta Test gedacht und darf nicht produktiv eingesetzt werden.
+> :warning: Diese Version von Intelligent Indexing ist nur für den geschlossenen Beta Test gedacht und darf nicht produktiv eingesetzt werden.
 
 ## Einleitung
 
