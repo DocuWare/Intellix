@@ -17,9 +17,7 @@ Folgende Voraussetzungen müssen für die Installation erfüllt sein:
 - 16 GB RAM
 - Zugriff auf SQL Server 2019
 
-Intelligent Indexing V2 darf nicht auf einem Server installiert werden, auf dem bereits andere Applikationen vorhanden sind. Insbesondere DocuWare oder eine bestehende Intelligent Indexing Installation sind dann nicht mehr erreichbar.
-
-Intelligent Indexing ist nutzbar in Kombination mit DocuWare ab Version 6.1. Falls Sie für Ihr DocuWare System oder für eine bestehende Intelligent Indexing Installation einen SQL Server 2019 verwenden, können Sie diesen auch für Intelligent Indexing V2 verwenden. Ansonsten müssen Sie einen eigenen SQL Server aufsetzen.
+Es wird empfohlen, Intelligent Indexing auf einem eigenen Server zu installieren, um eine bestmögliche Performance zu erreichen. Intelligent Indexing ist nutzbar in Kombination mit DocuWare ab Version 6.1. Falls Sie für Ihr DocuWare System oder für eine bestehende Intelligent Indexing Installation einen SQL Server 2019 verwenden, können Sie diesen auch für Intelligent Indexing V2 verwenden. Ansonsten müssen Sie einen eigenen SQL Server aufsetzen.
 
 Für die im Folgenden beschriebene Installation sind Administratorrechte sowie eine Internetverbindung nötig.
 
@@ -29,7 +27,7 @@ Zum Download der Installationsdateien klicken Sie unter [https://github.com/Docu
 
 Sie können das komplette Verzeichnis aber auch später an eine andere Stelle verschieben.
 
-Sie können die Datei mit folgendem Powershell-Skript herunterladen und extrahieren:
+Sie können die Datei mit folgendem Powershell-Skript herunterladen und extrahieren. Wechseln Sie zuvor mit der Powershell in das Zielverzeichnis:
 
 ```powershell
 $tmp = New-TemporaryFile | Rename-Item -NewName { $_ -replace 'tmp$', 'zip' } -PassThru
@@ -42,7 +40,7 @@ Im Anhang finden Sie eine Übersicht über die einzelnen Dateien. Zusätzlich be
 
 ### Docker Containerisierung
 
-Intelligent Indexing läuft virtualisiert in zwei Docker Containern. Diese laufen unabhängig von anderen Anwendungen, die auf Ihrem Host-Rechner installiert sind, und werden vorkonfiguriert ausgeliefert. Der Installationsaufwand für Intelligent Indexing wird dadurch deutlich reduziert.
+Intelligent Indexing läuft virtualisiert in zwei Docker Containern. Diese laufen unabhängig von anderen Anwendungen, die auf Ihrem Host-Rechner installiert sind, und werden vorkonfiguriert ausgeliefert. Der Installationsaufwand für Intelligent Indexing V2 ist dadurch sehr niedrig.
 
 Die Docker Container sind:
 
@@ -74,15 +72,15 @@ Um die aktuelle Einstellung zu prüfen, führen Sie als Administrator in der Pow
 Get-ExecutionPolicy
 ```
 
-Wird dabei `Unrestricted` angezeigt, müssen Sie nichts ändern. Wird ein anderer Wert als `Unrestricted` angezeigt, müssen Sie über folgenden Befehl das Ausführen von signierten Skripten erlauben:
+Wird als Ergebnis `Unrestricted` angezeigt, müssen Sie nichts ändern. Wird ein anderer Wert als `Unrestricted` angezeigt, müssen Sie über folgenden Befehl das Ausführen von unsignierten Skripten erlauben:
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 ```
 
-Nach Ausführen des Kommandos können __in der aktuellen Powershell-Sitzung__ alle Kommandos ausgeführt werden. Dieses Kommando müssen Sie in jedem Powershell-Fenster erneut ausführen.
+Nach Ausführen des Kommandos können __in der aktuellen Powershell-Sitzung__ alle Kommandos ausgeführt werden. Dieses Kommando müssen Sie in jedem Powershell-Fenster erneut ausführen. 
 
-Falls Sie die Sperre ganz aufheben wollen, können Sie für den Scope auch `CurrentUser` oder `LocalMachine` verwenden.
+Falls Sie die Sperre komplett aufheben wollen, können Sie für den Scope auch `CurrentUser` oder `LocalMachine` verwenden.
 
 ## Installation der Docker Umgebung
 
@@ -128,9 +126,9 @@ sehen können. Dadurch ist sichergestellt, dass auch Docker-Compose richtig inst
 
 ## Installation des Datenbankservers
 
-Intelligent Indexing funktioniert zusammen mit einer SQL Server 2019 Datenbank. Auf älteren Versionen des SQL Server kann die folgende Installation abweichen oder scheitern. Falls Sie für Ihr DocuWare System einen SQL Server 2019 verwenden, können Sie diesen auch für Intelligent Indexing verwenden. Ansonsten müssen Sie einen eigenen SQL Server aufsetzen.
+Intelligent Indexing funktioniert zusammen mit einer SQL Server 2019 Datenbank. Auf älteren Versionen des SQL Server kann die folgende Installation abweichen oder scheitern. Falls Sie für Ihr DocuWare System einen SQL Server 2019 verwenden, können Sie diesen auch für Intelligent Indexing verwenden. Ansonsten müssen Sie einen separaten SQL Server aufsetzen.
 
-Falls Sie einen eigenen Datenbankserver aufsetzen, können Sie den kostenlosen SQL Server 2019 Express verwenden. Dieser ist allerdings auf 10 GB Speicher beschränkt, was in etwa für 1.000.000 einfache Dokumente Platz bietet. Sie können ihn unter folgendem Link herunterladen: [https://www.microsoft.com/de-de/sql-server/sql-server-downloads](https://www.microsoft.com/de-de/sql-server/sql-server-downloads).
+Falls Sie einen separaten Datenbankserver für Intelligent Indexing aufsetzen, können Sie den kostenlosen SQL Server 2019 Express verwenden. Dieser ist allerdings auf 10 GB Speicher beschränkt, was in etwa für 1.000.000 einfache Dokumente Platz bietet. Sie können ihn unter folgendem Link herunterladen: [https://www.microsoft.com/de-de/sql-server/sql-server-downloads](https://www.microsoft.com/de-de/sql-server/sql-server-downloads).
 
 Der direkte Download und die Installation können mit folgenden Kommandos durchgeführt werden:
 
@@ -185,7 +183,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 .\Install-IIS.ps1
 ```
 
-Das Skript installiert den Webserver IIS mit den Komponenten `UrlRewrite` und `ARR`. Es konfiguriert den Webserver so, dass Intelligent Indexing ohne Angabe eines Ports (Defaultport `80`) unter `http`  erreichbar ist.
+Das Skript installiert den Webserver IIS mit den Komponenten `UrlRewrite` und `ARR`.
 
 Falls Sie eine Verbindung über `https` verwenden wollen, müssen Sie in der Oberfläche des IIS unter `Sites` -> `Default Web Site` rechts auf `Bindings...` klicken und dort unter dem `https` Binding ein gültiges Zertifikat hinterlegen und das Zertifikat in den entsprechenden Zertifikatsspeichern ablegen. In der Verbindungsdatei (siehe [Verbindung zu DocuWare](#verbindung-zu-docuWare)) können Sie dann `https` statt `http` eintragen.
 
