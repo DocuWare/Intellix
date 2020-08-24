@@ -27,7 +27,9 @@ Für die im Folgenden beschriebene Installation sind Administratorrechte sowie e
 
 Zum Download der Installationsdateien klicken Sie unter [https://github.com/DocuWare/Intellix](https://github.com/DocuWare/Intellix) auf den grünen Button `Code` und dann auf `Download ZIP`. Zur Installation und Betrieb von Intelligent Indexing wird  der Inhalt des Verzeichnisses `scripts` benötigt. Entpacken Sie die ZIP-Datei und kopieren Sie das Verzeichnis `scripts` an eine Stelle, die Sie dauerhaft verwenden wollen. Dieses Verzeichnis wird im Folgenden als Installationsverzeichnis bezeichnet.
 
-Sie können das komplette Verzeichnis aber auch später an eine andere Stelle verschieben. Sie können die Datei mit folgendem Powershell-Skript herunterladen und extrahieren:
+Sie können das komplette Verzeichnis aber auch später an eine andere Stelle verschieben.
+
+Sie können die Datei mit folgendem Powershell-Skript herunterladen und extrahieren:
 
 ```powershell
 $tmp = New-TemporaryFile | Rename-Item -NewName { $_ -replace 'tmp$', 'zip' } -PassThru
@@ -155,7 +157,7 @@ Dabei müssen Sie folgende Parameter angeben:
 
 - `dbIntellixUser` und `dbIntellixUserPassword`: Das sind die Zugangsdaten für die Datenbank, mit denen Intelligent Indexing auf die Datenbank zugreifen wird. Diese Werte müssen Sie im Abschnitt [Konfiguration von Intelligent Indexing](#konfiguration-von-intelligent-indexing) in die Konfigurationsdatei eintragen. Der SQL Server setzt ein starkes Passwort voraus. Details dazu finden Sie unter <https://docs.microsoft.com/de-de/sql/relational-databases/security/password-policy?view=sql-server-ver15>
 - `serverInstance`: Dieser Wert legt den Namen der Datenbankserver Instanz, z.B. `SQLEXPRESS`, fest.
-- `intellixAdminUser` und `intellixAdminUserPassword`: Das sind die Zugangsdaten, mit denen DocuWare auf Intelligent Indexing zugreifen wird. Diese Werte müssen Sie im Abschnitt [Verbindung zu DocuWare](#verbindung-zu-docuWare) in die Intelligent Indexing Verbindungsdatei eintragen. Das Passwort sollte sicher sein, aber keines der folgenden 5 Sonderzeichen enthalten, da diese in der Verbindungsdatei zu Problemen führen können: & < > " '
+- `intellixAdminUser` und `intellixAdminUserPassword`: Das sind die Zugangsdaten, mit denen DocuWare auf Intelligent Indexing zugreifen wird. Diese Werte müssen Sie im Abschnitt [Verbindung zu DocuWare](#verbindung-zu-docuWare) in die Intelligent Indexing Verbindungsdatei eintragen. Das Passwort sollte sicher sein, aber keines der folgenden 5 Sonderzeichen enthalten, da diese in der Verbindungsdatei zu Problemen führen können: `& < > " '`
 
 Die Parameter können dem Skript auch mitgegeben werden:
 
