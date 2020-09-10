@@ -3,5 +3,5 @@
 	<ServiceUri>http://localhost/intellix-v2/</ServiceUri>
 	<User>...</User>
 	<Password>...</Password>
-	<ModelspaceName>Default_admin</ModelspaceName>
+	<ModelspaceName>Default_...</ModelspaceName>
 </IntellixConnectionSetup>

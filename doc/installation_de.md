@@ -23,11 +23,7 @@ Für die im Folgenden beschriebene Installation sind Administratorrechte sowie e
 
 ### Überblick über die benötigten Dateien
 
-Zum Download der Installationsdateien klicken Sie unter [https://github.com/DocuWare/Intellix](https://github.com/DocuWare/Intellix) auf den grünen Button `Code` und dann auf `Download ZIP`. Zur Installation und Betrieb von Intelligent Indexing wird  der Inhalt des Verzeichnisses `scripts` benötigt. Entpacken Sie die ZIP-Datei und kopieren Sie das Verzeichnis `scripts` an eine Stelle, die Sie dauerhaft verwenden wollen. Dieses Verzeichnis wird im Folgenden als Installationsverzeichnis bezeichnet.
-
-Sie können das komplette Verzeichnis aber auch später an eine andere Stelle verschieben.
-
-Sie können die Datei mit folgendem Powershell-Skript herunterladen und extrahieren. Wechseln Sie zuvor mit der Powershell in das Zielverzeichnis:
+Zum Download der Installationsdateien klicken Sie unter [https://github.com/DocuWare/Intellix](https://github.com/DocuWare/Intellix) auf den grünen Button `Code` und dann auf `Download ZIP` und extrahieren Sie die Datei. Sie können die Datei auch mit folgendem Powershell-Skript herunterladen und extrahieren. Wechseln Sie zuvor mit der Powershell in das Zielverzeichnis für den Download:
 
 ```powershell
 $tmp = New-TemporaryFile | Rename-Item -NewName { $_ -replace 'tmp$', 'zip' } -PassThru
@@ -36,7 +32,11 @@ Expand-Archive $tmp -DestinationPath master
 $tmp | Remove-Item
 ```
 
-Im Anhang finden Sie eine Übersicht über die einzelnen Dateien. Zusätzlich benötigen Sie Ihre DocuWare Lizenzdatei, welche Sie im [DocuWare Partner Portal](https://login.docuware.com) herunterladen können.
+Zur Installation und Betrieb von Intelligent Indexing wird  der Inhalt des Verzeichnisses `scripts` benötigt. Kopieren Sie dieses Verzeichnis an eine Stelle, die Sie dauerhaft verwenden wollen. Dieses Verzeichnis wird im Folgenden als Installationsverzeichnis bezeichnet.
+
+Sie können das komplette Verzeichnis aber auch später an eine andere Stelle verschieben.
+
+Im [Anhang](#überblick-über-die-intelligent-indexing-setup-dateien) finden Sie eine Übersicht über die einzelnen Dateien. Zusätzlich benötigen Sie Ihre DocuWare Lizenzdatei, welche Sie im [DocuWare Partner Portal](https://login.docuware.com) herunterladen können.
 
 ### Docker Containerisierung
 
@@ -138,7 +138,7 @@ Invoke-WebRequest https://go.microsoft.com/fwlink/?linkid=866658 -OutFile SQL201
 .\SQL2019-SSEI-Expr.exe
 ```
 
-Zu Beginn der Installation können Sie die Variante Basic wählen. Wählen Sie am Ende der Installation aus, auch das SQL Server Management Studio (SSMS) zu installieren. Danach ist ein Neustart des Rechners nötig.
+Zu Beginn der Installation können Sie die Variante Basic wählen. Falls Sie während der Installation des Datenbankservers nach einer Collation gefragt werden, empfehlen wir die Collation `SQL_Latin1_General_CP1_CI_AS`. Wählen Sie am Ende der Installation aus, auch das SQL Server Management Studio (SSMS) zu installieren. Danach ist ein Neustart des Rechners nötig.
 
 Falls Sie einen neu aufgesetzten SQL Server verwenden, können Sie die Datenbank über ein Powershell Skript konfigurieren, das sie lokal auf dem Rechner des Datenbankservers ausführen. Gegebenenfalls müssen Sie dazu die Intelligent Indexing Setup-Dateien auf den Rechner mit dem Datenbankserver kopieren.
 
@@ -302,7 +302,7 @@ Im Installationsverzeichnis befindet sich die Intelligent Indexing Verbindungsda
 
 Öffnen Sie diese Datei in einem Texteditor. Tragen Sie in Zeile 3 die Adresse ein, unter der der Host-Rechner von dem Rechner mit der DocuWare Installation aus erreichbar war, aber ohne `Html` am Ende. Der Name des Host-Rechners bzw. dessen statische IP-Adresse muss also statt `localhost` eintragen werden. Falls Sie z.B. Intelligent Indexing von Ihrem DocuWare Rechner unter `http://intellix/intellix-v2/Html` erreichen konnten, tragen Sie hier `http://intellix/intellix-v2/` ein. Falls Sie den Webserver für eine Verbindung über `https` konfiguriert haben (siehe [Installation des Webservers IIS](#installation-des-webservers-iis)), können Sie hier `https` statt `http` eintragen.
 
-Tragen Sie in Zeile 4 und 5 den Nutzer und das Passwort ein, die Sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben. Die restlichen Werte müssen nicht angepasst werden. Speichern Sie die Datei wieder ab.
+Tragen Sie in Zeile 4 und 5 den Nutzer und das Passwort ein, die Sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben. In Zeile 6 wird der Name des Modelspaces festgelegt. Tragen Sie hier "Default_" gefolgt von dem von Ihnen gewählten Nutzer ein. Falls Sie z.B. "admin" als Nutzer gewählt haben, sollten Sie hier "Default_admin" eintragen. Die restlichen Werte müssen nicht angepasst werden. Speichern Sie die Datei wieder ab.
 
 Sie können nun die Intelligent Indexing Verbindungsdatei in Ihre DocuWare Installation hochladen, um die Verbindung mit Intelligent Indexing herzustellen. Loggen Sie sich dazu in die DocuWare Administration ein und navigieren Sie zu `DocuWare System` -> `Datenverbindungen` -> `Verbindungen Intelligent Indexing Service`. Falls hier schon eine Verbindung eingetragen ist, können Sie diese öffnen und unter Organizations Ihre Organisation entfernen und auf `Übernehmen` klicken. Dadurch ist die Verbindung Ihres DocuWare Systems zu Ihrem alten Intelligent Indexing System deaktiviert, könnte aber durch erneutes Hinzufügen der Organisation wieder aktiviert werden. Klicken Sie anschließend mit der rechten Maustaste auf `Verbindungen Intelligent Indexing Service` auf der linken Seite und wählen `Installiere Datei von Intelligent Indexing Service` aus. In dem sich öffnenden Dialog wählen Sie die von Ihnen editierte `intelligent-indexing-connection.xml` Datei aus. Klicken Sie anschließend auf `Übernehmen` und schließen Sie die DocuWare Administration.
 
