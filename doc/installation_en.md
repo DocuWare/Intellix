@@ -36,7 +36,7 @@ To install and run Intelligent Indexing, the content of the `scripts` directory 
 
 You can also move the complete directory to another location later.
 
-An overview of the individual files can be found in the [Appendix](#überblick-über-die-intelligent-indexing-setup-dateien). You also need your DocuWare license file, which you can download from the [DocuWare Partner Portal](https://login.docuware.com).
+An overview of the individual files can be found in the [Appendix](#overview-of-the-intelligent-indexing-setup-files). You also need your DocuWare license file, which you can download from the [DocuWare Partner Portal](https://login.docuware.com).
 
 ### Docker Containerization
 
@@ -53,10 +53,10 @@ In addition, a SQL Server database that runs outside the Docker container is req
 
 The installation is divided into the following steps:
 
-- [Allow execution of scripts](#allow-execution-of-scripts)
-- [Installation of the Docker environment](#installation-of-the-docker-environment)
-- [Installation of the database server](#installation-of-the-database-server)
-- [Installation of the IIS web server](#installation-of-the-iis-web-server)
+- [Allowing Execution of Scripts](#allowing-execution-of-scripts)
+- [Installation of the Docker Environment](#installation-of-the-docker-environment)
+- [Installation of the Database Server](#installation-of-the-database-server)
+- [Installation of the IIS Web Server](#installation-of-the-iis-web-server)
 - [Management of Intelligent Indexing](#management-of-intelligent-indexing)
 - [Licensing Intelligent Indexing](#licensing-intelligent-indexing)
 - [Connection to DocuWare](#connection-to-docuWare)
@@ -191,7 +191,7 @@ If you want to use a connection via `https`, you must click `Bindings...` on the
 
 In the installation directory you will find a `configuration.env` file for configuring Intelligent Indexing. Adjust the following values to your installation and then save the file again:
 
-- `ConnectionStrings:IntellixDatabaseEntities`: The connection string for the database connection. Change the values for `Server`, `user id`, and `password` according to your database server. `user id` and `password` correspond to the parameters `dbIntellixUser` and `dbIntellixUserPassword`, which you specified in the script for configuring the database in the [Installation of the Database Server](#installation-of-the-database-server) section. `Server` is the name of the database server. If the database server is installed on the host computer, you must use `$$internalgw$$` as the default name for the computer. If you are not using SQL Server Express or port `1433`, you must change the entries accordingly. The script for setting up the database in the [Installation of the Database Server](#installation-of-the-dtabase-server) section uses port `1433`.
+- `ConnectionStrings:IntellixDatabaseEntities`: The connection string for the database connection. Change the values for `Server`, `user id`, and `password` according to your database server. `user id` and `password` correspond to the parameters `dbIntellixUser` and `dbIntellixUserPassword`, which you specified in the script for configuring the database in the [Installation of the Database Server](#installation-of-the-database-server) section. `Server` is the name of the database server. If the database server is installed on the host computer, you must use `$$internalgw$$` as the default name for the computer. If you are not using SQL Server Express or port `1433`, you must change the entries accordingly. The script for setting up the database in the [Installation of the Database Server](#installation-of-the-database-server) section uses port `1433`.
 
 - The next entries define different directories on the host computer. Document information is stored under `E_FileStoragePath`. The data of the SolR full text search engine is stored under `E_SolRDataPath`. The content of both directories grows per document and can be several GB. Data for encrypting cookies is stored under `E_DataProtectionKeysPath`. You can also change these directories later while Intelligent Indexing is stopped. To do this, you must also copy the contents of the directories to the new location. All these directories are independent of the installation directory where the Intelligent Indexing setup files are stored.
 
