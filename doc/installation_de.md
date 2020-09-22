@@ -63,8 +63,7 @@ Die Installation gliedert sich in folgende Schritte:
 
 ## Skripte ausführen erlauben
 
-Windows Server unterbindet das Ausführen von Powershell-Skripten standardmäßig. Für den Installationsprozess müssen daher die Berechtigungen
-angepasst werden.
+Windows Server unterbindet das Ausführen von Powershell-Skripten standardmäßig. Für den Installationsprozess müssen daher die Berechtigungen angepasst werden.
 
 Um die aktuelle Einstellung zu prüfen, führen Sie als Administrator in der Powershell folgenden Befehl aus:
 
@@ -232,7 +231,7 @@ Beim erstmaligen Starten von Intelligent Indexing werden die Verzeichnisse angel
 docker ps -a
 ```
 
-Sie sollten für die Docker Container __intellix_app__ und __intellix_solr__ je eine Zeile als Ausgabe erhalten. In der Spalte `Status` können Sie sehen, ob die Docker Container laufen (`Up...`) oder beendet wurden (`Exited...`). Außerdem können Sie in dieser Spalte sehen, ob die Container prinzipiell erreichbar sind. Beim Starten wird hier `(health: starting)` angezeigt. Wenn die Container erfolgreich auf Anfragen antworten, wird `(healthy)` angezeigt.
+Sie sollten für die Docker Container __intellix_app__ und __intellix_solr__ je eine Zeile als Ausgabe erhalten. In der Spalte `Status` können Sie sehen, ob die Docker Container laufen (`Up...`) oder beendet wurden (`Exited...`). Außerdem können Sie in dieser Spalte sehen, ob die Container prinzipiell erreichbar sind. Beim Starten wird hier (`health: starting`) angezeigt. Wenn die Container erfolgreich auf Anfragen antworten, wird (`healthy`) angezeigt.
 
 Nach dem Starten von Intelligent Indexing können Sie in einem Browser auf dem Host-Rechner nach <http://localhost/intellix-v2/Html> navigieren, um die Administrationsoberfläche aufzurufen.
 
@@ -240,7 +239,7 @@ Sie können sich mit dem Benutzernamen und dem Passwort einloggen, die Sie im Ab
 
 Testen Sie hier auch, ob Sie den Host-Rechner von dem Rechner aus, auf dem DocuWare installiert ist, über einen Browser erreichen können. Rufen Sie von einem anderen Rechner die URL <http://_rechnername_/intellix-v2/Html/> auf und ersetzen _\_rechnername\__ durch den Namen des Host-Rechners.
 
-Unter <http://localhost:8983> können Sie die SolR Volltextsuchmaschine von Ihrem Host-Rechner aus erreichen:
+Unter <http://localhost:8983> können Sie die SolR Volltextsuchmaschine von Ihrem Host-Rechner aus erreichen.
 
 ### Logging
 
@@ -302,7 +301,7 @@ Im Installationsverzeichnis befindet sich die Intelligent Indexing Verbindungsda
 
 Öffnen Sie diese Datei in einem Texteditor. Tragen Sie in Zeile 3 die Adresse ein, unter der der Host-Rechner von dem Rechner mit der DocuWare Installation aus erreichbar war, aber ohne `Html` am Ende. Der Name des Host-Rechners bzw. dessen statische IP-Adresse muss also statt `localhost` eintragen werden. Falls Sie z.B. Intelligent Indexing von Ihrem DocuWare Rechner unter `http://intellix/intellix-v2/Html` erreichen konnten, tragen Sie hier `http://intellix/intellix-v2/` ein. Falls Sie den Webserver für eine Verbindung über `https` konfiguriert haben (siehe [Installation des Webservers IIS](#installation-des-webservers-iis)), können Sie hier `https` statt `http` eintragen.
 
-Tragen Sie in Zeile 4 und 5 den Nutzer und das Passwort ein, die Sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben. In Zeile 6 wird der Name des Modelspaces festgelegt. Tragen Sie hier "Default_" gefolgt von dem von Ihnen gewählten Nutzer ein. Falls Sie z.B. "admin" als Nutzer gewählt haben, sollten Sie hier "Default_admin" eintragen. Die restlichen Werte müssen nicht angepasst werden. Speichern Sie die Datei wieder ab.
+Tragen Sie in Zeile 4 und 5 den Nutzer und das Passwort ein, die Sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben. In Zeile 6 wird der Name des Modelspaces festgelegt. Tragen Sie hier `Default_` gefolgt von dem von Ihnen gewählten Nutzer ein. Falls Sie z.B. `admin` als Nutzer gewählt haben, sollten Sie hier `Default_admin` eintragen. Die restlichen Werte müssen nicht angepasst werden. Speichern Sie die Datei wieder ab.
 
 Sie können nun die Intelligent Indexing Verbindungsdatei in Ihre DocuWare Installation hochladen, um die Verbindung mit Intelligent Indexing herzustellen. Loggen Sie sich dazu in die DocuWare Administration ein und navigieren Sie zu `DocuWare System` -> `Datenverbindungen` -> `Verbindungen Intelligent Indexing Service`. Falls hier schon eine Verbindung eingetragen ist, können Sie diese öffnen und unter Organizations Ihre Organisation entfernen und auf `Übernehmen` klicken. Dadurch ist die Verbindung Ihres DocuWare Systems zu Ihrem alten Intelligent Indexing System deaktiviert, könnte aber durch erneutes Hinzufügen der Organisation wieder aktiviert werden. Klicken Sie anschließend mit der rechten Maustaste auf `Verbindungen Intelligent Indexing Service` auf der linken Seite und wählen `Installiere Datei von Intelligent Indexing Service` aus. In dem sich öffnenden Dialog wählen Sie die von Ihnen editierte `intelligent-indexing-connection.xml` Datei aus. Klicken Sie anschließend auf `Übernehmen` und schließen Sie die DocuWare Administration.
 
