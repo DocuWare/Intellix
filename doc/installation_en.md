@@ -141,7 +141,9 @@ At the beginning of the installation you can choose the Basic variant. If you ar
 
 If you are using a newly set up SQL Server, you can configure the database using a PowerShell script that you run locally on the database server machine. You may need to copy the Intelligent Indexing setup files to the computer with the database server.
 
-In a PowerShell, execute the following script there as administrator in the installation directory. If you have just installed SQL Server Express, execute the following commands __in a new PowerShell window__:
+The script will restart the database server. If you do not want to do this or if you have to adapt the setup to your situation, the [Appendix](#manual-setup-of-the-database-server) contains an overview of the required steps and how they can be performed manually in SQL Server Management Studio.
+
+In a PowerShell, execute the following script on the computer with the database server as administrator in the installation directory. If you have just installed SQL Server Express, execute the following commands __in a new PowerShell window__:
 
 ```powershell
 # Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
@@ -164,7 +166,6 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
 .\Init-Database.ps1 -serverInstance SQLEXPRESS -dbIntellixUser intellix -dbIntellixUserPassword MyVerySeKRe!tPasSw0rD -intellixAdminUser intellixAdmin -intellixAdminUserPassword an00tHerVerySeKRe!tPasSw0rD
 ```
-The script will restart the database server. If you do not want to do this or if you have to adapt the setup to your situation, the [Appendix](#manual-setup-of-the-database-server) contains an overview of the required steps and how they can be performed manually in SQL Server Management Studio.
 
 If you run an old version of Intelligent Indexing On-Premise on the same database server, you can install Intelligent Indexing V2 in parallel. The old version uses the `intellix` database, the current version uses the `intellixv2` database.
 
@@ -210,7 +211,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
 This will download the current Docker images from Intelligent Indexing. These are automatically managed by the Docker environment. The Docker images are several GB in size.
 
-###Starting Intelligent Indexing
+### Starting Intelligent Indexing
 
 To start Intelligent Indexing, run the following script in PowerShell as administrator in the installation directory:
 

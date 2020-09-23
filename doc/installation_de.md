@@ -141,7 +141,9 @@ Zu Beginn der Installation können Sie die Variante Basic wählen. Falls Sie wä
 
 Falls Sie einen neu aufgesetzten SQL Server verwenden, können Sie die Datenbank über ein Powershell Skript konfigurieren, das sie lokal auf dem Rechner des Datenbankservers ausführen. Gegebenenfalls müssen Sie dazu die Intelligent Indexing Setup-Dateien auf den Rechner mit dem Datenbankserver kopieren.
 
-Führen Sie dort als Administrator in einer Powershell folgendes Skript im Installationsverzeichnis aus. Falls Sie gerade den SQL Server Express installiert haben, führen Sie folgende Kommandos __in einem neuen Powershell-Fenster__ aus:
+Das Skript wird den Datenbankserver neustarten. Falls Sie das nicht möchten oder die Einrichtung an Ihre Situation anpassen müssen, finden Sie im [Anhang](#manuelle-einrichtung-des-datenbankservers) eine Übersicht, welche Schritte ausgeführt werden und wie diese manuell im SQL Server Management Studio durchgeführt werden können.
+
+Führen Sie auf dem Rechner mit dem Datenbankserver als Administrator in einer Powershell folgendes Skript im Installationsverzeichnis aus. Falls Sie gerade den SQL Server Express installiert haben, führen Sie folgende Kommandos __in einem neuen Powershell-Fenster__ aus:
 
 ```powershell
 # Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
@@ -164,8 +166,6 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
 .\Init-Database.ps1 -serverInstance SQLEXPRESS -dbIntellixUser intellix -dbIntellixUserPassword MyVerySeKRe!tPasSw0rD -intellixAdminUser intellixAdmin -intellixAdminUserPassword an00tHerVerySeKRe!tPasSw0rD
 ```
-
-Das Skript wird den Datenbankserver neustarten. Falls Sie das nicht möchten oder die Einrichtung an Ihre Situation anpassen müssen, finden Sie im [Anhang](#manuelle-einrichtung-des-datenbankservers) eine Übersicht, welche Schritte ausgeführt werden und wie diese manuell im SQL Server Management Studio durchgeführt werden können.
 
 Falls Sie eine alte Version von Intelligent Indexing On-Premise auf demselben Datenbankserver betreiben, können Sie Intelligent Indexing V2 parallel dazu installieren. Die alte Version verwendet die Datenbank `intellix`, die aktuelle Version die Datenbank `intellixv2`.
 
