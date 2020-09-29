@@ -178,7 +178,7 @@ IF EXISTS (SELECT 1
     BEGIN
         ALTER DATABASE [$(DatabaseName)]
             SET FILESTREAM(NON_TRANSACTED_ACCESS = OFF),
-                CONTAINMENT = PARTIAL
+                CONTAINMENT = NONE
             WITH ROLLBACK IMMEDIATE;
     END
 
