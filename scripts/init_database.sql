@@ -178,7 +178,7 @@ IF EXISTS (SELECT 1
     BEGIN
         ALTER DATABASE [$(DatabaseName)]
             SET FILESTREAM(NON_TRANSACTED_ACCESS = OFF),
-                CONTAINMENT = NONE 
+                CONTAINMENT = PARTIAL
             WITH ROLLBACK IMMEDIATE;
     END
 
@@ -228,44 +228,26 @@ IF fulltextserviceproperty(N'IsFulltextInstalled') = 1
     EXECUTE sp_fulltext_database 'enable';
 
 
-GO
-/*
- Pre-Deployment Script Template							
---------------------------------------------------------------------------------------
- This file contains SQL statements that will be executed before the build script.	
- Use SQLCMD syntax to include a file in the pre-deployment script.			
- Example:      :r .\myfile.sql								
- Use SQLCMD syntax to reference a variable in the pre-deployment script.		
- Example:      :setvar TableName MyTable							
-               SELECT * FROM [$(TableName)]					
---------------------------------------------------------------------------------------
-*/
-
--- update Modelspaces set LastAgingAccess  = '1999-12-12' where LastAgingAccess is null;
-
---update Modelspaces set LastDeletionAccess  = '1999-12-12' where LastDeletionAccess is null;
-
---update Modelspaces set LastTemplateDetectionAccess  = '1999-12-12' where LastTemplateDetectionAccess is null;
-
-GO
-
---if exists (
---    select * from dbo.sysobjects 
---    where name = 'trig_FeedbackLogToStatisticsLog' 
---    and OBJECTPROPERTY(id, 'IsTrigger') = 1
---)
---begin
---   DROP TRIGGER trig_FeedbackLogToStatisticsLog;
---end
-GO
-
-GO
 PRINT N'Creating [dbo].[DocIdTableType]...';
 
 
 GO
 CREATE TYPE [dbo].[DocIdTableType] AS TABLE (
     [Id] UNIQUEIDENTIFIER NOT NULL);
+
+
+GO
+PRINT N'Creating [dbo].[DataProtectionKeys]...';
+
+
+GO
+CREATE TABLE [dbo].[DataProtectionKeys] (
+    [Id]           INT           NULL,
+    [FriendlyName] VARCHAR (50)  NOT NULL,
+    [Xml]          XML           NOT NULL,
+    [CreatedAt]    DATETIME2 (7) NOT NULL,
+    CONSTRAINT [PK_DataProtetionKeys] PRIMARY KEY CLUSTERED ([FriendlyName] ASC)
+);
 
 
 GO
@@ -535,23 +517,21 @@ PRINT N'Creating [dbo].[Users]...';
 
 GO
 CREATE TABLE [dbo].[Users] (
-    [Id]             INT             IDENTITY (1, 1) NOT NULL,
-    [Name]           NVARCHAR (100)  NOT NULL,
-    [Password]       VARBINARY (256) NULL,
-    [PasswordSalt]   NVARCHAR (256)  NULL,
-    [CreatedAt]      DATETIME2 (7)   NOT NULL,
-    [IsActive]       BIT             NOT NULL,
-    [State]          TINYINT         NOT NULL,
-    [QuotaId]        INT             NULL,
-    [CreatedBy]      INT             NULL,
-    [UseOldPassword] BIT             NOT NULL,
-    [PasswordNew]    VARBINARY (256) NULL,
-    [UserType]       TINYINT         NOT NULL,
-    [Company]        NVARCHAR (MAX)  NULL,
-    [DisplayName]    NVARCHAR (MAX)  NULL,
-    [Uri]            NVARCHAR (MAX)  NULL,
-    [Tags]           NVARCHAR (MAX)  NOT NULL,
-    [ToBeDeletedAt]  DATETIME2 (7)   NULL,
+    [Id]            INT             IDENTITY (1, 1) NOT NULL,
+    [Name]          NVARCHAR (100)  NOT NULL,
+    [Password]      VARBINARY (256) NULL,
+    [PasswordSalt]  NVARCHAR (256)  NULL,
+    [HashAlgorithm] INT             NOT NULL,
+    [CreatedAt]     DATETIME2 (7)   NOT NULL,
+    [IsActive]      BIT             NOT NULL,
+    [QuotaId]       INT             NULL,
+    [CreatedBy]     INT             NULL,
+    [UserType]      TINYINT         NOT NULL,
+    [Company]       NVARCHAR (MAX)  NULL,
+    [DisplayName]   NVARCHAR (MAX)  NULL,
+    [Uri]           NVARCHAR (MAX)  NULL,
+    [Tags]          NVARCHAR (MAX)  NOT NULL,
+    [ToBeDeletedAt] DATETIME2 (7)   NULL,
     CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [Unique_Name_Users] UNIQUE NONCLUSTERED ([Name] ASC)
 );
@@ -564,6 +544,15 @@ PRINT N'Creating [dbo].[Users].[idx_Users_CreatedBy]...';
 GO
 CREATE NONCLUSTERED INDEX [idx_Users_CreatedBy]
     ON [dbo].[Users]([CreatedBy] ASC);
+
+
+GO
+PRINT N'Creating unnamed constraint on [dbo].[DataProtectionKeys]...';
+
+
+GO
+ALTER TABLE [dbo].[DataProtectionKeys]
+    ADD DEFAULT SYSUTCDATETIME() FOR [CreatedAt];
 
 
 GO
@@ -590,15 +579,6 @@ PRINT N'Creating unnamed constraint on [dbo].[ModelspaceForgottenDocsData]...';
 
 GO
 ALTER TABLE [dbo].[ModelspaceForgottenDocsData]
-    ADD DEFAULT '2000-01-01' FOR [LastForgottenDocsJobAccess];
-
-
-GO
-PRINT N'Creating unnamed constraint on [dbo].[ModelspaceForgottenDocsData]...';
-
-
-GO
-ALTER TABLE [dbo].[ModelspaceForgottenDocsData]
     ADD DEFAULT 0 FOR [ForgottenDocsJobFinishedCorrectly];
 
 
@@ -609,6 +589,15 @@ PRINT N'Creating unnamed constraint on [dbo].[ModelspaceForgottenDocsData]...';
 GO
 ALTER TABLE [dbo].[ModelspaceForgottenDocsData]
     ADD DEFAULT SYSUTCDATETIME() FOR [CreatedAt];
+
+
+GO
+PRINT N'Creating unnamed constraint on [dbo].[ModelspaceForgottenDocsData]...';
+
+
+GO
+ALTER TABLE [dbo].[ModelspaceForgottenDocsData]
+    ADD DEFAULT '2000-01-01' FOR [LastForgottenDocsJobAccess];
 
 
 GO
@@ -644,7 +633,7 @@ PRINT N'Creating unnamed constraint on [dbo].[ModelspacesAgingData]...';
 
 GO
 ALTER TABLE [dbo].[ModelspacesAgingData]
-    ADD DEFAULT 0 FOR [DoNoAging];
+    ADD DEFAULT 0 FOR [TDandAgingFinishedCorrectly];
 
 
 GO
@@ -654,15 +643,6 @@ PRINT N'Creating unnamed constraint on [dbo].[ModelspacesAgingData]...';
 GO
 ALTER TABLE [dbo].[ModelspacesAgingData]
     ADD DEFAULT '2000-01-01' FOR [LastTDandAgingAccess];
-
-
-GO
-PRINT N'Creating unnamed constraint on [dbo].[ModelspacesAgingData]...';
-
-
-GO
-ALTER TABLE [dbo].[ModelspacesAgingData]
-    ADD DEFAULT 0 FOR [TDandAgingFinishedCorrectly];
 
 
 GO
@@ -684,12 +664,12 @@ ALTER TABLE [dbo].[ModelspacesAgingData]
 
 
 GO
-PRINT N'Creating unnamed constraint on [dbo].[ObsoleteModelspacesData]...';
+PRINT N'Creating unnamed constraint on [dbo].[ModelspacesAgingData]...';
 
 
 GO
-ALTER TABLE [dbo].[ObsoleteModelspacesData]
-    ADD DEFAULT '2000-01-01' FOR [LastDeleteModelspaceAccess];
+ALTER TABLE [dbo].[ModelspacesAgingData]
+    ADD DEFAULT 0 FOR [DoNoAging];
 
 
 GO
@@ -699,6 +679,15 @@ PRINT N'Creating unnamed constraint on [dbo].[ObsoleteModelspacesData]...';
 GO
 ALTER TABLE [dbo].[ObsoleteModelspacesData]
     ADD DEFAULT 0 FOR [DeleteMsFinishedCorrectly];
+
+
+GO
+PRINT N'Creating unnamed constraint on [dbo].[ObsoleteModelspacesData]...';
+
+
+GO
+ALTER TABLE [dbo].[ObsoleteModelspacesData]
+    ADD DEFAULT '2000-01-01' FOR [LastDeleteModelspaceAccess];
 
 
 GO
@@ -743,7 +732,7 @@ PRINT N'Creating unnamed constraint on [dbo].[SimpleFieldFilters]...';
 
 GO
 ALTER TABLE [dbo].[SimpleFieldFilters]
-    ADD DEFAULT 1 FOR [Enabled];
+    ADD DEFAULT SYSUTCDATETIME() FOR [CreatedAt];
 
 
 GO
@@ -752,7 +741,7 @@ PRINT N'Creating unnamed constraint on [dbo].[SimpleFieldFilters]...';
 
 GO
 ALTER TABLE [dbo].[SimpleFieldFilters]
-    ADD DEFAULT SYSUTCDATETIME() FOR [CreatedAt];
+    ADD DEFAULT 1 FOR [Enabled];
 
 
 GO
@@ -761,15 +750,6 @@ PRINT N'Creating unnamed constraint on [dbo].[UserRoles]...';
 
 GO
 ALTER TABLE [dbo].[UserRoles]
-    ADD DEFAULT SYSUTCDATETIME() FOR [CreatedAt];
-
-
-GO
-PRINT N'Creating unnamed constraint on [dbo].[Users]...';
-
-
-GO
-ALTER TABLE [dbo].[Users]
     ADD DEFAULT SYSUTCDATETIME() FOR [CreatedAt];
 
 
@@ -788,24 +768,6 @@ PRINT N'Creating unnamed constraint on [dbo].[Users]...';
 
 GO
 ALTER TABLE [dbo].[Users]
-    ADD DEFAULT 0 FOR [State];
-
-
-GO
-PRINT N'Creating unnamed constraint on [dbo].[Users]...';
-
-
-GO
-ALTER TABLE [dbo].[Users]
-    ADD DEFAULT 1 FOR [UseOldPassword];
-
-
-GO
-PRINT N'Creating unnamed constraint on [dbo].[Users]...';
-
-
-GO
-ALTER TABLE [dbo].[Users]
     ADD DEFAULT 0 FOR [UserType];
 
 
@@ -816,6 +778,24 @@ PRINT N'Creating unnamed constraint on [dbo].[Users]...';
 GO
 ALTER TABLE [dbo].[Users]
     ADD DEFAULT '' FOR [Tags];
+
+
+GO
+PRINT N'Creating unnamed constraint on [dbo].[Users]...';
+
+
+GO
+ALTER TABLE [dbo].[Users]
+    ADD DEFAULT SYSUTCDATETIME() FOR [CreatedAt];
+
+
+GO
+PRINT N'Creating unnamed constraint on [dbo].[Users]...';
+
+
+GO
+ALTER TABLE [dbo].[Users]
+    ADD DEFAULT 0 FOR [HashAlgorithm];
 
 
 GO
@@ -952,7 +932,6 @@ GO
 CREATE VIEW QuotaPerUser
 	AS SELECT u.Id, u.Name, u.DisplayName, u.Company, u.Uri, u.UserType, u.Tags,(q.Credit - q.Booked) RemainingCredit, q.Credit,  isnull(q.Booked, 0) Booked, u.QuotaId
 	FROM Users u left outer join Quota q on u.QuotaId = q.id
-	where u.State = 0 
 	--show only active users
 GO
 PRINT N'Creating [dbo].[FromMsId]...';
@@ -1186,35 +1165,25 @@ CREATE PROCEDURE [dbo].[AddNewDocument](
 	@msId int
 	)
 
-
-
 as
 	SET NOCOUNT ON;
 	
 BEGIN		
+	BEGIN TRANSACTION;
+	insert into DocumentsWithoutFeedback(Id, StoragePath, DocumentInfo,	[Version], CreatedBy ) values (@id, @storagePath, @documentInfo, @version, @createdBy);
+	insert into DocumentInfoForUI(DocId) values (@id);
+	insert into ShortIdToLongIdMapping(ShortId, LongId) values (substring(@id,1,8)+substring(@id,17,48), @id);
 
-		declare	@isContained INT;
-		BEGIN TRY
-			BEGIN TRANSACTION;
-			insert into DocumentsWithoutFeedback(Id, StoragePath, DocumentInfo,	[Version], CreatedBy ) values (@id, @storagePath, @documentInfo, @version, @createdBy);
-			insert into DocumentInfoForUI(DocId) values (@id);
-			insert into ShortIdToLongIdMapping(ShortId, LongId) values (substring(@id,1,8)+substring(@id,17,48), @id);
-			
-			SET @isContained = (SELECT COUNT(*) FROM MappingEntity WHERE MsId = @msId and Id = @mappingId);
-			IF (@isContained > 0)
-			BEGIN
-				UPDATE MappingEntity SET LastUse = GETUTCDATE() WHERE MsId = @msId and Id = @mappingId;
-			END
-			ELSE
-			BEGIN
-				INSERT INTO MappingEntity(MsId, Id, LastUse, Mapping, DocuWareVersion) VALUES (@msId, @mappingId, GETUTCDATE(), @mapping, @docuwareVersion);
-			End
-			COMMIT;			
-		END TRY
-		BEGIN CATCH
-			ROLLBACK;
-			THROW;
-		END CATCH	
+	MERGE MappingEntity
+		USING (VALUES (@msId, @mappingId)) AS src (MsId, Id) 
+	ON MappingEntity.MsId = src.MsId and MappingEntity.Id = src.Id
+	WHEN MATCHED THEN
+		UPDATE SET LastUse = GETUTCDATE()
+	WHEN NOT MATCHED THEN
+		INSERT (MsId, Id, LastUse, Mapping, DocuWareVersion)
+		VALUES (src.MsId, src.Id, GETUTCDATE(), @mapping, @docuwareVersion);
+
+	COMMIT;
 END
 GO
 PRINT N'Creating [dbo].[AddNewDocumentWithFeedback]...';
@@ -1590,17 +1559,6 @@ AS
 	SET NOCOUNT ON;
 	select * from Users where Name=@userName;
 GO
-PRINT N'Creating [dbo].[GetUserByPassword]...';
-
-
-GO
-CREATE PROCEDURE [dbo].[GetUserByPassword]
-	@userName nvarchar(200), 
-	@password nvarchar(256)
-AS
-	SET NOCOUNT ON;
-	select * from Users where Name=@userName and Users.Password is not null and @password is not null and @password != '' and Users.Password = HashBytes('SHA1', @password + ISNULL( Users.PasswordSalt, ''));
-GO
 PRINT N'Creating [dbo].[MarkDocumentAsObsoleteImmediately]...';
 
 
@@ -1638,7 +1596,6 @@ PRINT N'Creating [dbo].[MarkForgottenDocumentAsObsolete]...';
 
 
 GO
-
 CREATE PROCEDURE [dbo].[MarkForgottenDocumentAsObsolete] (
 	@id char(64),
 	@storagePath varchar(100),
@@ -2146,20 +2103,31 @@ AS
 	update Users set Password = @hash, PasswordSalt = @salt where Id=@userId;
 	return @@ROWCOUNT
 GO
-
-/*
-Post-Deployment Script Template							
---------------------------------------------------------------------------------------
- This file contains SQL statements that will be appended to the build script.		
- Use SQLCMD syntax to include a file in the post-deployment script.			
- Example:      :r .\myfile.sql								
- Use SQLCMD syntax to reference a variable in the post-deployment script.		
- Example:      :setvar TableName MyTable							
-               SELECT * FROM [$(TableName)]					
---------------------------------------------------------------------------------------
-*/
+PRINT N'Creating [dbo].[AddOrUpdateAdminUser]...';
 
 
+GO
+CREATE PROCEDURE [dbo].AddOrUpdateAdminUser
+	@userName nvarchar(200), 
+	@password nvarchar(256)
+AS
+
+IF NOT EXISTS(select * from users where Name=@userName)
+BEGIN
+    Execute AddUser @userName, @password
+
+    declare @adminUserRoleId int
+    
+    set @adminUserRoleId = (select Id from Roles where name = N'Administrator');
+    
+    insert into UserRoles (UserId, RoleId)
+    select u.Id, @adminUserRoleId
+    from
+        (select * from Users where name = @userName) u left outer join
+        (select * from UserRoles where RoleId = @adminUserRoleId) ur on u.Id = ur.UserId
+    where ur.UserId is null
+END
+GO
 Exec CreateRoleIfNotExists N'User', N'CreateModelspace ExtractDocument ImportModelspace ResetModelspace UploadDocument'
 Exec CreateRoleIfNotExists N'Administrator', N'All'
 Exec CreateRoleIfNotExists N'DWOnline', N'ChangeQuota CreateUser DeleteUser ListUsers EditUserRoles'
@@ -2177,8 +2145,6 @@ BEGIN
 END
 
 
-insert into ModelspacesAgingData (id,DoNoAging)
-select id, DoNoAging from Modelspaces where id not in ( select id from ModelspacesAgingData);
 GO
 
 GO
