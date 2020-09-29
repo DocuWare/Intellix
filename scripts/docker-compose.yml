@@ -13,7 +13,6 @@ services:
       - 8080:80
     volumes:
       - ${E_FileStoragePath}:C:/FileStorage
-      - ${E_DataProtectionKeysPath}:C:/Keys
     container_name: intellix_app
     depends_on:
       - intellixonpremisesolr
