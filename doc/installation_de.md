@@ -12,14 +12,15 @@ Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing so
 
 Folgende Voraussetzungen müssen für die Installation erfüllt sein:
 
-- Neu aufgesetztes Windows Server 2019 (Build 1809)
+- Neu aufgesetztes Windows Server 2019 (Build 1809, Standard oder Datacenter Edition)
 - 8 Prozessorkerne
 - 16 GB RAM
 - Zugriff auf SQL Server 2019
 
 Es wird empfohlen, Intelligent Indexing auf einem eigenen Server zu installieren, um eine bestmögliche Performance zu erreichen. Intelligent Indexing ist nutzbar in Kombination mit DocuWare ab Version 6.1. Falls Sie für Ihr DocuWare System oder für eine bestehende Intelligent Indexing Installation einen SQL Server 2019 verwenden, können Sie diesen auch für Intelligent Indexing V2 verwenden. Ansonsten müssen Sie einen eigenen SQL Server aufsetzen.
 
-Für die im Folgenden beschriebene Installation sind Administratorrechte sowie eine Internetverbindung nötig.
+Für die im Folgenden beschriebene Installation sind Administratorrechte sowie eine Internetverbindung nötig. Alle Befehle in dieser Installationsanleitung müssen in der Powershell eingegeben werden. Die Powershell ISE wird nicht unterstützt.
+
 
 ### Überblick über die benötigten Dateien
 
@@ -233,7 +234,7 @@ docker ps -a
 
 Sie sollten für die Docker Container __intellix_app__ und __intellix_solr__ je eine Zeile als Ausgabe erhalten. In der Spalte `Status` können Sie sehen, ob die Docker Container laufen (`Up...`) oder beendet wurden (`Exited...`). Außerdem können Sie in dieser Spalte sehen, ob die Container prinzipiell erreichbar sind. Beim Starten wird hier (`health: starting`) angezeigt. Wenn die Container erfolgreich auf Anfragen antworten, wird (`healthy`) angezeigt.
 
-Nach dem Starten von Intelligent Indexing können Sie in einem Browser auf dem Host-Rechner nach <http://localhost/intellix-v2/Html> navigieren, um die Administrationsoberfläche aufzurufen.
+Nach dem Starten von Intelligent Indexing können Sie in einem Browser auf dem Host-Rechner nach <http://localhost/intellix-v2/Html> navigieren, um die Administrationsoberfläche aufzurufen. Bei der Verwendung des Internet Explorers kann es hierbei zu Problemen kommen. Verwenden Sie in diesem Fall einen anderen Browser.
 
 Sie können sich mit dem Benutzernamen und dem Passwort einloggen, die Sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben.
 

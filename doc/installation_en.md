@@ -12,14 +12,14 @@ This document describes the installation of DocuWare Intelligent Indexing and al
 
 The following requirements must be met for installation:
 
-- Newly installed Windows Server 2019 (build 1809)
+- Newly installed Windows Server 2019 (build 1809, Standard or Datacenter Edition)
 - 8 processor cores
 - 16 GB RAM
 - Access to SQL Server 2019
 
 It is recommended that you install Intelligent Indexing on a separate server to achieve the best possible performance. Intelligent Indexing can be used in combination with DocuWare Version 6.1 or higher. If you use SQL Server 2019 for your DocuWare system or for an existing Intelligent Indexing installation, you can also use it for Intelligent Indexing V2. Otherwise, you must set up a separate SQL server.
 
-For the installation described below, administrator rights and an Internet connection are required.
+For the installation described below, administrator rights and an Internet connection are required. All commands in these installation instructions must be entered in the Powershell. The Powershell ISE is not supported.
 
 ### Overview of the Required Files
 
@@ -233,7 +233,7 @@ docker ps -a
 
 You should get one line each as output for the Docker containers __intellix_app__ and __intellix_solr__. In the `Status` column, you can see whether the Docker containers are running (`Up...`) or have been ended (`Exited...`). You can also see in this column whether the containers are accessible in principle. At startup, (`health: starting`) is displayed here. If the containers respond successfully to requests, (`healthy`) is displayed.
 
-After starting Intelligent Indexing, you can navigate to <http://localhost/intellix-v2/Html> on the host computer to call up the administration interface.
+After starting Intelligent Indexing, you can navigate to <http://localhost/intellix-v2/Html> on the host computer to call up the administration interface. This can lead to problems when using Internet Explorer. In this case, use a different browser.
 
 You can log in with the user name and password you specified via the parameters `intellixAdminUser` and `intellixAdminUserPassword` in the script for initializing the database in the [Installation of the Database Server](#installation-of-the-database-server) section.
 
