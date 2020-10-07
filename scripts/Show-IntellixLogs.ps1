@@ -1,1 +1,1 @@
-docker logs --follow intellix_app
+docker-compose -f setup/run/docker-compose.yml logs -f

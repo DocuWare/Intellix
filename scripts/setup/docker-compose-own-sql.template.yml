@@ -1,0 +1,40 @@
+version: "3.3"
+
+services:
+  intellix:
+    image: docuwarepublic.azurecr.io/intellix/app
+    container_name: intellix
+    restart: unless-stopped
+    tty: false
+    env_file: 
+      - ../intellix.env
+      - intellix-database.env
+      - intellix-license.env
+    networks:
+      - intellix
+    ports:
+      - 8080:80
+    volumes:
+      - type: bind
+        source: c:\ProgramData\IntellixV2\Files
+        target: c:\FileStorage
+      - type: bind
+        source: c:\ProgramData\IntellixV2\License
+        target: c:\license
+    depends_on:
+      - solr
+
+  solr:
+    container_name: solr
+    image: docuwarepublic.azurecr.io/intellix/windows/solr:8
+    restart: unless-stopped
+    tty: false
+    networks:
+      - intellix
+    volumes:
+      - type: bind
+        source: c:\ProgramData\IntellixV2\Solr\Data
+        target: C:\solr\server\solr\productionWordPairExtended\data
+
+networks:
+  intellix:

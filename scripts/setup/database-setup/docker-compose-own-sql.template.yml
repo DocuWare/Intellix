@@ -1,0 +1,11 @@
+version: "3.5"
+
+services:
+  tools:
+    container_name: intellix-sql-setup-tools
+    build: .
+    networks:
+      - intellix
+        
+networks:
+  intellix:

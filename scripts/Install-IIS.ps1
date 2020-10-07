@@ -2,21 +2,18 @@ param(
     [string] $applicationPrefix = "intellix-v2"
 )
 
-.\Read-IntellixConfiguration.ps1
-if (-not (Test-Path Temp)) {
-    mkdir Temp
-}
+$temp = $env:TEMP
 
 # Install IIS
 Install-WindowsFeature -name Web-Server -IncludeManagementTools
 
 # Install WebPiCmd
-Invoke-WebRequest 'http://download.microsoft.com/download/C/F/F/CFF3A0B8-99D4-41A2-AE1A-496C08BEB904/WebPlatformInstaller_amd64_en-US.msi' -OutFile ./Temp/WebPlatformInstaller_amd64_en-US.msi
-Start-Process ./Temp/WebPlatformInstaller_amd64_en-US.msi '/qn' -PassThru | Wait-Process
+Invoke-WebRequest 'http://download.microsoft.com/download/C/F/F/CFF3A0B8-99D4-41A2-AE1A-496C08BEB904/WebPlatformInstaller_amd64_en-US.msi' -OutFile $temp/WebPlatformInstaller_amd64_en-US.msi
+Start-Process $temp/WebPlatformInstaller_amd64_en-US.msi '/qn' -PassThru | Wait-Process
 
 # Install ARR
-& $Env:Programfiles'\Microsoft\Web Platform Installer\WebpiCmd.exe' /Install /Products:'UrlRewrite2' /AcceptEULA /Log:./Temp/WebpiCmd_UrlRewrite.log
-& $Env:Programfiles'\Microsoft\Web Platform Installer\WebpiCmd.exe' /Install /Products:'ARRv3_0' /AcceptEULA /Log:./Temp/WebpiCmd_ARR.log
+& $Env:Programfiles'\Microsoft\Web Platform Installer\WebpiCmd.exe' /Install /Products:'UrlRewrite2' /AcceptEULA /Log:$temp/WebpiCmd_UrlRewrite.log
+& $Env:Programfiles'\Microsoft\Web Platform Installer\WebpiCmd.exe' /Install /Products:'ARRv3_0' /AcceptEULA /Log:$temp/WebpiCmd_ARR.log
 
 # Create server farm in IIS
 & $Env:WinDir\system32\inetsrv\appcmd.exe set config -section:webFarms /+"[name='Intellix']" /commit:apphost

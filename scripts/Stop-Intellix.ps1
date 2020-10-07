@@ -1,1 +1,1 @@
-docker-compose -f docker-compose.yml down -t 60
+docker-compose -f setup/run/docker-compose.yml down
