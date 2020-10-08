@@ -52,29 +52,36 @@ param(
   [string] $SqlServerInstancePassword
 )
 
-if ($SqlServerInstance) {
-  Write-Host "Intelligent indexing is set up on SQL Server instance $SqlServerInstance"
-}
+Push-Location $PSScriptRoot
+try {
 
-if (-not (Test-Path run -PathType Container)) {
-  mkdir ./run -Force
-}
-
-if ($IntellixDbUser -and $IntellixDbPassword) {
   if ($SqlServerInstance) {
-    $server = $SqlServerInstance
-    Copy-Item -Force ./docker-compose-own-sql.template.yml ./run/docker-compose.yml
+    Write-Host "Intelligent indexing is set up on SQL Server instance $SqlServerInstance"
+    if (!($SqlServerInstanceUser -and $SqlServerInstancePasword)) {
+      Write-Error "There are no passwords for the SQL Server instance $SqlServerInstance specified. Please use the parameters SqlServerInstanceUser and SqlServerInstancePassword to specify the credentials to access the SQL Server."
+      exit 1
+    }
   }
-  else {
-    $server = "sql\SQLEXPRESS"
-    Copy-Item -Force ./docker-compose-sql-in-container.template.yml ./run/docker-compose.yml
-  }
-  $connectionString = "ConnectionStrings__IntellixDatabaseEntities=Server=$server;Database=intellixv2;user id=$intellixDbUser;password=$intellixDbPassword;Trusted_Connection=False;pooling=True;multipleactiveresultsets=True;App=Intellix"
-  $connectionString | Out-File -FilePath ./run/intellix-database.env -Encoding ASCII
-}
 
-if ($IntellixAdminUser -and $IntellixAdminPassword) {
-  [Xml] $xml = '<?xml version="1.0"?>
+  if (-not (Test-Path run -PathType Container)) {
+    mkdir ./run -Force
+  }
+
+  if ($IntellixDbUser -and $IntellixDbPassword) {
+    if ($SqlServerInstance) {
+      $server = $SqlServerInstance
+      Copy-Item -Force ./docker-compose-own-sql.template.yml ./run/docker-compose.yml
+    }
+    else {
+      $server = "sql\SQLEXPRESS"
+      Copy-Item -Force ./docker-compose-sql-in-container.template.yml ./run/docker-compose.yml
+    }
+    $connectionString = "ConnectionStrings__IntellixDatabaseEntities=Server=$server;Database=intellixv2;user id=$intellixDbUser;password=$intellixDbPassword;Trusted_Connection=False;pooling=True;multipleactiveresultsets=True;App=Intellix"
+    $connectionString | Out-File -FilePath ./run/intellix-database.env -Encoding ASCII
+  }
+
+  if ($IntellixAdminUser -and $IntellixAdminPassword) {
+    [Xml] $xml = '<?xml version="1.0"?>
   <IntellixConnectionSetup CreatedAt="2013-12-05T17:11:32.0919779+01:00" xmlns="http://dev.docuware.com/public/services/intellix">
     <ServiceUri></ServiceUri>
     <User></User>
@@ -82,69 +89,63 @@ if ($IntellixAdminUser -and $IntellixAdminPassword) {
     <ModelspaceName></ModelspaceName>
   </IntellixConnectionSetup>'
 
-  $domain = $env:USERDNSDOMAIN
-  $fqdn = $env:COMPUTERNAME
-  if ($domain) {
-    $fqdn += ".$domain"
+    $domain = $env:USERDNSDOMAIN
+    $fqdn = $env:COMPUTERNAME
+    if ($domain) {
+      $fqdn += ".$domain"
+    }
+
+    [System.Xml.XmlElement] $rootElement = $xml.DocumentElement
+    $rootElement.CreatedAt = Get-Date -Format "yyyy-MM-ddTHH:mm:ss"
+    $rootElement.ServiceUri = "http://$fqdn/intellix-v2/"
+    $rootElement.Password = $IntellixAdminPassword 
+    $rootElement.User = $IntellixAdminUser
+    $rootElement.ModelspaceName = "$($user)_Default"
+    $xml.Save("$PSScriptRoot/run/intelligent-indexing-connection.xml")
   }
 
-  [System.Xml.XmlElement] $rootElement = $xml.DocumentElement
-  $rootElement.CreatedAt = Get-Date -Format "yyyy-MM-ddTHH:mm:ss"
-  $rootElement.ServiceUri = "http://$fqdn/intellix-v2/"
-  $rootElement.Password = $IntellixAdminPassword 
-  $rootElement.User = $IntellixAdminUser
-  $rootElement.ModelspaceName = "$($user)_Default"
-  $xml.Save("$PSScriptRoot/run/intelligent-indexing-connection.xml")
-}
+  $intellixDirs = @(
+    'c:\ProgramData\IntellixV2'
+    'c:\ProgramData\IntellixV2\SQL'
+    'c:\ProgramData\IntellixV2\License'
+    'c:\ProgramData\IntellixV2\Solr'
+    'c:\ProgramData\IntellixV2\License'
+    'c:\ProgramData\IntellixV2\Files'
+  )
 
-$intellixDirs = @(
-  'c:\ProgramData\IntellixV2'
-  'c:\ProgramData\IntellixV2\SQL'
-  'c:\ProgramData\IntellixV2\License'
-  'c:\ProgramData\IntellixV2\Solr'
-  'c:\ProgramData\IntellixV2\License'
-  'c:\ProgramData\IntellixV2\Files'
-)
-
-foreach ($dir in $intellixDirs) {
-  if (-not (Test-Path $dir -PathType Container)) {
-    mkdir $dir -Force
+  foreach ($dir in $intellixDirs) {
+    if (-not (Test-Path $dir -PathType Container)) {
+      mkdir $dir -Force
+    }
   }
+
+  "" | Out-File -FilePath ./run/intellix-license.env -Encoding ASCII
+  if ($LicenseFile -and (Test-Path $LicenseFile)) {
+    Copy-Item $LicenseFile c:\ProgramData\IntellixV2\License\license.lic
+    "LicenseFileLocation=c:/license/license.lic" | Out-File -FilePath ./run/intellix-license.env -Encoding ASCII
+  }
+
+  if (-not (Test-Path 'c:\ProgramData\IntellixV2\Solr\data\productionWordPairExtended' -PathType Container) ) {
+    mkdir 'c:\ProgramData\IntellixV2\Solr\data' -Force
+    Copy-Item productionWordPairExtended 'c:\ProgramData\IntellixV2\Solr\data\' -Recurse 
+  }
+
+  if ($SqlServerInstance) {
+    $dbSetupPath = "database-setup/docker-compose-own-sql.template.yml"
+  }
+  else {
+    $dbSetupPath = "database-setup/docker-compose-sql-in-container.template.yml"
+  }
+
+
+  docker-compose -f $dbSetupPath build
+  docker-compose -f $dbSetupPath run --rm -e intellixUserName=$IntellixAdminUser -e intellixUserPassword=$IntellixAdminPassword -e intellixDbUser=$IntellixDbUser -e intellixDbPassword=$IntellixDbPassword -e sqlServerInstance=$SqlServerInstance -e sqlServerInstanceUser=$SqlServerInstanceUser -e sqlServerInstancePassword=$SqlServerInstancePassword tools --exit-code-from tools
+  docker-compose -f $dbSetupPath down
+
+
+  Write-Output "Start Intelligent Indexing with 'Start-Intellix.ps1"
+  Write-Output "Browse Intelligent Indexing at http://$(hostname)/intellix-v2/"
 }
-
-"" | Out-File -FilePath ./run/intellix-license.env -Encoding ASCII
-if ($LicenseFile -and (Test-Path $LicenseFile)) {
-  Copy-Item $LicenseFile c:\ProgramData\IntellixV2\License\license.lic
-  "LicenseFileLocation=c:/license/license.lic" | Out-File -FilePath ./run/intellix-license.env -Encoding ASCII
+finally {
+  Pop-Location
 }
-
-if (-not (Test-Path 'c:\ProgramData\IntellixV2\Solr\data\productionWordPairExtended' -PathType Container) ) {
-  mkdir 'c:\ProgramData\IntellixV2\Solr\data' -Force
-  Copy-Item productionWordPairExtended 'c:\ProgramData\IntellixV2\Solr\data\' -Recurse 
-}
-
-if ($SqlServerInstance) {
-  $dbSetupPath = "database-setup/docker-compose-own-sql.template.yml"
-}
-else {
-  $dbSetupPath = "database-setup/docker-compose-sql-in-container.template.yml"
-}
-
-
-docker-compose -f $dbSetupPath build
-docker-compose -f $dbSetupPath run --rm -e intellixUserName=$IntellixAdminUser -e intellixUserPassword=$IntellixAdminPassword -e intellixDbUser=$IntellixDbUser -e intellixDbPassword=$IntellixDbPassword -e sqlServerInstance=$SqlServerInstance -e sqlServerInstanceUser=$SqlServerInstanceUser -e sqlServerInstancePassword=$SqlServerInstancePassword tools --exit-code-from tools
-#docker logs intellix-sql-setup
-docker-compose -f $dbSetupPath down
-
-
-
-
-#if [ $err -eq 0 ]; then
-Write-Output "Start Intelligent Indexing with 'docker-compose -f run/docker-compose.yml up -d'"
-Write-Output "Browse Intelligent Indexing at http://$(hostname)/intellix-v2/"
-#else
-#echo "Something went wrong. See messages above"
-#fi
-
-#exit $err
-
