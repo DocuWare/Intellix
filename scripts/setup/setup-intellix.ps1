@@ -54,16 +54,16 @@ param(
 
 
 if ($SqlServerInstance) {
-  Write-Host "Intelligent indexing is set up on SQL Server instance $SqlServerInstance"
-  if (!($SqlServerInstanceUser -and $SqlServerInstancePasword)) {
-    Write-Error "There are no passwords for the SQL Server instance $SqlServerInstance specified. Please use the parameters SqlServerInstanceUser and SqlServerInstancePassword to specify the credentials to access the SQL Server."
+  Write-Host "Intelligent indexing is set up on SQL Server instance $SqlServerInstance $SqlServerInstanceUser $SqlServerInstancePassword"
+  if ((-not $SqlServerInstanceUser) -or (-not $SqlServerInstancePassword)){
+    Write-Error "There are no credentials for the SQL Server instance $SqlServerInstance specified. Please use the parameters SqlServerInstanceUser and SqlServerInstancePassword to specify the credentials to access the SQL Server."
     exit 1
   }
 }
 
 $runPath = "$PSScriptRoot/run"
 
-if (-not (Test-Path run -PathType Container)) {
+if (-not (Test-Path $runPath -PathType Container)) {
   mkdir $runPath -Force
 }
 
@@ -100,7 +100,7 @@ if ($IntellixAdminUser -and $IntellixAdminPassword) {
   $rootElement.ServiceUri = "http://$fqdn/intellix-v2/"
   $rootElement.Password = $IntellixAdminPassword 
   $rootElement.User = $IntellixAdminUser
-  $rootElement.ModelspaceName = "$($user)_Default"
+  $rootElement.ModelspaceName = "$($IntellixAdminUser)_Default"
   $xml.Save("$runPath/intelligent-indexing-connection.xml")
 }
 
@@ -145,4 +145,5 @@ docker-compose -f $dbSetupPath down
 
 
 Write-Output "Start Intelligent Indexing with 'Start-Intellix.ps1"
+Write-Output "You find the configuration file for DocuWare at '$(Join-Path $runPath 'intelligent-indexing-connection.xml')'"
 Write-Output "Browse Intelligent Indexing at http://$(hostname)/intellix-v2/"
