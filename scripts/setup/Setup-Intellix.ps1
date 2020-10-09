@@ -114,7 +114,7 @@ if ($IntellixAdminUser -and $IntellixAdminPassword) {
   $rootElement.ServiceUri = "http://$fqdn/intellix-v2/"
   $rootElement.Password = $IntellixAdminPassword 
   $rootElement.User = $IntellixAdminUser
-  $rootElement.ModelspaceName = "$($IntellixAdminUser)_Default"
+  $rootElement.ModelspaceName = "Default_$($IntellixAdminUser)"
   $xml.Save("$runPath/intelligent-indexing-connection.xml")
   Write-Verbose "DocuWare configuration file written."
 }
