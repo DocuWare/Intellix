@@ -361,6 +361,9 @@ This file contains the connection URL. In case your server is exposed with a dif
 
 You can now upload the Intelligent Indexing connection file to your DocuWare installation to establish the connection with Intelligent Indexing. To do this, log in to DocuWare Administration and navigate to `DocuWare System` -> `Data Connections` -> `Intelligent Indexing Service connections`. If a connection is already entered here, you can open it, remove your organization under Organizations, and click `Apply`. This disables the connection of your DocuWare system to your old Intelligent Indexing system, but it can be reactivated by adding the organization again. Then right-click `Intelligent Indexing Service connections` on the left side and select `Install Intelligent Indexing Service file`. In the dialog that opens, select the `intelligent-indexing-connection.xml` file you edited. Then click `Apply` and close DocuWare Administration.
 
+> :point_up: When you upload the configuration file in the DocuWare Configuration, you may receive an error message, saying Intelligent Indexing cannot be connected. 
+However, this message is misleading, and the connection is established. We fix this wrong message in a future version of DocuWare.
+
 ## Appendix
 
 ### Overview of the Intelligent Indexing Script Files
