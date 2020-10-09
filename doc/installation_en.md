@@ -177,21 +177,28 @@ The setup is triggered by running the `setup-intellix.ps1` in the `setup` folder
 
 - `LicenseFile`: The path to the license file. If the license file is not specified on the setup, it can be uploaded after the setup in the Intelligent Indexing UI.
 
-  To make the service ready to use right after the installation, it is recommended to specify the license file when running the setup. If you do not have a license file, visit the [DocuWare Partner Portal](https://login.docuware.com).
+  > To make the service ready to use right after the installation, it is recommended to specify the license file when running the setup. If you do not have a license file, visit the [DocuWare Partner Portal](https://login.docuware.com).
 
 - `SqlServerInstance`, `SqlServerInstanceUser` and `SqlServerInstancePassword`: This value specifies the instance and the credentials to access your own SQL Server.
   
-  If you use the containerized SQL Server, you must not pass these parameters.
-  
-__Examples__:
+  > If you use the containerized SQL Server, you must not pass these parameters.
 
-Simple Intelligent Indexing installation:
+If you run an old version of Intelligent Indexing On-Premise on the same database server, you can install Intelligent Indexing V2 in parallel. The old version uses the `intellix` database, the current version uses the `intellixv2` database.
+  
+### Examples
+
+There are two example scripts `Run-Setup-Example.ps1` and
+`Run-Setup-With-Own-SqlServer-Example.ps1` provided. You can modify the scripts and use them
+to run the setup and start the service when the setup is finished.
+
+Simple Intelligent Indexing installation with Intelligent Indexing license file:
 
 ```powershell
 # Only necessary if the PowerShell execution policy is not 'Unrestricted.'
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
 .\setup\setup-intellix.ps1 `
+  -LicenseFile 'c:\users\Administrator\Downloads\Peters Engineering_Enterprise.lic' `
   -IntellixAdminUser intellix  `
   -IntellixAdminPassword ThIsiS_VarYYSecreTT001 `
   -IntellixDbUser IntellixAdminDb `
@@ -199,7 +206,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
   -SqlServerInstance my-sql-2019-box `
 ```
 
-Installing Intelligent Indexing with your own SQL Server:
+Installing Intelligent Indexing with your own SQL Server, but without Intelligent Indexing license file:
 
 ```powershell
 # Only necessary if the PowerShell execution policy is not 'Unrestricted.'
@@ -215,7 +222,15 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
   -SqlServerInstancePassword MYAb0luTe1ySecre!tAKKSESS
 ```
 
-If you run an old version of Intelligent Indexing On-Premise on the same database server, you can install Intelligent Indexing V2 in parallel. The old version uses the `intellix` database, the current version uses the `intellixv2` database.
+### Troubleshooting
+
+In case the setup fails, you should enable the _verbose output_ of Powershell and then run the setup again.
+This can be enabled with:
+
+```powershell
+$VerbosePreference = "Continue"
+$InformationPreference = "Continue"
+```
 
 ## Installation of the IIS Web Server
 
@@ -236,15 +251,20 @@ If you want to use a connection via `https`, you must click `Bindings...` on the
 
 ### Configuration of Intelligent Indexing
 
-The setup generates files, which are used by the containers to connect to the 
+The setup generates files, which are used by the containers to connect to the
 database and to store the files and the index data for Apache Solr. The data
 is stored at `C:\ProgramData\IntellixV2`. If you want to store the data
 at a different location, we recommend to move the folder to a location of
 your choice and create junctions or soft links using the [mklink](https://docs.microsoft.com/de-de/windows-server/administration/windows-commands/mklink) command or with `New-Item`:
 
 ```powershell
+Stop-Intellix.ps1
+Move-Item -Path C:\ProgramData\IntellixV2 -Destination d:\a-lot-of-space\intellixv2
+
 New-Item -ItemType Junction -Path C:\ProgramData\IntellixV2 `
   -Value d:\a-lot-of-space\intellixv2
+
+Start-Intellix.ps1
 ```
 
 ### Starting Intelligent Indexing
@@ -268,7 +288,7 @@ docker ps -a
 
 You should get one line each as output for the Docker containers __intellix_app__ and __intellix_solr__. In the `Status` column, you can see whether the Docker containers are running (`Up...`) or have been ended (`Exited...`). You can also see in this column whether the containers are accessible in principle. At startup, (`health: starting`) is displayed here. If the containers respond successfully to requests, (`healthy`) is displayed.
 
-After starting Intelligent Indexing, you can navigate to <http://localhost/intellix-v2/Html> on the host computer to call up the administration interface. 
+After starting Intelligent Indexing, you can navigate to <http://localhost/intellix-v2/Html> on the host computer to call up the administration interface.
 
 > :warning: Internet Explorer is not supported.
 
@@ -278,7 +298,7 @@ Also test here whether you can access the host computer via a browser from the c
 
 ### Logging
 
-To log Intelligent Indexing, run the following script in PowerShell as administrator in the installation directory:
+To view the live log of Intelligent Indexing, run the following PowerShell script:
 
 ```powershell
 # Only necessary if the PowerShell execution policy is not 'Unrestricted.'
@@ -287,20 +307,11 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 .\Show-IntellixLogs.ps1
 ```
 
-To log the SolR full text search engine, execute the following script:
-
-```powershell
-# Only necessary if the PowerShell execution policy is not 'Unrestricted.'
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
-
-.\Show-SolrLogs.ps1
-```
-
-Both scripts display log outputs live. The output can be canceled by pressing `Ctrl+C`.
+The output can be canceled by pressing `Ctrl+C`.
 
 ### Stopping Intelligent Indexing
 
-To stop Intelligent Indexing, run the following script in PowerShell as administrator in the installation directory:
+To stop Intelligent Indexing, run the following script in PowerShell script:
 
 ```powershell
 # Only necessary if the PowerShell execution policy is not 'Unrestricted.'
@@ -311,6 +322,9 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
 ### Updating Intelligent Indexing
 
+DocuWare is constantly improving Intelligent indexing. To apply the updates, it is enough to pull
+updated images and restart the service.
+
 Use the following script to check for and download any updates or hotfixes for Intelligent Indexing:
 
 ```powershell
@@ -320,7 +334,16 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 .\Update-Intellix.ps1
 ```
 
-Docker images that are no longer needed are automatically deleted. The download size will in most cases be several 100 MB. You can run this script while Intelligent Indexing is running. The changes will not take effect until you run `Stop-Intellix.ps1` and `Start-Intellix.ps1` after this script is finished. Even restarting the host computer will not install a downloaded update.
+You can run this script while Intelligent Indexing is running. The changes will not take effect until you 
+run `Stop-Intellix.ps1` and `Start-Intellix.ps1` after this script is finished. This step can be simplfied
+if the `WithRestart`parameter is added:
+
+```powershell
+# Only necessary if the PowerShell execution policy is not 'Unrestricted.'
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+
+.\Update-Intellix.ps1 -WithRestart
+```
 
 ### Restarting the Host Computer
 
@@ -336,8 +359,6 @@ The installation directory contains the Intelligent Indexing connection file at 
 
 This file contains the connection URL. In case your server is reached with a different name than the machine name, or you configured the IIS to use `https`, you should change this URL in this file.
 
-Open this file in a text editor. In line 3, enter the address at which the host computer was accessible from the computer with the DocuWare installation, but without the `Html` at the end. The name of the host computer or its static IP address must therefore be entered instead of `localhost`. For example, if you could reach Intelligent Indexing from your DocuWare computer at `http://intellix/intellix-v2/Html`, enter `http://intellix/intellix-v2/` here. If you have configured the web server for connection via `https` (see [Installation of the IIS Web Server](#installation-of-the-iis-web-server)), you can enter `https` instead of `http` here.
-
 You can now upload the Intelligent Indexing connection file to your DocuWare installation to establish the connection with Intelligent Indexing. To do this, log in to DocuWare Administration and navigate to `DocuWare System` -> `Data Connections` -> `Intelligent Indexing Service connections`. If a connection is already entered here, you can open it, remove your organization under Organizations, and click `Apply`. This disables the connection of your DocuWare system to your old Intelligent Indexing system, but it can be reactivated by adding the organization again. Then right-click `Intelligent Indexing Service connections` on the left side and select `Install Intelligent Indexing Service file`. In the dialog that opens, select the `intelligent-indexing-connection.xml` file you edited. Then click `Apply` and close DocuWare Administration.
 
 ## Appendix
@@ -349,3 +370,5 @@ You can now upload the Intelligent Indexing connection file to your DocuWare ins
 - `Update-Intellix.ps1`, `Start-Intellix.ps1`, `Stop-Intellix.ps1`: Scripts for updating, starting, and stopping Intelligent Indexing
 
 - `Show-IntellixLogs.ps1`: Scripts for displaying log outputs of Intelligent Indexing and the SolR full text search
+
+- `setup/Setup-Intellix.ps1`: Scripts for displaying log outputs of Intelligent Indexing and the SolR full text search
