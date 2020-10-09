@@ -2,7 +2,7 @@
 
 __Beta Test__
 
-> :warning: This version of Intelligent Indexing is intended for closed beta testing only and must not be used in a production environment.
+> :heavy_exclamation_mark: This version of Intelligent Indexing is intended for closed beta testing only and must not be used in a production environment.
 
 ## Introduction
 
@@ -169,19 +169,19 @@ The setup is triggered by running the `setup-intellix.ps1` in the `setup` folder
 
   This SQL account with the specified credentials is created in the intellixv2 database, and no logins are created on your SQL Server.
   
-  These values must be specified on the initial setup only. If you run the setup a second time, the values are not needed anymore.  
+  :bulb: These values must be specified on the initial setup only. If you run the setup a second time, the values are not needed anymore.  
 
-- `-IntellixAdminUser` and `IntellixAdminPassword`: These are the credentials that DocuWare uses to access Intelligent Indexing. The password should be secure, but should not contain any of the following 5 special characters, as these can cause problems in the connection file: `& < > " '`.
+- `IntellixAdminUser` and `IntellixAdminPassword`: These are the credentials that DocuWare uses to access Intelligent Indexing. The password should be secure, but should not contain any of the following 5 special characters, as these can cause problems in the connection file: `& < > " '`.
   
-  These values must be specified on the initial setup only. If you run the setup a second time, the values are not needed anymore.
+  :bulb: These values must be specified on the initial setup only. If you run the setup a second time, the values are not needed anymore.
 
 - `LicenseFile`: The path to the license file. If the license file is not specified on the setup, it can be uploaded after the setup in the Intelligent Indexing UI.
 
-  > To make the service ready to use right after the installation, it is recommended to specify the license file when running the setup. If you do not have a license file, visit the [DocuWare Partner Portal](https://login.docuware.com).
+  :bulb: To make the service ready to use right after the installation, it is recommended to specify the license file when running the setup. If you do not have a license file, visit the [DocuWare Partner Portal](https://login.docuware.com).
 
 - `SqlServerInstance`, `SqlServerInstanceUser` and `SqlServerInstancePassword`: This value specifies the instance and the credentials to access your own SQL Server.
   
-  > If you use the containerized SQL Server, you must not pass these parameters.
+  :warning: If you use the containerized SQL Server, you must not pass these parameters.
 
 If you run an old version of Intelligent Indexing On-Premise on the same database server, you can install Intelligent Indexing V2 in parallel. The old version uses the `intellix` database, the current version uses the `intellixv2` database.
   
