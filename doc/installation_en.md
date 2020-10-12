@@ -234,7 +234,7 @@ which is used to persist the data for Intelligent Indexing.
 Please consider this directory in you backups, use junctions to mount this
 directory to an external storage.
 
-The setup is triggered by running the `setup-intellix.ps1` in the `setup` folder.
+The setup is triggered by running the `Setup-Intellix.ps1` in the `setup` folder.
 You can apply the following parameters:
 
 - `IntellixDbUser` and `IntellixDbPassword`: These are the database credentials that
@@ -288,7 +288,7 @@ Simple Intelligent Indexing installation with Intelligent Indexing license file:
 # Only necessary if the PowerShell execution policy is not 'Unrestricted.'
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
-.\setup\setup-intellix.ps1 `
+.\setup\Setup-Intellix.ps1 `
   -LicenseFile 'c:\users\Administrator\Downloads\Peters Engineering_Enterprise.lic' `
   -IntellixAdminUser intellix  `
   -IntellixAdminPassword ThIsiS_VarYYSecreTT001 `
@@ -304,7 +304,7 @@ but without Intelligent Indexing license file:
 # Only necessary if the PowerShell execution policy is not 'Unrestricted.'
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
-.\setup\setup-intellix.ps1 `
+.\setup\Setup-Intellix.ps1 `
   -IntellixAdminUser intellix  `
   -IntellixAdminPassword ThIsiS_VarYYSecreTT001 `
   -IntellixDbUser IntellixAdminDb `
