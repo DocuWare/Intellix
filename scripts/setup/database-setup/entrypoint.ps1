@@ -58,11 +58,10 @@ else {
 Write-Output "Create or update the database..."
 & /sqlpackage/sqlpackage /Action:Publish /SourceFile:IntellixDatabase.dacpac /TargetDatabaseName:intellixv2 /TargetServerName:$sqlServer /TargetUser:$sqlUser /TargetPassword:$sqlPw /p:BlockOnPossibleDataLoss=false
 
-Write-Output "Create or update the database user..."
-$intellixDbUser = $env:intellixDbUser;
-$intellixDbPassword = $env:intellixDbPassword;
-
-if ($intellixDbUser) {
+if ($env:intellixDbUser) {
+    Write-Output "Create or update the database user..."
+    $intellixDbUser = $env:intellixDbUser;
+    $intellixDbPassword = $env:intellixDbPassword;
     $cuCommand = "IF EXISTS (SELECT 1 FROM sys.database_principals WHERE name = '$intellixDbUser')
         BEGIN
             PRINT 'Change password of user ""$intellixDbUser""';
