@@ -456,7 +456,7 @@ To use Intelligent Indexing, you must apply a license file to the service.
 You can download the license file from the
 [DocuWare Partner Portal](https://login.docuware.com).
 
-If you have the file dowloaded, we recommend to pass the file when
+If you have the file downloaded, we recommend to pass the file when
 [configuring](#setup) Intelligent Indexing. Alternatively,
 you can upload the file in the Intelligent Indexing Web UI at the _Licensing_ section.
 
