@@ -3,7 +3,7 @@ version: "3.3"
 services:
   intellix:
     image: docuwarepublic.azurecr.io/intellix/app
-    container_name: intellix
+    container_name: intellix-app
     restart: unless-stopped
     tty: false
     env_file: 
@@ -27,7 +27,7 @@ services:
 
 
   solr:
-    container_name: solr
+    container_name: intellix-solr
     image: docuwarepublic.azurecr.io/intellix/windows/solr:8
     restart: unless-stopped
     tty: false
@@ -39,7 +39,7 @@ services:
         target: C:\solr\server\solr\productionWordPairExtended\data
 
   sql:
-    container_name: sql
+    container_name: intellix-sql
     image: docuwarepublic.azurecr.io/intellix/windows/mssql
     restart: unless-stopped
     tty: false

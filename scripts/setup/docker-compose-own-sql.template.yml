@@ -3,7 +3,7 @@ version: "3.3"
 services:
   intellix:
     image: docuwarepublic.azurecr.io/intellix/app
-    container_name: intellix
+    container_name: intellix-app
     restart: unless-stopped
     tty: false
     env_file: 
@@ -25,7 +25,7 @@ services:
       - solr
 
   solr:
-    container_name: solr
+    container_name: intellix-solr
     image: docuwarepublic.azurecr.io/intellix/windows/solr:8
     restart: unless-stopped
     tty: false
