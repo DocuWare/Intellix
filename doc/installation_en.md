@@ -291,8 +291,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
   -IntellixAdminUser intellix  `
   -IntellixAdminPassword ThIsiS_VarYYSecreTT001 `
   -IntellixDbUser IntellixAdminDb `
-  -IntellixDbPassword htThIsiS_VarYYSecreTT001UUi649mj60Jffdf_f634 `
-  -SqlServerInstance my-sql-2019-box `
+  -IntellixDbPassword htThIsiS_VarYYSecreTT001UUi649mj60Jffdf_f634
 ```
 
 Installing Intelligent Indexing with your own SQL Server,
