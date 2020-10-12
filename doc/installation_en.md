@@ -5,12 +5,8 @@ __Beta Test__
 > :heavy_exclamation_mark: This version of Intelligent Indexing is intended for
 > closed beta testing only and must not be used in a production environment.
 
----
-
 > :bulb: If you have Intelligent Indexing v2 already installed from an earlier beta test,
 > you should updated the the database by running the [Setup](#setup).
-
----
 
 > :bulb: We simplified the installation of an SQL Server.
 > If you have SQL Express already installed, you can consider replacing the installed SQL Server
