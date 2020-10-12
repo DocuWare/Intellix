@@ -7,7 +7,7 @@ __Beta Test__
 
 > :bulb: If you have Intelligent Indexing v2 already installed from an earlier beta test,
 > you should updated the the database by running the [Setup](#setup). We also moved the
-> Intelligent Indexing data failes to `C:\ProgramData\IntellixV2'.
+> Intelligent Indexing data failes to `C:\ProgramData\IntellixV2`.
 
 > :bulb: We simplified the SQL Server installation.
 > If you have SQL Express already installed, you can consider replacing the installed SQL Server
