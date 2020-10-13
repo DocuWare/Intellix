@@ -24,15 +24,17 @@ Intelligent Indexing are available as separate documents in the
 
 ### System Requirements
 
-The following requirements must be met for installation:
+The following minumum requirements must be met for installation:
 
 - Windows Server 2019 (Core, Standard or Datacenter Edition)
-- 4 processor cores
-- 8 GB RAM
+- 2 processor cores
+- 4 GB RAM
 - Optional: Access to SQL Server 2019
 
 It is recommended that you install Intelligent Indexing on a separate server to achieve
-the best possible performance.
+the best possible performance. If you install Intelligent Indexing on a machine which is already
+hosting other services, you should ensure that no other application is using port 8080.
+
 Intelligent Indexing can be used in combination with DocuWare Version 6.1 or higher.
 If you use SQL Server 2019 for your DocuWare system or for an existing
 Intelligent Indexing installation, you can also use it for Intelligent Indexing V2.
