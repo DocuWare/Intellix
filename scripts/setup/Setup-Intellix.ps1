@@ -103,11 +103,7 @@ if ($IntellixAdminUser -and $IntellixAdminPassword) {
     <ModelspaceName></ModelspaceName>
   </IntellixConnectionSetup>'
 
-  $domain = $env:USERDNSDOMAIN
-  $fqdn = $env:COMPUTERNAME
-  if ($domain) {
-    $fqdn += ".$domain"
-  }
+  $fqdn = $(hostname)
 
   [System.Xml.XmlElement] $rootElement = $xml.DocumentElement
   $rootElement.CreatedAt = "$(Get-Date -Format "yyyy-MM-ddTHH:mm:ss")"
