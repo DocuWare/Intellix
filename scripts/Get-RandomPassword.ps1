@@ -4,10 +4,6 @@ param(
     [int] $digits = 6
 )
 
-#$lowerCaseAlphabet = 97..122 | ForEach-Object { [char] $_ }
-#$upperCaseAlphabet = 65..90 | ForEach-Object { [char] $_ }
-#$digits = 48..57 | ForEach-Object { [char] $_ }
-
 $lowerCaseCharacters = Get-Random -Count $lowerCaseLetters -Minimum 97 -Maximum 123
 $upperCaseCharacters = Get-Random -Count $upperCaseLetters -Minimum 65 -Maximum 91
 $digitCharacters = Get-Random -Count $digits -Minimum 48 -Maximum 58
