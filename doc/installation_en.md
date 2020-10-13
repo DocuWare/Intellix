@@ -7,7 +7,7 @@ __Beta Test__
 
 > :bulb: If you have Intelligent Indexing v2 already installed from an earlier beta test,
 > please remove running or stopped Intelligent Indexing containers.
-> You should then update or recreate the the database by running the [Setup](#setup).
+> You should then update or recreate the database by running the [Setup](#setup).
 > We moved the Intelligent Indexing data files to `C:\ProgramData\IntellixV2`.
 
 > :bulb: We simplified the SQL Server installation.
@@ -127,7 +127,9 @@ If you want to remove the block completely, you can also use
 ## Installation of the Docker Environment
 
 Intelligent Indexing runs in Docker containers. Therefore, a Docker environment
-first needs to be installed. In PowerShell as administrator,
+needs to be installed. Also `docker-compose` must be installed. We provide a script
+which executes the neccessary steps. 
+In PowerShell as administrator,
 switch to the installation directory and run the following command:
 
 ```powershell
@@ -137,24 +139,19 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 .\Install-Docker.ps1
 ```
 
-You can ignore the warning that the `version` and `Properties` properties cannot be found.
-
-Now start the host computer again:
+If the installation script reports that the computer should be restarted you can run:
 
 ```powershell
 Restart-Computer
 ```
 
-After the reboot, wait about one minute and then execute the following command
-in the PowerShell as administrator in the installation directory to test the Docker installation:
+After the reboot you can test if the Docker environment and docker-compose are installed correctly:
 
-```powershell
+```cmd
 docker run --rm --name helloworld hello-world:nanoserver
-docker-compose --version
 ```
 
-A Docker container with about 100 MB is downloaded and launched.
-If Docker is installed correctly, you will see the following output:
+After the Docker image is downloaded and launched, you should see the following output:
 
 ```text
 Hello from Docker!
@@ -162,15 +159,17 @@ Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ```
 
-Also check whether you can see the line
+If you run
+
+```cmd
+docker-compose --version
+```
+
+you should see the line
 
 ```text
 docker-compose version...
 ```
-
-in the last line of the output. This ensures that Docker-Compose,
-which is required for the interaction of the Docker containers,
-has also been correctly installed.
 
 ## Installation of the Database Server
 
@@ -180,8 +179,8 @@ For the database you can choose from the following options:
 
 This is recommended for most installations.
 In this scenario, the installation of Intelligent Indexing is very simple, because no further
-configuration of the database server is needed. You do not care about configuring the
-database - this is fully managed by the setup script.
+configuration of the database server is needed. You do not need to care about the
+database setup and configuration - this is fully managed by the setup script.
 
 However, SQL Express limits the size of the stored data. If you expect a very high data volume
 (i.e. several thousands documents each day) then you should go for the other option.
@@ -192,7 +191,7 @@ If the size limit becomes a problem later, you can migrate to your own database 
 You should choose this option if you expect a high volume of documents,
 or if you want to have full control of the Intelligent Indexing database.
 Intelligent Indexing expects SQL Server 2019. On older
-versions of SQL Server, the fails. If you use a SQL Server 2019 for your
+versions of SQL Server, the setup fails. If you use a SQL Server 2019 for your
 DocuWare system, you can also use it for Intelligent Indexing.
 
 If you want to setup your own SQL Server, you can start with an installation of
@@ -241,8 +240,7 @@ You can apply the following parameters:
   Intelligent Indexing will use to access the database.
   You should use a strong password which matches the
   [SQL Server password policy](https://docs.microsoft.com/en-us/sql/relational-databases/security/password-policy?view=sql-server-ver15).
-  These values must be specified only on the initial setup. If you run the setup a second time,
-  the values are not needed anymore.
+  These values must be specified only on the initial setup.
 
   This SQL account with the specified credentials is created in the intellixv2 database,
   and no logins are created on your SQL Server.
@@ -282,18 +280,28 @@ There are two example scripts `Run-Setup-Example.ps1` and
 `Run-Setup-With-Own-SqlServer-Example.ps1` provided. You can modify the scripts and use them
 to run the setup and start the service when the setup is finished.
 
+These scripts use a password generator to generate passwords for the Web UI and the
+database user. If you do not like to generate random passwords, just modify the examples
+depending on your need.
+
 Simple Intelligent Indexing installation with Intelligent Indexing license file:
 
 ```powershell
 # Only necessary if the PowerShell execution policy is not 'Unrestricted.'
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
-.\setup\Setup-Intellix.ps1 `
-  -LicenseFile 'c:\users\Administrator\Downloads\Peters Engineering_Enterprise.lic' `
-  -IntellixAdminUser intellix  `
-  -IntellixAdminPassword ThIsiS_VarYYSecreTT001 `
-  -IntellixDbUser IntellixAdminDb `
-  -IntellixDbPassword htThIsiS_VarYYSecreTT001UUi649mj60Jffdf_f634
+$intellixAdminPassword = ./Get-RandomPassword.ps1
+$intellixDbPassword = ./Get-RandomPassword.ps1
+
+./setup/Setup-Intellix.ps1 `
+    -IntellixAdminUser intellix `
+    -IntellixAdminPassword $intellixAdminPassword `
+    -IntellixDbUser intellix `
+    -IntellixDbPassword $intellixDbPassword `
+    -LicenseFile 'c:\users\Administrator\Downloads\Peters Engineering_Enterprise.lic'
+
+Write-Output "Intelligent Indexing Web UI user: intellix"
+Write-Output "Intelligent Indexing Web UI password: $intellixAdminPassword"
 ```
 
 Installing Intelligent Indexing with your own SQL Server,
@@ -303,14 +311,20 @@ but without Intelligent Indexing license file:
 # Only necessary if the PowerShell execution policy is not 'Unrestricted.'
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
-.\setup\Setup-Intellix.ps1 `
-  -IntellixAdminUser intellix  `
-  -IntellixAdminPassword ThIsiS_VarYYSecreTT001 `
-  -IntellixDbUser IntellixAdminDb `
-  -IntellixDbPassword htThIsiS_VarYYSecreTT001UUi649mj60Jffdf_f634 `
-  -SqlServerInstance my-sql-2019-box `
-  -SqlServerInstanceUser sa `
-  -SqlServerInstancePassword MYAb0luTe1ySecre!tAKKSESS
+$intellixAdminPassword = ./Get-RandomPassword.ps1
+$intellixDbPassword = ./Get-RandomPassword.ps1
+
+./setup/Setup-Intellix.ps1 `
+    -IntellixAdminUser intellix `
+    -IntellixAdminPassword $intellixAdminPassword `
+    -IntellixDbUser intellix `
+    -IntellixDbPassword $intellixDbPassword `
+    -SqlServerInstance my-sql-2019-box `
+    -SqlServerInstanceUser "sa" `
+    -SqlServerInstancePassword "Admin001"
+
+Write-Output "Intelligent Indexing Web UI user: intellix"
+Write-Output "Intelligent Indexing Web UI password: $intellixAdminPassword"
 ```
 
 ## Installation of the IIS Web Server
