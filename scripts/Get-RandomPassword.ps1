@@ -4,9 +4,9 @@ param(
     [int] $digits = 6
 )
 
-$lowerCaseCharacters = Get-Random -Count $lowerCaseLetters -Minimum 97 -Maximum 123
-$upperCaseCharacters = Get-Random -Count $upperCaseLetters -Minimum 65 -Maximum 91
-$digitCharacters = Get-Random -Count $digits -Minimum 48 -Maximum 58
+$lowerCaseCharacters = 1..$lowerCaseLetters | ForEach-Object { Get-Random -Minimum 97 -Maximum 123 }
+$upperCaseCharacters = 1..$upperCaseLetters | ForEach-Object { Get-Random -Minimum 65 -Maximum 91 }
+$digitCharacters = 1..$digits | ForEach-Object { Get-Random -Minimum 48 -Maximum 58 }
 
 $characters = ($lowerCaseCharacters + $upperCaseCharacters + $digitCharacters) | ForEach-Object { [char] $_ }
 $shuffled = $characters | Get-Random -Count ([int]::MaxValue)

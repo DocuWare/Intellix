@@ -42,10 +42,10 @@ Otherwise, you must set up a separate SQL server.
 
 For the installation described below, administrator rights and an Internet
 connection are required.
-All commands in these installation instructions must be entered in the Powershell. You can use
-Powershell 5 or Powershell 7.
+All commands in these installation instructions must be entered in the PowerShell. You can use
+PowerShell 5 or PowerShell 7.
 
-> :bulb: If you want to run the scripts in the Powershell ISE, please ensure that
+> :bulb: If you want to run the scripts in the PowerShell ISE, please ensure that
 > the current directory in the ISE is changed to the __scripts__ directory
 > the extracted setup files.
 
@@ -397,7 +397,7 @@ or have been ended (`Exited...`). You can also see in this column whether the co
 are accessible in principle. At startup, (`health: starting`) is displayed here.
 If the containers respond successfully to requests, (`healthy`) is displayed.
 
-You can check with Powershell if the service runs. The following request
+You can check with PowerShell if the service runs. The following request
 should be responded with status code 200:
 
 ```powershell
@@ -509,7 +509,7 @@ However, this message is misleading, and the connection is established. We fix t
 ### Database Setup fails
 
 In case the setup fails, you should enable the _verbose output_
-of Powershell and then run the setup again.
+of PowerShell and then run the setup again.
 This can be enabled with:
 
 ```powershell
