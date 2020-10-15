@@ -485,7 +485,7 @@ you can upload the file in the Intelligent Indexing Web UI at the _Licensing_ se
 ## Connecting DocuWare with Intelligent Indexing
 
 The setup generates a connection file for DocuWare. The installation directory
-contains this file at `\setup\run\intelligent-indexing-connection.xml`.
+contains this file at `.\setup\run\intelligent-indexing-connection.xml`.
 
 This file contains the connection URL. In case your server is exposed with a different name
 than the machine name, or you configured the IIS to use `https`, you should change this URL in this file.
