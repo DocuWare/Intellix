@@ -71,7 +71,7 @@ Copy this directory to a location that you want to use permanently.
 This directory will be referred to in the following as the _installation directory_.
 
 > :point_up: When you download the archive with a browser, you should consider unblocking
-> the archive first before extracting the files.
+> the archive before extracting the files.
 > Otherwise, there could be callbacks popping up when the setup is executed.
 > To unblock the archive file, right click the archive and disable the blocking in the
 > file properties window.
