@@ -71,13 +71,13 @@ Copy this directory to a location that you want to use permanently.
 This directory will be referred to in the following as the _installation directory_.
 
 > :point_up: When you download the archive with a browser, you should consider unblocking
-the archive first. Otherwise, there could be callbacks popping up when the setup is executed.
-To unblock the files, right click the archive and disable the blocking in the
-file properties window. If the files are already extracted, then you can switch to the
-extraction directory and run in PowerShell
-```powershell
-Get-ChildItem -Recurse | Unblock-File
-```
+> the archive first. Otherwise, there could be callbacks popping up when the setup is executed.
+> To unblock the files, right click the archive and disable the blocking in the
+> file properties window. If the files are already extracted, then you can switch to the
+> extraction directory and run in PowerShell
+>  ```powershell
+>  Get-ChildItem -Recurse | Unblock-File
+>  ```
 
 An overview of the individual files can be found in the
 [Appendix](#overview-of-the-intelligent-indexing-setup-files).
