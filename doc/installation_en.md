@@ -26,13 +26,15 @@ Intelligent Indexing are available as separate documents in the
 
 The following minumum requirements must be met for installation:
 
-- Windows Server 2019 (Core, Standard or Datacenter Edition)
+- Windows Server 2019 (Standard or Datacenter Edition)
 - 2 processor cores
 - 4 GB RAM
 - Optional: Access to SQL Server 2019
 
 It is recommended that you install Intelligent Indexing on a separate server to achieve
-the best possible performance. If you install Intelligent Indexing on a machine which is already
+the best possible performance. In order to keep the footprint of the installation small, you should
+consider using Windows Server Core (which is an installation without a graphical UI).
+If you install Intelligent Indexing on a machine which is already
 hosting other services, you should ensure that no other application is using port 8080.
 
 Intelligent Indexing can be used in combination with DocuWare Version 6.1 or higher.
@@ -67,6 +69,15 @@ $tmp | Remove-Item
 To install and run Intelligent Indexing, the content of the `scripts` directory is required.
 Copy this directory to a location that you want to use permanently.
 This directory will be referred to in the following as the _installation directory_.
+
+> :point_up: When you download the archive with a browser, you should consider unblocking
+the archive first. Otherwise, there could be callbacks popping up when the setup is executed.
+To unblock the files, right click the archive and disable the blocking in the
+file properties window. If the files are already extracted, then you can switch to the
+extraction directory and run in PowerShell
+```powershell
+Get-ChildItem -Recurse | Unblock-File
+```
 
 An overview of the individual files can be found in the
 [Appendix](#overview-of-the-intelligent-indexing-setup-files).
