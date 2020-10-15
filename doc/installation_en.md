@@ -280,8 +280,9 @@ There are two example scripts `Run-Setup-Example.ps1` and
 `Run-Setup-With-Own-SqlServer-Example.ps1` provided. You can modify the scripts and use them
 to run the setup and start the service when the setup is finished.
 
-These scripts use a password generator to generate passwords for the Web UI and the
-database user. If you do not like to generate random passwords, just modify the examples
+In order to get strong passwords, these scripts use a password generator to generate passwords
+for the Web UI and the database user.
+If you do not like to generate random passwords, just modify the examples
 depending on your need.
 
 Simple Intelligent Indexing installation with Intelligent Indexing license file:
