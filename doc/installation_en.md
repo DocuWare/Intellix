@@ -128,7 +128,7 @@ If you want to remove the block completely, you can also use
 
 Intelligent Indexing runs in Docker containers. Therefore, a Docker environment
 needs to be installed. Also `docker-compose` must be installed. We provide a script
-which executes the neccessary steps. 
+which executes the necessary steps.
 In PowerShell as administrator,
 switch to the installation directory and run the following command:
 
@@ -391,19 +391,26 @@ currently running on the host computer:
 docker ps -a
 ```
 
-You should get one line each as output for the Docker containers __intellix_app__ and __intellix_solr__.
+You should get one line each as output for the Docker containers whose names start with __intellix__.
 In the `Status` column, you can see whether the Docker containers are running (`Up...`)
 or have been ended (`Exited...`). You can also see in this column whether the containers
 are accessible in principle. At startup, (`health: starting`) is displayed here.
 If the containers respond successfully to requests, (`healthy`) is displayed.
 
-After starting Intelligent Indexing, you can navigate to <http://localhost/intellix-v2/Html>
+You can check with Powershell if the service runs. The following request
+should be responded with status code 200:
+
+```powershell
+Invoke-WebRequest -UseBasicParsing http://localhost:8080/intellix-v2/
+```
+
+If this succeeds, you can navigate to <http://localhost:8080/intellix-v2/Html>
 on the host computer to call up the administration interface.
 
 > :warning: Internet Explorer is not supported.
 
 You can log in with the user name and password you specified via the parameters
-`IntellixAdminUser` and `IntellixAdminPasswird` in setup.
+`IntellixAdminUser` and `IntellixAdminPassword` in setup.
 
 Also test here whether you can access the host computer via a browser from the computer on which
 DocuWare is installed. From another computer, call up the URL
@@ -513,7 +520,7 @@ $InformationPreference = "Continue"
 ### IIS installation and ARR installation fails
 
 In case the IIS installation fails, or any other module installation fails, you should restart the
-machine. Pending Windows may stop the configuration of the IIS. A machine restart solves this problem
+machine. Pending Windows updates may stop the configuration of the IIS. A machine restart solves this problem
 in many cases.
 
 ## Appendix
