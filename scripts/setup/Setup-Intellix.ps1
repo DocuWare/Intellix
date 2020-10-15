@@ -159,6 +159,8 @@ else {
   $dbSetupPath = Join-Path -Path $dbSetupDir -ChildPath docker-compose-sql-in-container.template.yml
 }
 
+docker-compose -f $dbSetupPath pull
+docker pull docuwarepublic.azurecr.io/intellix/app
 
 docker-compose -f $dbSetupPath build
 if (!$?) {
@@ -178,6 +180,5 @@ if (!$?) {
   exit -1
 }
 
-Write-Output "Start Intelligent Indexing with 'Start-Intellix.ps1"
+Write-Output "Start Intelligent Indexing with Start-Intellix.ps1"
 Write-Output "You find the configuration file for DocuWare at '$(Join-Path $runPath 'intelligent-indexing-connection.xml')'"
-Write-Output "Browse Intelligent Indexing at http://$(hostname)/intellix-v2/"
