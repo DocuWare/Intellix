@@ -1,13 +1,24 @@
+param (
+    [string] $intellixAdminUser = 'intellix',
+    [string] $intellixAdminPassword = $(./Get-RandomPassword.ps1)
+)
 Set-Location $PSScriptRoot
+
+# The service is configured with random passwords
+$intellixDbUser = 'intellix'
+$intellixDbPassword = ./Get-RandomPassword.ps1
 
 ./setup/Setup-Intellix.ps1 `
     -LicenseFile 'c:\users\Administrator\Downloads\Peters Engineering_Enterprise.lic' `
-    -IntellixAdminUser intellix `
-    -IntellixAdminPassword fnmfhh34hsd7!kdj9eekdekwi!jdflj1Kdgfglj `
-    -IntellixDbUser intellix `
-    -IntellixDbPassword dfdfdf45de_34!sd+wexere435d435 `
+    -IntellixAdminUser $intellixAdminUser `
+    -IntellixAdminPassword $intellixAdminPassword `
+    -IntellixDbUser $intellixDbUser `
+    -IntellixDbPassword $intellixDbPassword `
     -SqlServerInstance "Chw-Win2019-Sql2019" `
     -SqlServerInstanceUser "sa" `
     -SqlServerInstancePassword "Admin001"
 
-./Start-Intellix
+if ($?) {
+    Write-Output "Intelligent Indexing Web UI user: $intellixAdminUser"
+    Write-Output "Intelligent Indexing Web UI password: $intellixAdminPassword"
+}

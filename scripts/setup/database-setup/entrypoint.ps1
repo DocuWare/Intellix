@@ -78,10 +78,26 @@ if ($env:intellixDbUser) {
 
 if ($env:intellixUserName) {
     Write-Output "Create or update the administrative Intelligent Indexing user..."
-    $vars = "userName='$($env:intellixUserName)'", "password='$($env:intellixUserPassword)'" 
-    $q = "Execute AddOrUpdateAdminUser `$(userName), `$(password)"
-    Invoke-Sqlcmd -ServerInstance $sqlServer -Username $sqlUser -Password $sqlPw -Database intellixv2 -Query $q -Variable $vars -Verbose
 
+    $alg = [System.Security.Cryptography.Rfc2898DeriveBytes]::new($env:intellixUserPassword, 32, 5000, "SHA512");
+    $salt = [System.Convert]::ToBase64String($alg.Salt);
+    
+    # Invoke-SqlCmd does not like '=' characters - they have to be escaped!
+    # We work around this by replacing '=' with a special string - and revert this in the SQL query
+    $salt = $salt.Replace("=", "*EQUALSIGN*")
+
+    $hash = $alg.GetBytes(32);
+    $seq = $hash | foreach-object { $_.ToString("X2") }
+    $byteArray = "0x" + [System.String]::Join("", $seq)    
+
+    $vars = "userName='$($env:intellixUserName)'", "hash=$byteArray", "salt='$salt'"
+    $q = "declare @x varchar(100) = REPLACE(`$(salt),'*EQUALSIGN*','='); Execute AddOrUpdateAdminWithPasswordHash `$(userName), `$(hash), @x , 1"
+    Invoke-Sqlcmd -ServerInstance $sqlServer -Username $sqlUser -Password $sqlPw -Database intellixv2 -Query $q -Variable $vars -Verbose
+    if (!$?) {
+        exit -1
+    }
+
+    # Create default modelspace
     $q = 'DECLARE @userName varchar(100) = $(userName) 
     DECLARE @msName varchar(100) = ''Default_'' + @userName; 
     IF NOT EXISTS (SELECT 1 FROM Modelspaces where Name=@msName) 
@@ -91,5 +107,10 @@ if ($env:intellixUserName) {
         select top(1) @uid=Id from Users where Name = @userName
         insert into Modelspaces(Name, CreatedBy) values (@msName, @uid)
     END'
+
+    $vars = "userName='$($env:intellixUserName)'"
     Invoke-Sqlcmd -ServerInstance $sqlServer -Username $sqlUser -Password $sqlPw -Database intellixv2 -Query $q -Variable $vars -Verbose
+    if (!$?) {
+        exit -1
+    }
 }
