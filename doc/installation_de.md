@@ -1,23 +1,22 @@
 # Installationsanleitung Intelligent Indexing V2
 
-__Beta Test__
-
-> :warning: Diese Version von Intelligent Indexing ist nur für den geschlossenen Beta Test gedacht und darf nicht produktiv eingesetzt werden.
-
 ## Einleitung
 
-Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing sowie aller zusätzlich notwendigen Komponenten. Anleitungen zur Konfiguration von Intelligent Indexing und zur Arbeit mit Intelligent Indexing existieren als gesonderte Dokumente im [DocuWare Knowledge Center](https://help.docuware.com).
+Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing
+einschlißlich notwendigen Komponenten. Anleitungen zur Konfiguration vonIntelligent Indexing und
+zur Arbeit mit Intelligent Indexing sind
+als gesonderte Dokumente im [DocuWare Knowledge Center](https://help.docuware.com) zu finden.
 
 ### Systemvoraussetzungen
 
 Folgende Voraussetzungen müssen für die Installation erfüllt sein:
 
-- Neu aufgesetztes Windows Server 2019 (Build 1809, Standard oder Datacenter Edition)
-- 8 Prozessorkerne
-- 16 GB RAM
-- Zugriff auf SQL Server 2019
+- Windows Server 2019 (Standard oder Datacenter Edition)
+- 2 Prozessorkerne
+- 4 GB RAM
+- Optional: Installierter SQL Server 2019
 
-Es wird empfohlen, Intelligent Indexing auf einem eigenen Server zu installieren, um eine bestmögliche Performance zu erreichen. Intelligent Indexing ist nutzbar in Kombination mit DocuWare ab Version 6.1. Falls Sie für Ihr DocuWare System oder für eine bestehende Intelligent Indexing Installation einen SQL Server 2019 verwenden, können Sie diesen auch für Intelligent Indexing V2 verwenden. Ansonsten müssen Sie einen eigenen SQL Server aufsetzen.
+Es wird empfohlen, Intelligent Indexing auf einem eigenen Server zu installieren, um bestmögliche Performance zu erreichen. Intelligent Indexing ist nutzbar in Kombination mit DocuWare ab Version 6.1. Falls Sie für Ihr DocuWare System oder für eine bestehende Intelligent Indexing Installation einen SQL Server 2019 verwenden, können Sie diesen auch für Intelligent Indexing V2 verwenden. Ansonsten müssen Sie einen eigenen SQL Server aufsetzen.
 
 Für die im Folgenden beschriebene Installation sind Administratorrechte sowie eine Internetverbindung nötig. Alle Befehle in dieser Installationsanleitung müssen in der Powershell eingegeben werden. Die Powershell ISE wird nicht unterstützt.
 

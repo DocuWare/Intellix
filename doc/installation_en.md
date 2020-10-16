@@ -1,20 +1,5 @@
 # Installation Instructions for Intelligent Indexing On Premises Version 2
 
-__Beta Test__
-
-> :heavy_exclamation_mark: This version of Intelligent Indexing is intended for
-> closed beta testing only and must not be used in a production environment.
-
-> :bulb: If you have Intelligent Indexing Version 2 already installed from an earlier beta test,
-> please remove running or stopped Intelligent Indexing containers.
-> You should then update or recreate the database by running the [Setup](#setup).
-> We moved the Intelligent Indexing data files to `C:\ProgramData\IntellixV2`.
-
-> :bulb: We simplified the SQL Server installation.
-> If you have SQL Express already installed, you can consider replacing the installed SQL Server
-> with a containerized SQL Server. You can also continue with the installed SQL Server. Find the
-> details at [Installation of the Database Server](#installation-of-the-database-server).
-
 ## Introduction
 
 This document describes the installation of DocuWare Intelligent Indexing and all additional
@@ -32,10 +17,9 @@ The following minimum requirements must be met for installation:
 - Optional: Access to SQL Server 2019
 
 It is recommended that you install Intelligent Indexing on a separate server to achieve
-the best possible performance. In order to keep the footprint of the installation small, you should
-consider using Windows Server Core (which is an installation without a graphical UI).
-If you install Intelligent Indexing on a machine which is already
-hosting other services, you should ensure that no other application is using port 8080.
+the best possible performance. In order to keep the footprint of the installation small, 
+you should take Windows Server Core (which is an installation without a graphical UI).
+If you install Intelligent Indexing on a machine together with other services, you should ensure that no other application is using port 8080.
 
 Intelligent Indexing can be used in combination with all supported DocuWare Versions [https://support.docuware.com/en-US/support/docuware-support-lifecycle-policy/](https://support.docuware.com/en-US/support/docuware-support-lifecycle-policy/).
 If you use SQL Server 2019 for your DocuWare system or for an existing
@@ -537,6 +521,18 @@ $InformationPreference = "Continue"
 In case the IIS installation fails, or any other module installation fails, you should restart the
 machine. Pending Windows updates may stop the configuration of the IIS. A machine restart solves this problem
 in many cases.
+
+### Hints for Beta test users
+
+- If you have Intelligent Indexing v2 already installed from an earlier beta test,
+  please remove running or stopped Intelligent Indexing containers.
+  You should then update or recreate the database by running the [Setup](#setup).
+  We moved the Intelligent Indexing data files to `C:\ProgramData\IntellixV2`.
+
+- We simplified the SQL Server installation.
+  If you have SQL Express already installed, you can consider replacing the installed SQL Server
+  with a containerized SQL Server. You can also continue with the installed SQL Server. Find the
+  details at [Installation of the Database Server](#installation-of-the-database-server).
 
 ## Appendix
 
