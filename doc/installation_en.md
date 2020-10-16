@@ -17,18 +17,19 @@ The following minimum requirements must be met for installation:
 - Optional: Access to SQL Server 2019
 
 It is recommended that you install Intelligent Indexing on a separate server to achieve
-the best possible performance. In order to keep the footprint of the installation small, 
+the best possible performance. In order to keep the footprint of the installation small,
 you should take Windows Server Core (which is an installation without a graphical UI).
-If you install Intelligent Indexing on a machine together with other services, you should ensure that no other application is using port 8080.
+If you install Intelligent Indexing on a machine together with other services,
+you should ensure that no other application is using port 8080.
 
-Intelligent Indexing can be used in combination with all supported DocuWare Versions [https://support.docuware.com/en-US/support/docuware-support-lifecycle-policy/](https://support.docuware.com/en-US/support/docuware-support-lifecycle-policy/).
+Intelligent Indexing can be used in combination with all
+[supported DocuWare Versions](https://support.docuware.com/en-US/support/docuware-support-lifecycle-policy/).
 If you use SQL Server 2019 for your DocuWare system or for an existing
 Intelligent Indexing installation, you can also use it for Intelligent Indexing V2.
 Otherwise, you must set up a separate SQL server.
 
-For the installation described below, administrator rights and an Internet
-connection are required.
-All commands in these installation instructions must be entered in the PowerShell. You can use
+The installation requires administrator rights and internet connection.
+All commands in following instructions must be entered in the PowerShell. You can use
 PowerShell 5 or PowerShell 7.
 
 > :bulb: If you want to run the scripts in the PowerShell ISE, please ensure that
@@ -37,9 +38,10 @@ PowerShell 5 or PowerShell 7.
 
 ### Overview of the Required Files
 
-To download the installation files, go to
-[https://github.com/DocuWare/Intellix](https://github.com/DocuWare/Intellix),
-click on the green Code button, then on Download ZIP, and extract the file.
+The installation files can be downloaded from
+[our GitHub repository](https://github.com/DocuWare/Intellix/archive/master.zip).
+After the ZIP file is downloaded, extract it.
+
 You can also download and extract the file with the following PowerShell script.
 First switch to the target directory for the download with PowerShell:
 
