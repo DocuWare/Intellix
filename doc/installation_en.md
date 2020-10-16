@@ -37,7 +37,7 @@ consider using Windows Server Core (which is an installation without a graphical
 If you install Intelligent Indexing on a machine which is already
 hosting other services, you should ensure that no other application is using port 8080.
 
-Intelligent Indexing can be used in combination with DocuWare Version 6.1 or higher.
+Intelligent Indexing can be used in combination with all supported DocuWare versions.
 If you use SQL Server 2019 for your DocuWare system or for an existing
 Intelligent Indexing installation, you can also use it for Intelligent Indexing V2.
 Otherwise, you must set up a separate SQL server.
