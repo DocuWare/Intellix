@@ -1,30 +1,45 @@
 # Installationsanleitung Intelligent Indexing V2
 
-__Beta Test__
-
-> :warning: Diese Version von Intelligent Indexing ist nur für den geschlossenen Beta Test gedacht und darf nicht produktiv eingesetzt werden.
-
 ## Einleitung
 
-Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing sowie aller zusätzlich notwendigen Komponenten. Anleitungen zur Konfiguration von Intelligent Indexing und zur Arbeit mit Intelligent Indexing existieren als gesonderte Dokumente im [DocuWare Knowledge Center](https://help.docuware.com).
+Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing
+einschließlich notwendigen Komponenten. Anleitungen zur Konfiguration vonIntelligent Indexing und
+zur Arbeit mit Intelligent Indexing sind
+als gesonderte Dokumente im [DocuWare Knowledge Center](https://help.docuware.com) zu finden.
 
 ### Systemvoraussetzungen
 
 Folgende Voraussetzungen müssen für die Installation erfüllt sein:
 
-- Neu aufgesetztes Windows Server 2019 (Build 1809, Standard oder Datacenter Edition)
-- 8 Prozessorkerne
-- 16 GB RAM
-- Zugriff auf SQL Server 2019
+- Windows Server 2019 (Standard oder Datacenter Edition)
+- 2 Prozessorkerne
+- 4 GB RAM
+- Optional: Installierter SQL Server 2019
 
-Es wird empfohlen, Intelligent Indexing auf einem eigenen Server zu installieren, um eine bestmögliche Performance zu erreichen. Intelligent Indexing ist nutzbar in Kombination mit DocuWare ab Version 6.1. Falls Sie für Ihr DocuWare System oder für eine bestehende Intelligent Indexing Installation einen SQL Server 2019 verwenden, können Sie diesen auch für Intelligent Indexing V2 verwenden. Ansonsten müssen Sie einen eigenen SQL Server aufsetzen.
+Es wird empfohlen, Intelligent Indexing auf einem eigenen Server zu installieren,
+um bestmögliche Performance zu erreichen.
+Um den Platzbedarf der Installation gering zu halten,
+sollte Intelligent Indexing auf Windows Server Core (Installation ohne grafische Benutzeroberfläche)
+installiert werden.
+Wenn Sie Intelligent Indexing zusammen mit anderen Diensten auf einem Computer installieren,
+Sie sollten sicherstellen, dass keine andere Anwendung Port 8080 verwendet.
 
-Für die im Folgenden beschriebene Installation sind Administratorrechte sowie eine Internetverbindung nötig. Alle Befehle in dieser Installationsanleitung müssen in der Powershell eingegeben werden. Die Powershell ISE wird nicht unterstützt.
+Die Installation erfordert Administratorrechte und eine Internetverbindung.
+Alle Befehle in den folgenden Anweisungen müssen in PowerShell eingegeben werden.
+Sie können PowerShell 5 oder PowerShell 7 verwenden.
 
+> :bulb: Wenn Sie die Skripte in der PowerShell ISE ausführen möchten,
+> stellen wechseln Sie in der ISE zum Verzeichnis __scripts__
+> innerhalb des extrahierten Archivs.
 
 ### Überblick über die benötigten Dateien
 
-Zum Download der Installationsdateien klicken Sie unter [https://github.com/DocuWare/Intellix](https://github.com/DocuWare/Intellix) auf den grünen Button `Code` und dann auf `Download ZIP` und extrahieren Sie die Datei. Sie können die Datei auch mit folgendem Powershell-Skript herunterladen und extrahieren. Wechseln Sie zuvor mit der Powershell in das Zielverzeichnis für den Download:
+Das Archiv mit den Installationsdateien kann von
+[unserem GitHub-Repository](https://github.com/DocuWare/Intellix/archive/master.zip) heruntergeladen werden.
+Nach dem Download extrahieren Sie das Archiv.
+
+Sie können die Datei auch mit folgendem Powershell-Skript herunterladen und extrahieren.
+Wechseln Sie zuvor mit der Powershell in das Zielverzeichnis für den Download:
 
 ```powershell
 $tmp = New-TemporaryFile | Rename-Item -NewName { $_ -replace 'tmp$', 'zip' } -PassThru
@@ -33,22 +48,38 @@ Expand-Archive $tmp -DestinationPath master
 $tmp | Remove-Item
 ```
 
-Zur Installation und Betrieb von Intelligent Indexing wird  der Inhalt des Verzeichnisses `scripts` benötigt. Kopieren Sie dieses Verzeichnis an eine Stelle, die Sie dauerhaft verwenden wollen. Dieses Verzeichnis wird im Folgenden als Installationsverzeichnis bezeichnet.
+Zur Installation und Betrieb von Intelligent Indexing wird der
+Inhalt des Verzeichnisses `scripts` benötigt. Kopieren Sie dieses
+Verzeichnis an eine Stelle, die Sie dauerhaft verwenden wollen.
 
-Sie können das komplette Verzeichnis aber auch später an eine andere Stelle verschieben.
+> :bulb: Wenn Sie das Archiv mit einem Browser herunterladen, sollten Sie die heruntergeladene
+> Datei vor der Extraction entsperren. Andernfalls werden Sie während der Installation wiederholt
+> gefragt, ob Sie den Installationsskripten vertrauen. können Rückrufe auftreten, wenn das Setup ausgeführt wird.
+> Um die Archivdatei zu entsperren, klicken Sie mit der rechten Maustaste auf das Archiv
+> und deaktivieren Sie die Blockierung im Fenster mit den Dateieigenschaften.
+>
+> Wenn das Archiv schon ausgepackt wurde, können Sie in das Extraktionsverzeichnis wechseln
+> und die Sperren mit PowerShell aufheben:
+>  ```powershell
+>  Get-ChildItem -Recurse | Unblock-File
+>  ```
 
-Im [Anhang](#überblick-über-die-intelligent-indexing-setup-dateien) finden Sie eine Übersicht über die einzelnen Dateien. Zusätzlich benötigen Sie Ihre DocuWare Lizenzdatei, welche Sie im [DocuWare Partner Portal](https://login.docuware.com) herunterladen können.
+[Am Ende dieses Dokumentes](#überblick-über-die-intelligent-indexing-setup-dateien)
+finden Sie eine Übersicht über die einzelnen Dateien.
+Zusätzlich benötigen Sie Ihre DocuWare Lizenzdatei,
+welche Sie im [DocuWare Partner Portal](http://go.docuware.com/partnerportal-login) herunterladen können.
 
-### Docker Containerisierung
+### Docker Container
 
-Intelligent Indexing läuft virtualisiert in zwei Docker Containern. Diese laufen unabhängig von anderen Anwendungen, die auf Ihrem Host-Rechner installiert sind, und werden vorkonfiguriert ausgeliefert. Der Installationsaufwand für Intelligent Indexing V2 ist dadurch sehr niedrig.
+Intelligent Indexing läuft in Docker Containern.
+Ein Setup-Skript konfiguriert die Container.
+Damit ist der Installationsaufwand für Intelligent Indexing Version 2 sehr gering.
 
 Die Docker Container sind:
 
-- __intellix_app__: Der Code von Intelligent Indexing
-- __intellix_solr__: Die SolR Volltextsuchmaschine
-
-Zusätzlich wird eine SQL Server Datenbank benötigt, die außerhalb der Docker Container läuft.
+- __intellix-app__: Intelligent Indexing
+- __intellix-solr__: Die SolR Volltextsuchmaschine
+- __intellix-sql__: SQL Express, falls Sie keinen eigenen SQL Server benutzen
 
 ### Überblick über die Anleitung
 
@@ -57,10 +88,12 @@ Die Installation gliedert sich in folgende Schritte:
 - [Skripte ausführen erlauben](#skripte-ausführen-erlauben)
 - [Installation der Docker Umgebung](#installation-der-docker-umgebung)
 - [Installation des Datenbankservers](#installation-des-datenbankservers)
+- [Setup](#setup)
 - [Installation des Webservers IIS](#installation-des-webservers-iis)
 - [Verwaltung von Intelligent Indexing](#verwaltung-von-intelligent-indexing)
 - [Intelligent Indexing lizenzieren](#intelligent-indexing-lizenzieren)
 - [Verbindung zu DocuWare](#verbindung-zu-docuWare)
+- [Troubleshooting](#troubleshooting)
 
 ## Skripte ausführen erlauben
 
@@ -72,19 +105,27 @@ Um die aktuelle Einstellung zu prüfen, führen Sie als Administrator in der Pow
 Get-ExecutionPolicy
 ```
 
-Wird als Ergebnis `Unrestricted` angezeigt, müssen Sie nichts ändern. Wird ein anderer Wert als `Unrestricted` angezeigt, müssen Sie über folgenden Befehl das Ausführen von unsignierten Skripten erlauben:
+Wird als Ergebnis `Unrestricted` angezeigt, müssen Sie nichts ändern.
+Wird ein anderer Wert als `Unrestricted` angezeigt, müssen Sie über
+folgenden Befehl das Ausführen von unsignierten Skripten erlauben:
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 ```
 
-Nach Ausführen des Kommandos können __in der aktuellen Powershell-Sitzung__ alle Kommandos ausgeführt werden. Dieses Kommando müssen Sie in jedem Powershell-Fenster erneut ausführen. 
+Nach Ausführen des Kommandos können __in der aktuellen Powershell-Sitzung__
+alle Kommandos ausgeführt werden.
+Dieses Kommando müssen Sie in jedem Powershell-Fenster erneut ausführen.
 
-Falls Sie die Sperre komplett aufheben wollen, können Sie für den Scope auch `CurrentUser` oder `LocalMachine` verwenden.
+Falls Sie die Sperre komplett aufheben wollen,
+können Sie für den Scope auch `CurrentUser` oder `LocalMachine` verwenden.
 
 ## Installation der Docker Umgebung
 
-Intelligent Indexing läuft in Docker Containern. Dazu muss zuerst eine Docker Umgebung installiert werden. Wechseln Sie in einer Powershell als Administrator in das Installationsverzeichnis und führen folgenden Befehl aus:
+Intelligent Indexing läuft in Docker Containern.
+Dazu muss zuerst eine Docker Umgebung installiert werden.
+Wechseln Sie in einer Powershell als Administrator in das
+Installationsverzeichnis und führen folgenden Befehl aus:
 
 ```powershell
 # Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
@@ -93,22 +134,19 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 .\Install-Docker.ps1
 ```
 
-Die Warnung, dass die Eigenschaften `version` und `Properties` nicht vorhanden sind, können Sie ignorieren.
-
 Starten Sie anschließend den Host-Rechner neu:
 
 ```powershell
 Restart-Computer
 ```
 
-Warten Sie nach dem Neustart ca. eine Minute und führen Sie anschließend in der Powershell als Administrator im Installationsverzeichnis folgenden Befehl aus, um die Docker Installation zu testen:
+Nach dem Neustart können Sie testen, ob die Docker-Umgebung und docker-compose korrekt installiert sind:
 
 ```powershell
 docker run --rm --name helloworld hello-world:nanoserver
-docker-compose --version
 ```
 
-Es wird dazu ein Docker Container mit ca. 100 MB heruntergeladen und gestartet. Falls Docker korrekt installiert wurde, ist dann unter anderem folgende Ausgabe zu sehen:
+Nach dem Herunterladen und Starten des Docker-Images sollte die folgende Ausgabe angezeigt werden:
 
 ```text
 Hello from Docker!
@@ -116,65 +154,181 @@ Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ```
 
-Prüfen Sie auch, ob Sie in der letzten Zeile der Ausgabe die Zeile
+Nach
+
+```cmd
+docker-compose --version
+```
+
+sollten Sie folgende Zeile sehen:
 
 ```text
 docker-compose version...
 ```
 
-sehen können. Dadurch ist sichergestellt, dass auch Docker-Compose richtig installiert wurde, das für das Zusammenspiel der Docker Container benötigt wird.
-
 ## Installation des Datenbankservers
 
-Intelligent Indexing funktioniert zusammen mit einer SQL Server 2019 Datenbank. Auf älteren Versionen des SQL Server kann die folgende Installation abweichen oder scheitern. Falls Sie für Ihr DocuWare System einen SQL Server 2019 verwenden, können Sie diesen auch für Intelligent Indexing verwenden. Ansonsten müssen Sie einen separaten SQL Server aufsetzen.
+Für die Installation der Datenbank haben Sie folgende Möglichkeiten:
 
-Falls Sie einen separaten Datenbankserver für Intelligent Indexing aufsetzen, können Sie den kostenlosen SQL Server 2019 Express verwenden. Dieser ist allerdings auf 10 GB Speicher beschränkt, was in etwa für 1.000.000 einfache Dokumente Platz bietet. Sie können ihn unter folgendem Link herunterladen: [https://www.microsoft.com/de-de/sql-server/sql-server-downloads](https://www.microsoft.com/de-de/sql-server/sql-server-downloads).
+### Option 1: Verwenden Sie SQL Server Express als Container-Image
 
-Der direkte Download und die Installation können mit folgenden Kommandos durchgeführt werden:
+Dies wird für die meisten Installationen empfohlen.
+In diesem Szenario ist die Installation von Intelligent Indexing sehr einfach,
+da keine weitere Konfiguration des Datenbankservers erforderlich ist.
+Sie müssen sich nicht um die Einrichtung und Konfiguration der Datenbank kümmern -
+diese wird vollständig vom Setup-Skript verwaltet.
 
-```powershell
-Invoke-WebRequest https://go.microsoft.com/fwlink/?linkid=866658 -OutFile SQL2019-SSEI-Expr.exe
+SQL Express begrenzt jedoch die Größe der gespeicherten Daten.
+Wenn Sie ein sehr hohes Datenvolumen erwarten (d.h. mehrere tausend Dokumente pro Tag),
+sollten Sie sich für die andere Option entscheiden.
+Wenn die Größenbeschränkung später zu einem Problem wird,
+können Sie jederzeit Ihren eigenen Datenbankserver migrieren.
 
-.\SQL2019-SSEI-Expr.exe
+### Option 2: Verwenden Sie Ihren eigenen Datenbankserver
+
+Sie sollten diese Option wählen, wenn Sie ein hohes Dokumentenvolumen erwarten
+oder die vollständige Kontrolle über die Intelligent Indexing-Datenbank
+haben möchten. Intelligent Indexing benötigt SQL Server 2019.
+Bei älteren Versionen von SQL Server schlägt die Einrichtung fehl.
+Wenn Sie einen SQL Server 2019 für Ihr DocuWare-System verwenden,
+können Sie ihn auch für die Intelligent Indexing verwenden.
+
+Wenn Sie Ihren eigenen SQL Server einrichten möchten, können Sie
+[SQL Server 2019 Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) verwenden.
+Laden Sie es herunter und folgen Sie den Anweisungen zum Einrichten.
+
+Es ist wichtig, dass Ihr SQL Server folgendermaßen konfiguriert ist:
+
+- TCP-Verbindungen an Port 1433.
+- Die SQL Server-Authentifizierung muss aktiviert sein.
+  Die Container unterstützen keine integrierte Authentifizierung.
+- Für das Setup-Skript sollte ein SQL Server-Konto verfügbar sein.
+  Dieses Konto muss über die Berechtigung zum Erstellen einer neuen Datenbank verfügen.
+- In der Firewall müssen die Ports so konfiguriert sein, dass Docker-Container
+  eine Verbindung zur Datenbank herstellen können.
+
+Beachten Sie, dass für die Intelligent Indexing
+_self-contained databases_ erforderlich sind. Daher wird das
+folgende SQL vom Setup-Skript ausgeführt:
+
+```sql
+sp_configure 'contained database authentication', 1
+GO
+RECONFIGURE
+GO
 ```
 
-Zu Beginn der Installation können Sie die Variante Basic wählen. Falls Sie während der Installation des Datenbankservers nach einer Collation gefragt werden, empfehlen wir die Collation `SQL_Latin1_General_CP1_CI_AS`. Wählen Sie am Ende der Installation aus, auch das SQL Server Management Studio (SSMS) zu installieren. Danach ist ein Neustart des Rechners nötig.
+Wenn dies nicht gewünscht ist, sollten Sie eine separate SQL Server-Instanz für die Intelligent Indexing
+installieren.
 
-Falls Sie einen neu aufgesetzten SQL Server verwenden, können Sie die Datenbank über ein Powershell Skript konfigurieren, das sie lokal auf dem Rechner des Datenbankservers ausführen. Gegebenenfalls müssen Sie dazu die Intelligent Indexing Setup-Dateien auf den Rechner mit dem Datenbankserver kopieren.
+## Setup
 
-Das Skript wird den Datenbankserver neustarten. Falls Sie das nicht möchten oder die Einrichtung an Ihre Situation anpassen müssen, finden Sie im [Anhang](#manuelle-einrichtung-des-datenbankservers) eine Übersicht, welche Schritte ausgeführt werden und wie diese manuell im SQL Server Management Studio durchgeführt werden können.
+Das Setup konfiguriert die Datenbank und die Containerinfrastruktur.
+Wenn das Setup ausgeführt wird, werden einige Container-Images
+heruntergeladen und der Container, der das Datenbank-Setup enthält,
+wird erstellt und ausgeführt.
 
-Führen Sie auf dem Rechner mit dem Datenbankserver als Administrator in einer Powershell folgendes Skript im Installationsverzeichnis aus. Falls Sie gerade den SQL Server Express installiert haben, führen Sie folgende Kommandos __in einem neuen Powershell-Fenster__ aus:
+Das Setup erstellt eine Verzeichnisstruktur unter `C:\ProgramData\IntellixV2`,
+wo die Dateien für Intelligent Indexing abgelegt werden.
+Bitte berücksichtigen Sie dieses Verzeichnis in Ihren Backups.
+Verwenden Sie Junctions, um dieses Verzeichnis an einen externen Speicher anzuhängen.
 
-```powershell
-# Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+Die Installation wird durch Ausführen von  `Setup-Intellix.ps1` im Verzeichnus `setup` gestartet.
+Sie können die folgenden Parameter angeben:
 
-.\Init-Database.ps1
-```
+- `IntellixDbUser` und `IntellixDbPassword`: Dies sind die Zugangsdaten, die
+  Intelligent Indexing verwendet, um auf die Datenbank zuzugreifen.
+  Sie sollten starke Passwörter verwenden, welche der
+  [SQL Server password policy](https://docs.microsoft.com/en-us/sql/relational-databases/security/password-policy?view=sql-server-ver15) entspricht.
+  Diese Werte brauchen nur bei der Ersteinrichtung angegeben werden.
+  
+  Dieses SQL-Konto mit den angegebenen Anmeldeinformationen wird in der Intellixv2-Datenbank erstellt.
+  Auf Ihrem SQL Server werden keine Anmeldungen erstellt.
+  
+  :bulb: Diese Werte sollten nur bei der Ersteinrichtung angegeben werden.
+  Wenn Sie das Setup ein zweites Mal ausführen, werden die Werte nicht mehr benötigt.
 
-Dabei müssen Sie folgende Parameter angeben:
+- `IntellixAdminUser` and `IntellixAdminPassword`: Dies sind die Anmeldeinformationen,
+  mit denen DocuWare auf die Intelligent Indexing zugreift. Das Kennwort sollte sicher sein,
+  darf jedoch keine der folgenden 5 Sonderzeichen enthalten: `& < > " '`.
+  
+  :bulb: Diese Werte sollten nur bei der Ersteinrichtung angegeben werden.
+  Wenn Sie das Setup ein zweites Mal ausführen, werden die Werte nicht mehr benötigt.
 
-- `dbIntellixUser` und `dbIntellixUserPassword`: Das sind die Zugangsdaten für die Datenbank, mit denen Intelligent Indexing auf die Datenbank zugreifen wird. Diese Werte müssen Sie im Abschnitt [Konfiguration von Intelligent Indexing](#konfiguration-von-intelligent-indexing) in die Konfigurationsdatei eintragen. Der SQL Server setzt ein starkes Passwort voraus. Details dazu finden Sie unter <https://docs.microsoft.com/de-de/sql/relational-databases/security/password-policy?view=sql-server-ver15>
-- `serverInstance`: Dieser Wert legt den Namen der Datenbankserver Instanz, z.B. `SQLEXPRESS`, fest.
-- `intellixAdminUser` und `intellixAdminUserPassword`: Das sind die Zugangsdaten, mit denen DocuWare auf Intelligent Indexing zugreifen wird. Diese Werte müssen Sie im Abschnitt [Verbindung zu DocuWare](#verbindung-zu-docuWare) in die Intelligent Indexing Verbindungsdatei eintragen. Das Passwort sollte sicher sein, aber keines der folgenden 5 Sonderzeichen enthalten, da diese in der Verbindungsdatei zu Problemen führen können: `& < > " '`
+- `LicenseFile`: Der Pfad zur Lizenzdatei. Wenn die Lizenzdatei im Setup nicht angegeben ist,
+  kann sie nach dem Setup in der Benutzeroberfläche von Intelligent Indexing hochgeladen werden.
 
-Die Parameter können dem Skript auch mitgegeben werden:
+  :bulb: Um den Dienst direkt nach der Installation zu verwenden,
+  wird empfohlen, die Lizenzdatei beim Ausführen des Setups anzugeben.  
+  Wenn Sie keine Lizenzdatei haben, besuchen Sie die
+  [DocuWare Partner Portal](http://go.docuware.com/partnerportal-login).
 
-```powershell
-# Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+- `SqlServerInstance`, `SqlServerInstanceUser` and `SqlServerInstancePassword`:
+  Diese Werte geben die Instanz und die Anmeldeinformationen für den Zugriff auf Ihren eigenen SQL Server an
+  
+  :warning: Wenn Sie den containerisierten SQL Server verwenden, dürfen Sie diese Parameter nicht angeben.
 
-.\Init-Database.ps1 -serverInstance SQLEXPRESS -dbIntellixUser intellix -dbIntellixUserPassword MyVerySeKRe!tPasSw0rD -intellixAdminUser intellixAdmin -intellixAdminUserPassword an00tHerVerySeKRe!tPasSw0rD
-```
+Sie können die Datenbanken einer alte Version von Intelligent Indexing und Intelligent Indexing Version 2
+auf demselben Datenbankserver ablegen. Die alte Version verwendet die
+`intellix`-Datenbank, die aktuelle Version verwendet die `intellixv2`-Datenbank.
 
-Falls Sie eine alte Version von Intelligent Indexing On-Premise auf demselben Datenbankserver betreiben, können Sie Intelligent Indexing V2 parallel dazu installieren. Die alte Version verwendet die Datenbank `intellix`, die aktuelle Version die Datenbank `intellixv2`.
+### Examples
 
-Loggen Sie sich als Test über das SQL Server Management Studio auf dem Datenbankserver ein. Setzen Sie den `Server name` aus dem Namen des Rechners des Datenbankservers, der Server Instanz und dem Port `1433`, also z.B. `intellix\SQLEXPRESS,1433`, zusammen. Wählen Sie als `Authentication` den Wert `SQL Server Authentication`. Verwenden Sie als `Login` und `Password` die von Ihnen oben gewählten Werte für die Parameter `dbIntellixUser` und `dbIntellixUserPassword`. Auf dem Datenbankserver muss unter dem Eintrag `Databases` die Datenbank `intellixv2` vorhanden sein.
+Im Installationsverzeichnis gibt es die beiden Skripte `Run-Setup-Example.ps1` und
+`Run-Setup-With-Own-SqlServer-Example.ps1`. Sie können die Skripte ändern und verwenden
+um das Setup auszuführen und den Dienst zu starten, wenn das Setup abgeschlossen ist.
+
+Um sichere Kennwörter zu erhalten, verwenden diese Skripte einen
+Kennwortgenerator, um Kennwörter für die Web-Benutzeroberfläche
+und den Datenbankbenutzer zu generieren. Wenn Sie keine zufälligen
+Passwörter generieren möchten, ändern Sie einfach die Beispiele je nach Bedarf.
+
+- Einfache Installation von Intelligent Indexing mit Lizenzdatei:
+
+  ```powershell
+  # Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
+  Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+
+  $intellixAdminPassword = ./Get-RandomPassword.ps1
+  $intellixDbPassword = ./Get-RandomPassword.ps1
+
+  ./setup/Setup-Intellix.ps1 `
+      -IntellixAdminUser intellix `
+      -IntellixAdminPassword $intellixAdminPassword `
+      -IntellixDbUser intellix `
+      -IntellixDbPassword $intellixDbPassword `
+      -LicenseFile 'c:\users\Administrator\Downloads\Peters Engineering_Enterprise.lic'
+
+  Write-Output "Intelligent Indexing Web UI user: intellix"
+  Write-Output "Intelligent Indexing Web UI password: $intellixAdminPassword"
+  ```
+
+- Installation von Intelligent Indexing mit eigenem SQL Server,aber ohne Lizenzdatei:
+
+  ```powershell
+  # Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
+  Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+
+  $intellixAdminPassword = ./Get-RandomPassword.ps1
+  $intellixDbPassword = ./Get-RandomPassword.ps1
+
+  ./setup/Setup-Intellix.ps1 `
+      -IntellixAdminUser intellix `
+      -IntellixAdminPassword $intellixAdminPassword `
+      -IntellixDbUser intellix `
+      -IntellixDbPassword $intellixDbPassword `
+      -SqlServerInstance my-sql-2019-box `
+      -SqlServerInstanceUser "sa" `
+      -SqlServerInstancePassword "Admin001"
+
+  Write-Output "Intelligent Indexing Web UI user: intellix"
+  Write-Output "Intelligent Indexing Web UI password: $intellixAdminPassword"
+  ```
 
 ## Installation des Webservers IIS
 
-Zur Installation führen Sie das folgende Skript in einer Powershell als Administrator im Installationsverzeichnis aus:
+Zur Installation führen Sie das folgende Skript in einer
+Powershell als Administrator im Installationsverzeichnis aus:
 
 ```powershell
 # Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
@@ -185,31 +339,37 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
 Das Skript installiert den Webserver IIS mit den Komponenten `UrlRewrite` und `ARR`.
 
-Falls Sie eine Verbindung über `https` verwenden wollen, müssen Sie in der Oberfläche des IIS unter `Sites` -> `Default Web Site` rechts auf `Bindings...` klicken und dort unter dem `https` Binding ein gültiges Zertifikat hinterlegen und das Zertifikat in den entsprechenden Zertifikatsspeichern ablegen. In der Verbindungsdatei (siehe [Verbindung zu DocuWare](#verbindung-zu-docuWare)) können Sie dann `https` statt `http` eintragen.
+Falls Sie eine Verbindung über `https` verwenden wollen,
+müssen Sie in der Oberfläche des IIS unter `Sites` -> `Default Web Site`
+rechts auf `Bindings...` klicken und dort unter dem `https` Binding
+ein gültiges Zertifikat hinterlegen und das Zertifikat in den entsprechenden
+Zertifikatsspeichern ablegen. In der Verbindungsdatei (siehe
+ [Verbindung zu DocuWare](#verbindung-zu-docuWare)) können
+ Sie dann `https` statt `http` eintragen.
 
 ## Verwaltung von Intelligent Indexing
 
 ### Konfiguration von Intelligent Indexing
 
-Im Installationsverzeichnis finden Sie eine Datei `configuration.env` zur Konfiguration von Intelligent Indexing. Passen Sie folgende Werte an Ihre Installation an und speichern Sie die Datei anschließend wieder ab:
-
-- `ConnectionStrings:IntellixDatabaseEntities`: Der Connection String für die Datenbankverbindung. Ändern Sie hier die Werte für `Server`, `user id` und `password` entsprechend Ihres Datenbankservers ab. `user id` und `password` entsprechen den Parametern `dbIntellixUser` und `dbIntellixUserPassword`, die sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Konfiguration der Datenbank übergeben haben. `Server` ist der Name des Datenbankservers. Falls der Datenbankserver auf dem Host-Rechner installiert ist, müssen Sie als Namen für den Rechner wie voreingestellt `$$internalgw$$` verwenden. Falls Sie keinen SQL Server Express oder nicht den Port `1433` verwenden, müssen Sie die Einträge entsprechend ändern. Das Skript zur Einrichtung der Datenbank aus dem Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) verwendet den Port `1433`.
-- Die nächsten Einträge legen verschiedene Verzeichnisse auf dem Host-Rechner fest. Unter `E_FileStoragePath` werden Dokumentinformationen gespeichert. Unter `E_SolRDataPath` werden die Daten der SolR Volltextsuchmaschine gespeichert. Der Inhalt beider Verzeichnisse wächst pro Dokument und kann mehrere GB betragen. Sie können diese Verzeichnisse auch später noch ändern, während Intelligent Indexing gestoppt ist. Dazu müssen Sie auch den Inhalt der Verzeichnisse an die neue Stelle kopieren. Alle diese Verzeichnise sind unabhängig vom Installationsverzeichnis, in dem die Intelligent Indexing Setup-Dateien abgelegt sind.
-
-Änderungen an diesen Werten greifen erst nach einem Neustart von Intelligent Indexing.
-
-### Installation von Intelligent Indexing
-
-Zur Installation führen Sie das folgende Skript in einer Powershell als Administrator im Installationsverzeichnis aus:
+Das Setup generiert Dateien, die von den Containern verwendet werden,
+um eine Verbindung zur Datenbank herzustellen
+und die Dateien und Indexdaten für Apache Solr zu speichern.
+Die Daten werden unter `C:\ProgramData\IntellixV2` gespeichert.
+Wenn Sie die Daten an einem anderen Speicherort speichern möchten,
+empfehlen wir, den Ordner an einen Speicherort Ihrer Wahl zu verschieben
+und Junctions oder Softlinks mit dem Befehl
+[mklink](https://docs.microsoft.com/de-de/windows-server/administration/windows-commands/mklink)
+oder mit `New-Item` zu erstellen:
 
 ```powershell
-# Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+Stop-Intellix.ps1
+Move-Item -Path C:\ProgramData\IntellixV2 -Destination d:\ganz-viel-platz\intellixv2
 
-.\Update-Intellix.ps1
+New-Item -ItemType Junction -Path C:\ProgramData\IntellixV2 `
+  -Value d:\ganz-viel-platz\intellixv2
+
+Start-Intellix.ps1
 ```
-
-Dadurch werden die aktuellen Docker Images von Intelligent Indexing heruntergeladen. Diese werden von der Docker Umgebung automatisch verwaltet. Die Größe der Docker Images beträgt mehrere GB.
 
 ### Starten von Intelligent Indexing
 
@@ -222,8 +382,6 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 .\Start-Intellix.ps1
 ```
 
-Beim erstmaligen Starten von Intelligent Indexing werden die Verzeichnisse angelegt, die Sie in der Konfigurationsdatei angegeben haben.
-
 ### Testen der Komponenten von Intelligent Indexing und Passwort ändern
 
 Über folgendes Skript können Sie überprüfen, welche Docker Container gerade auf dem Host-Rechner laufen:
@@ -232,19 +390,23 @@ Beim erstmaligen Starten von Intelligent Indexing werden die Verzeichnisse angel
 docker ps -a
 ```
 
-Sie sollten für die Docker Container __intellix_app__ und __intellix_solr__ je eine Zeile als Ausgabe erhalten. In der Spalte `Status` können Sie sehen, ob die Docker Container laufen (`Up...`) oder beendet wurden (`Exited...`). Außerdem können Sie in dieser Spalte sehen, ob die Container prinzipiell erreichbar sind. Beim Starten wird hier (`health: starting`) angezeigt. Wenn die Container erfolgreich auf Anfragen antworten, wird (`healthy`) angezeigt.
+Sie sollten jeweils eine Zeile als Ausgabe für die Docker-Container erhalten,
+deren Namen mit `intellix` beginnen. In der Spalte `Status` können Sie sehen,
+ob die Docker-Container ausgeführt werden (`Up ...`) oder beendet wurden
+(`Exited ...`). In dieser Spalte können Sie auch sehen,
+ob die Container grundsätzlich laufen. Beim Start wird hier
+`(health: starting)` angezeigt. Wenn die Container erfolgreich auf Anforderungen reagieren,
+wird `(healthy`) angezeigt.
 
-Nach dem Starten von Intelligent Indexing können Sie in einem Browser auf dem Host-Rechner nach <http://localhost/intellix-v2/Html> navigieren, um die Administrationsoberfläche aufzurufen. Bei der Verwendung des Internet Explorers kann es hierbei zu Problemen kommen. Verwenden Sie in diesem Fall einen anderen Browser.
+Sie können mit PowerShell überprüfen, ob der Dienst ausgeführt wird. Die folgende Anfrage sollte mit dem Statuscode 200 beantwortet werden:
 
-Sie können sich mit dem Benutzernamen und dem Passwort einloggen, die Sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben.
-
-Testen Sie hier auch, ob Sie den Host-Rechner von dem Rechner aus, auf dem DocuWare installiert ist, über einen Browser erreichen können. Rufen Sie von einem anderen Rechner die URL <http://_rechnername_/intellix-v2/Html/> auf und ersetzen _\_rechnername\__ durch den Namen des Host-Rechners.
-
-Unter <http://localhost:8983> können Sie die SolR Volltextsuchmaschine von Ihrem Host-Rechner aus erreichen.
+```powershell
+Invoke-WebRequest -UseBasicParsing http://localhost:8080/intellix-v2/
+```
 
 ### Logging
 
-Zum Loggen von Intelligent Indexing führen Sie das folgende Skript in einer Powershell als Administrator im Installationsverzeichnis aus:
+Führen Sie das folgende PowerShell-Skript aus, um das Live-Protokoll von Intelligent Indexing anzuzeigen:
 
 ```powershell
 # Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
@@ -253,16 +415,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 .\Show-IntellixLogs.ps1
 ```
 
-Zum Loggen der SolR Volltextsuchmaschine führen Sie das folgende Skript aus:
-
-```powershell
-# Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
-
-.\Show-SolrLogs.ps1
-```
-
-In beiden Skripten werden Logausgaben live angezeigt. Die Ausgaben könnten durch Drücken von `Strg+C` abgebrochen werden.
+Die Ausgaben könnten durch Drücken von `Strg+C` abgebrochen werden.
 
 ### Stoppen von Intelligent Indexing
 
@@ -277,7 +430,10 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
 ### Update von Intelligent Indexing
 
-Verwenden Sie folgendes Skript, um zu prüfen, ob Updates oder Hotfixes für Intelligent Indexing vorhanden sind und diese gegebenenfalls herunterzuladen:
+Intelligent Indexing wird ständig verbessert. Um Updates einsuspielen, reicht es aus,
+aktualisierte Images abzurufen und den Dienst neu zu starten.
+
+Verwenden Sie das folgende Skript, um nach Updates oder Hotfixes zu suchen und diese herunterzuladen:
 
 ```powershell
 # Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
@@ -286,7 +442,17 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 .\Update-Intellix.ps1
 ```
 
-Nicht mehr benötigte Docker Images werden automatisch gelöscht. Die Downloadgröße wird in den meisten Fällen mehrere 100 MB betragen. Sie können dieses Skript ausführen, während Intelligent Indexing läuft. Die Änderungen werden erst aktiv, wenn sie nach Beendigung dieses Skripts `Stop-Intellix.ps1` und `Start-Intellix.ps1` ausführen. Auch ein Neustart des Host-Rechners führt ein heruntergeladenes Update nicht durch.
+Sie können dieses Skript ausführen, während die Intelligent Indexing läuft.
+Die Änderungen werden erst wirksam, wenn `Stop-Intellix.ps1` und `Start-Intellix.ps1` ausführen.
+Diese Dienste können sofort nach dem Update neu gestartet werden,
+wenn der `WithRestart`-Parameter hinzugefügt wird:
+
+```powershell
+# Nur nötig, falls die Powershell execution policy nicht 'Unrestricted' ist
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+
+.\Update-Intellix.ps1 -WithRestart
+```
 
 ### Neustart des Host-Rechners
 
@@ -294,46 +460,89 @@ Die Docker Umgebung verwaltet die laufenden Intelligent Indexing Container. Dies
 
 ## Intelligent Indexing lizenzieren
 
-Im [DocuWare Partner Portal](https://login.docuware.com) können Sie die DocuWare Lizenzdatei herunterladen. In der Intelligent Indexing Administrationsoberfläche können Sie diese unter dem Punkt `Licensing` hochladen und damit Ihre Intelligent Indexing Installation lizenzieren.
+Um die Intelligent Indexing verwenden zu können, müssen Sie eine Lizenzdatei
+auf den Dienst anwenden.
+Sie können die Lizenzdatei vom
+[DocuWare Partner Portal](http://go.docuware.com/partnerportal-login) herunterladen.
+
+Wenn Sie die Datei heruntergeladen haben, empfehlen wir,
+die Datei beim [Setup](#setup) zu übergeben.
+Alternativ können Sie die Datei in der Intelligent Indexing Administrationsoberfläche
+unter dem Punkt `Licensing` hochladen.
 
 ## Verbindung zu DocuWare
 
-Im Installationsverzeichnis befindet sich die Intelligent Indexing Verbindungsdatei `intelligent-indexing-connection.xml`, mit deren Hilfe DocuWare die Verbindung zu Intelligent Indexing aufbauen kann.
+The setup generates a connection file for DocuWare. The installation directory
+contains this file at `.\setup\run\intelligent-indexing-connection.xml`.
 
-Öffnen Sie diese Datei in einem Texteditor. Tragen Sie in Zeile 3 die Adresse ein, unter der der Host-Rechner von dem Rechner mit der DocuWare Installation aus erreichbar war, aber ohne `Html` am Ende. Der Name des Host-Rechners bzw. dessen statische IP-Adresse muss also statt `localhost` eintragen werden. Falls Sie z.B. Intelligent Indexing von Ihrem DocuWare Rechner unter `http://intellix/intellix-v2/Html` erreichen konnten, tragen Sie hier `http://intellix/intellix-v2/` ein. Falls Sie den Webserver für eine Verbindung über `https` konfiguriert haben (siehe [Installation des Webservers IIS](#installation-des-webservers-iis)), können Sie hier `https` statt `http` eintragen.
+Diese Datei enthält die Verbindungs-URL. Wenn Ihr Server unter einer anderen Adresse
+als _http://Computernamen/_ erreichbar ist hat oder Sie den IIS für die
+Verwendung von _https_ konfiguriert haben, sollten Sie diese URL in dieser Datei ändern.
 
-Tragen Sie in Zeile 4 und 5 den Nutzer und das Passwort ein, die Sie im Abschnitt [Installation des Datenbankservers](#installation-des-datenbankservers) dem Skript zur Initialisierung der Datenbank über die Parameter `intellixAdminUser` und `intellixAdminUserPassword` übergeben haben. In Zeile 6 wird der Name des Modelspaces festgelegt. Tragen Sie hier `Default_` gefolgt von dem von Ihnen gewählten Nutzer ein. Falls Sie z.B. `admin` als Nutzer gewählt haben, sollten Sie hier `Default_admin` eintragen. Die restlichen Werte müssen nicht angepasst werden. Speichern Sie die Datei wieder ab.
+Sie können nun die Intelligent Indexing Verbindungsdatei in Ihre
+DocuWare Installation hochladen, um die Verbindung mit
+Intelligent Indexing herzustellen. Loggen Sie sich dazu in die
+DocuWare Administration ein und navigieren Sie zu 
+`DocuWare System` -> `Datenverbindungen` -> `Verbindungen Intelligent Indexing Service`.
+Falls hier schon eine Verbindung eingetragen ist,
+können Sie diese öffnen und unter _Organizations_ Ihre Organisation
+entfernen und auf `Übernehmen` klicken.
+Dadurch ist die Verbindung Ihres DocuWare Systems zu Ihrem alten
+Intelligent Indexing System deaktiviert, könnte aber durch
+erneutes Hinzufügen der Organisation wieder aktiviert werden.
+Klicken Sie anschließend mit der rechten Maustaste
+auf `Verbindungen Intelligent Indexing Service` auf der
+linken Seite und wählen `Installiere Datei von Intelligent Indexing Service` aus.
+In dem sich öffnenden Dialog wählen Sie die Datei `intelligent-indexing-connection.xml` aus.
+Klicken Sie anschließend auf `Übernehmen` und schließen Sie die DocuWare Administration.
 
-Sie können nun die Intelligent Indexing Verbindungsdatei in Ihre DocuWare Installation hochladen, um die Verbindung mit Intelligent Indexing herzustellen. Loggen Sie sich dazu in die DocuWare Administration ein und navigieren Sie zu `DocuWare System` -> `Datenverbindungen` -> `Verbindungen Intelligent Indexing Service`. Falls hier schon eine Verbindung eingetragen ist, können Sie diese öffnen und unter Organizations Ihre Organisation entfernen und auf `Übernehmen` klicken. Dadurch ist die Verbindung Ihres DocuWare Systems zu Ihrem alten Intelligent Indexing System deaktiviert, könnte aber durch erneutes Hinzufügen der Organisation wieder aktiviert werden. Klicken Sie anschließend mit der rechten Maustaste auf `Verbindungen Intelligent Indexing Service` auf der linken Seite und wählen `Installiere Datei von Intelligent Indexing Service` aus. In dem sich öffnenden Dialog wählen Sie die von Ihnen editierte `intelligent-indexing-connection.xml` Datei aus. Klicken Sie anschließend auf `Übernehmen` und schließen Sie die DocuWare Administration.
+> :point_up: Wenn Sie die Konfigurationsdatei in die DocuWare-Konfiguration hochladen,
+> wird möglicherweise die Fehlermeldung angezeigt, dass die Intelligent Indexing
+> nicht erreicht werden kann. Diese Meldung ist jedoch
+> irreführend, denn die Verbindung wird hergestellt.
+> Wir beheben diese falsche Meldung in einer zukünftigen Version von DocuWare.
 
-## Anhang
+## Troubleshooting
 
-### Überblick über die Intelligent Indexing Setup-Dateien
+### Setup der Datenbank Setup schlägt fehl
 
-Die folgenden Dateien müssen Sie im Laufe der Installation anpassen:
+Falls das Setup fehlschlägt, sollten Sie die _ausführliche Ausgabe_
+von PowerShell aktivieren und das Setup dann erneut ausführen.
+Dies kann aktiviert werden mit:
 
-- Konfigurationsdatei `configuration.env`
-- Intelligent Indexing Verbindungsdatei `intelligent-indexing-connection.xml` zum Herstellen der Verbindung zwischen DocuWare und Intelligent Indexing
+```powershell
+$VerbosePreference = "Continue"
+$InformationPreference = "Continue"
+```
 
-Die restlichen Intelligent Indexing Setup-Dateien dürfen nicht verändert werden:
+### Installation vom IIS und ARR schlägt fehl
 
-- Powershell Skripte
-  - `Install-Docker.ps1`, `Install-IIS.ps1`, `Init-Database.ps1`: Skripte zur Installation von Docker und des Webservers IIS und zur Initialisierung des Datenbankservers
-  - `Update-Intellix.ps1`, `Start-Intellix.ps1`, `Stop-Intellix.ps1`: Skripte, um Intelligent Indexing zu updaten, starten und stoppen
-  - `Show-IntellixLogs.ps1` und `Show-SolRLogs.ps1`: Skripte, um Logausgaben von Intelligent Indexing und der SolR Volltextsuche anzuzeigen
-  - `Read-IntellixConfiguration.ps1`: Dieses Skript wird von den anderen Skripten verwendet, um die Konfigurationsdatei zu lesen
-- Datenbankskript `init_database.sql`, um die Datenbank zu initialisieren
-- Die `docker-compose.yml` Datei, die die Docker Umgebung benötigt, um das Zusammenspiel der Docker Container zu steuern
+Falls die IIS-Installation fehlschlägt oder eine andere Modulinstallation fehlschlägt,
+sollten Sie den Computer neu starten.
+Ausstehende Windows-Updates stoppen möglicherweise die Konfiguration des IIS.
+In vielen Fällen löst ein Neustart der Maschine dieses Problem.
 
-### Manuelle Einrichtung des Datenbankservers
+### Hinweise für Beta-Tester
 
-Folgende Schritte sind nötig, um die Intelligent Indexing Datenbank einzurichten. Diese werden auch von dem Skript `Init-Database.ps1` ausgeführt.
+- Wenn Sie Intelligent Indexing v2 bereits aus einem früheren
+  Betatest installiert haben, entfernen Sie laufende oder gestoppte
+  Container. Sie sollten dann die Datenbank aktualisieren oder neu erstellen,
+  indem Sie das [Setup](#setup) ausführen.
+  Außerdem befinden sich die Datendateien nun unter `C:\ProgramData\IntellixV2`.
 
-- Führen Sie das Skript `init_database.sql` im SQL Server Management Studio im `SQLCMD Mode` aus. Dadurch wird die Datenbank `intellixv2` eingerichtet.
-- Aktivieren Sie im SQL Server Management Studio den Modus `SQL Server and Windows Authentication mode`.
-- Erzeugen Sie einen Login / User, der auf die Datenbank `intellixv2` zugreifen darf.
-- Aktivieren Sie den Zugriff auf den Datenbankserver über TCP über Port `1433`.
-- Starten Sie den Datenbankserver neu
-- Erstellen Sie eine Regel in der Firewall auf dem Rechner des Datenbankservers, um eingehende Verbindungen über TCP Port `1433` zu erlauben.
+- Wir haben die SQL Server-Installation vereinfacht. Wenn Sie SQL Express bereits
+  installiert haben, können Sie den installierten SQL Server durch einen
+  containerisierten SQL Server ersetzen. Sie können auch mit dem
+  installierten SQL Server fortfahren. Details finden Sie unter
+  [Installation des Datenbankservers](#installation_des_datenbankservers)
 
-Beachten Sie, dass der Zugriff über TCP und die Regel in der Firewall auch nötig sind, falls der Datenbankserver und Intelligent Indexing auf demselben Rechner installiert sind, da Intelligent Indexing innerhalb eines Docker Containers läuft.
+## Überblick über die Intelligent Indexing Setup-Dateien
+
+- `Install-Docker.ps1` und `Install-IIS.ps1`: Installationsskripte für Docker und IIS
+
+- `Update-Intellix.ps1`, `Start-Intellix.ps1`, `Stop-Intellix.ps1`:
+  Scripe um Intelligent Indexing zu updaten, starten und stoppen
+
+- `Show-IntellixLogs.ps1`: Skript, um das Protokoll von Intelligent Indexing anzuzeigen
+
+- `setup/Setup-Intellix.ps1`: Installationsskript

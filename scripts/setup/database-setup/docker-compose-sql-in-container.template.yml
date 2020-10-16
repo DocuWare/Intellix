@@ -1,0 +1,31 @@
+version: "3.5"
+
+services:
+  sql:
+    image: docuwarepublic.azurecr.io/intellix/windows/mssql
+    container_name: intellix-sql-setup
+    tty: true
+    networks:
+      - intellix
+    volumes:
+      - type: bind
+        source: C:\ProgramData\IntellixV2\SQL
+        target: c:\mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - sa_password=Admin001
+      - attach_dbs=[{'dbName':'intellixv2','dbFiles':['c:\\mssql\\intellixv2.mdf','c:\\mssql\\intellixv2.ldf']}]
+  tools:
+    container_name: intellix-sql-setup-tools
+    build: .
+    volumes:
+      - type: bind
+        source: C:\ProgramData\IntellixV2\SQL
+        target: c:\mssql
+    networks:
+      - intellix
+    depends_on:
+      - sql
+        
+networks:
+  intellix:

@@ -1,6 +1,21 @@
-﻿.\Read-IntellixConfiguration.ps1
+﻿<#
+.SYNOPSIS
+    Updates DocuWare Intelligent Indexing
 
-docker pull docuwarepublic.azurecr.io/intellix/app:$env:E_IntellixImageVersion
-docker pull docuwarepublic.azurecr.io/intellix/solr:$env:E_SolRImageVersion
+.DESCRIPTION
+    Updates DocuWare Intelligent Indexing and restarts the service
 
-docker image prune --force
+.EXAMPLE  
+./Update-Intellix.ps1 -WithRestart
+#>
+param(
+    # If set, Intelligent Index is restarted after the containers are pulled
+    [switch] $WithRestart
+)    
+
+docker-compose -f $PSScriptRoot/setup/run/docker-compose.yml pull
+
+if($WithRestart){    
+    & "$PSScriptRoot/Stop-Intellix.ps1"
+    & "$PSScriptRoot/Start-Intellix.ps1"
+}

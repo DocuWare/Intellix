@@ -1,1 +1,3 @@
-docker-compose -f docker-compose.yml down -t 60
+Write-Output "Stopping Intelligent Indexing..."
+docker-compose -f $PSScriptRoot/setup/run/docker-compose.yml down --remove-orphans
+Write-Output "Intelligent Indexing is stopped."

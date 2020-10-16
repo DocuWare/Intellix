@@ -1,0 +1,57 @@
+version: "3.3"
+
+services:
+  intellix:
+    image: docuwarepublic.azurecr.io/intellix/app
+    container_name: intellix-app
+    restart: unless-stopped
+    tty: false
+    env_file: 
+      - ../intellix.env
+      - intellix-database.env
+      - intellix-license.env
+    networks:
+      - intellix
+    ports:
+      - 8080:80
+    volumes:
+      - type: bind
+        source: c:\ProgramData\IntellixV2\Files
+        target: c:\FileStorage
+      - type: bind
+        source: c:\ProgramData\IntellixV2\License
+        target: c:\license
+    depends_on:
+      - solr
+      - sql
+
+
+  solr:
+    container_name: intellix-solr
+    image: docuwarepublic.azurecr.io/intellix/windows/solr:8
+    restart: unless-stopped
+    tty: false
+    networks:
+      - intellix
+    volumes:
+      - type: bind
+        source: c:\ProgramData\IntellixV2\Solr\Data
+        target: C:\solr\server\solr\productionWordPairExtended\data
+
+  sql:
+    container_name: intellix-sql
+    image: docuwarepublic.azurecr.io/intellix/windows/mssql
+    restart: unless-stopped
+    tty: false
+    networks:
+      - intellix
+    volumes:
+      - type: bind
+        source: C:\ProgramData\IntellixV2\SQL
+        target: c:\mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - attach_dbs=[{'dbName':'intellixv2','dbFiles':['c:\\mssql\\intellixv2.mdf','c:\\mssql\\intellixv2.ldf']}]
+
+networks:
+  intellix:
