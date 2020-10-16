@@ -1,11 +1,11 @@
-# Installation Instructions for Intelligent Indexing V2
+# Installation Instructions for Intelligent Indexing On Premises Version 2
 
 __Beta Test__
 
 > :heavy_exclamation_mark: This version of Intelligent Indexing is intended for
 > closed beta testing only and must not be used in a production environment.
 
-> :bulb: If you have Intelligent Indexing v2 already installed from an earlier beta test,
+> :bulb: If you have Intelligent Indexing Version 2 already installed from an earlier beta test,
 > please remove running or stopped Intelligent Indexing containers.
 > You should then update or recreate the database by running the [Setup](#setup).
 > We moved the Intelligent Indexing data files to `C:\ProgramData\IntellixV2`.
@@ -24,7 +24,7 @@ Intelligent Indexing are available as separate documents in the
 
 ### System Requirements
 
-The following minumum requirements must be met for installation:
+The following minimum requirements must be met for installation:
 
 - Windows Server 2019 (Standard or Datacenter Edition)
 - 2 processor cores
@@ -37,7 +37,7 @@ consider using Windows Server Core (which is an installation without a graphical
 If you install Intelligent Indexing on a machine which is already
 hosting other services, you should ensure that no other application is using port 8080.
 
-Intelligent Indexing can be used in combination with DocuWare Version 6.1 or higher.
+Intelligent Indexing can be used in combination with all supported DocuWare Versions [https://support.docuware.com/en-US/support/docuware-support-lifecycle-policy/](https://support.docuware.com/en-US/support/docuware-support-lifecycle-policy/).
 If you use SQL Server 2019 for your DocuWare system or for an existing
 Intelligent Indexing installation, you can also use it for Intelligent Indexing V2.
 Otherwise, you must set up a separate SQL server.
@@ -85,7 +85,7 @@ This directory will be referred to in the following as the _installation directo
 An overview of the individual files can be found in the
 [Appendix](#overview-of-the-intelligent-indexing-setup-files).
 You also need your DocuWare license file, which you can download from the
-[DocuWare Partner Portal](https://login.docuware.com).
+[DocuWare Partner Portal](http://go.docuware.com/partnerportal-login).
 
 ### Docker Containerization
 
@@ -276,16 +276,16 @@ You can apply the following parameters:
   :bulb: To make the service ready to use right after the installation,
   it is recommended to specify the
   license file when running the setup. If you do not have a license file, visit the
-  [DocuWare Partner Portal](https://login.docuware.com).
+  [DocuWare Partner Portal](http://go.docuware.com/partnerportal-login).
 
 - `SqlServerInstance`, `SqlServerInstanceUser` and `SqlServerInstancePassword`:
   This value specifies the instance and the credentials to access your own SQL Server.
   
   :warning: If you use the containerized SQL Server, you must not pass these parameters.
 
-If you run an old version of Intelligent Indexing On-Premise on the same
+If you run an old version of Intelligent Indexing On Premises on the same
 database server, you can install
-Intelligent Indexing V2 in parallel. The old version uses the
+Intelligent Indexing Version 2 in parallel. The old version uses the
 `intellix` database, the current version uses the `intellixv2` database.
   
 ### Examples
@@ -491,7 +491,7 @@ Intelligent Indexing was not running before the restart, it will not start after
 
 To use Intelligent Indexing, you must apply a license file to the service.
 You can download the license file from the
-[DocuWare Partner Portal](https://login.docuware.com).
+[DocuWare Partner Portal](http://go.docuware.com/partnerportal-login).
 
 If you have the file downloaded, we recommend to pass the file when
 [configuring](#setup) Intelligent Indexing. Alternatively,
