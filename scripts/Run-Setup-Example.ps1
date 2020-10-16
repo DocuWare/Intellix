@@ -19,5 +19,5 @@ if ($?) {
     Write-Output "Intelligent Indexing Web UI user: $intellixAdminUser"
     Write-Output "Intelligent Indexing Web UI password: $intellixAdminPassword"
 
-    ./Start-Intellix
+    ./Start-Intellix.ps1
 }
