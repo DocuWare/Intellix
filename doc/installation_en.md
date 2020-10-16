@@ -254,7 +254,7 @@ You can apply the following parameters:
   :bulb: These values must be specified on the initial setup only.
   If you run the setup a second time, the values are not needed anymore.
 
-- `LicenseFile`: The path to the license file. If the license file is notspecified on the setup,
+- `LicenseFile`: The path to the license file. If the license file is not specified on the setup,
   it can be uploaded after the setup in the Intelligent Indexing UI.
 
   :bulb: To make the service ready to use right after the installation,
