@@ -3,7 +3,7 @@
 ## Einleitung
 
 Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing
-einschließlich notwendigen Komponenten. Anleitungen zur Konfiguration vonIntelligent Indexing und
+einschließlich der notwendigen Komponenten. Anleitungen zur Konfiguration von Intelligent Indexing und
 zur Arbeit mit Intelligent Indexing sind
 als gesonderte Dokumente im [DocuWare Knowledge Center](https://help.docuware.com) zu finden.
 
@@ -22,14 +22,14 @@ Um den Platzbedarf der Installation gering zu halten,
 sollte Intelligent Indexing auf Windows Server Core (Installation ohne grafische Benutzeroberfläche)
 installiert werden.
 Wenn Sie Intelligent Indexing zusammen mit anderen Diensten auf einem Computer installieren,
-Sie sollten sicherstellen, dass keine andere Anwendung Port 8080 verwendet.
+sollten Sie sicherstellen, dass keine andere Anwendung Port 8080 verwendet.
 
 Die Installation erfordert Administratorrechte und eine Internetverbindung.
 Alle Befehle in den folgenden Anweisungen müssen in PowerShell eingegeben werden.
 Sie können PowerShell 5 oder PowerShell 7 verwenden.
 
 > :bulb: Wenn Sie die Skripte in der PowerShell ISE ausführen möchten,
-> stellen wechseln Sie in der ISE zum Verzeichnis __scripts__
+> wechseln Sie in der ISE zum Verzeichnis __scripts__
 > innerhalb des extrahierten Archivs.
 
 ### Überblick über die benötigten Dateien
@@ -48,12 +48,12 @@ Expand-Archive $tmp -DestinationPath master
 $tmp | Remove-Item
 ```
 
-Zur Installation und Betrieb von Intelligent Indexing wird der
+Zur Installation und zum Betrieb von Intelligent Indexing wird der
 Inhalt des Verzeichnisses `scripts` benötigt. Kopieren Sie dieses
 Verzeichnis an eine Stelle, die Sie dauerhaft verwenden wollen.
 
 > :bulb: Wenn Sie das Archiv mit einem Browser herunterladen, sollten Sie die heruntergeladene
-> Datei vor der Extraction entsperren. Andernfalls werden Sie während der Installation wiederholt
+> Datei vor der Extraktion entsperren. Andernfalls werden Sie während der Installation wiederholt
 > gefragt, ob Sie den Installationsskripten vertrauen. können Rückrufe auftreten, wenn das Setup ausgeführt wird.
 > Um die Archivdatei zu entsperren, klicken Sie mit der rechten Maustaste auf das Archiv
 > und deaktivieren Sie die Blockierung im Fenster mit den Dateieigenschaften.
@@ -218,7 +218,7 @@ RECONFIGURE
 GO
 ```
 
-Wenn dies nicht gewünscht ist, sollten Sie eine separate SQL Server-Instanz für die Intelligent Indexing
+Wenn dies nicht gewünscht ist, sollten Sie eine separate SQL Server-Instanz für Intelligent Indexing
 installieren.
 
 ## Setup
@@ -264,7 +264,7 @@ Sie können die folgenden Parameter angeben:
   [DocuWare Partner Portal](http://go.docuware.com/partnerportal-login).
 
 - `SqlServerInstance`, `SqlServerInstanceUser` and `SqlServerInstancePassword`:
-  Diese Werte geben die Instanz und die Anmeldeinformationen für den Zugriff auf Ihren eigenen SQL Server an
+  Diese Werte geben die Instanz und die Anmeldeinformationen für den Zugriff auf Ihren eigenen SQL Server an.
   
   :warning: Wenn Sie den containerisierten SQL Server verwenden, dürfen Sie diese Parameter nicht angeben.
 
@@ -442,8 +442,8 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 .\Update-Intellix.ps1
 ```
 
-Sie können dieses Skript ausführen, während die Intelligent Indexing läuft.
-Die Änderungen werden erst wirksam, wenn `Stop-Intellix.ps1` und `Start-Intellix.ps1` ausführen.
+Sie können dieses Skript ausführen, während Intelligent Indexing läuft.
+Die Änderungen werden erst wirksam, wenn Sie `Stop-Intellix.ps1` und `Start-Intellix.ps1` ausführen.
 Diese Dienste können sofort nach dem Update neu gestartet werden,
 wenn der `WithRestart`-Parameter hinzugefügt wird:
 
@@ -460,7 +460,7 @@ Die Docker Umgebung verwaltet die laufenden Intelligent Indexing Container. Dies
 
 ## Intelligent Indexing lizenzieren
 
-Um die Intelligent Indexing verwenden zu können, müssen Sie eine Lizenzdatei
+Um Intelligent Indexing verwenden zu können, müssen Sie eine Lizenzdatei
 auf den Dienst anwenden.
 Sie können die Lizenzdatei vom
 [DocuWare Partner Portal](http://go.docuware.com/partnerportal-login) herunterladen.
@@ -472,8 +472,7 @@ unter dem Punkt `Licensing` hochladen.
 
 ## Verbindung zu DocuWare
 
-The setup generates a connection file for DocuWare. The installation directory
-contains this file at `.\setup\run\intelligent-indexing-connection.xml`.
+Die Installation generiert automatisch eine Datei mit Verbindungsdaten von Intelligent Indexing. Sie finden diese Datei im INstallationsverzeichnis unter `.\setup\run\intelligent-indexing-connection.xml`.
 
 Diese Datei enthält die Verbindungs-URL. Wenn Ihr Server unter einer anderen Adresse
 als _http://Computernamen/_ erreichbar ist hat oder Sie den IIS für die
@@ -541,7 +540,7 @@ In vielen Fällen löst ein Neustart der Maschine dieses Problem.
 - `Install-Docker.ps1` und `Install-IIS.ps1`: Installationsskripte für Docker und IIS
 
 - `Update-Intellix.ps1`, `Start-Intellix.ps1`, `Stop-Intellix.ps1`:
-  Scripe um Intelligent Indexing zu updaten, starten und stoppen
+  Skripte um Intelligent Indexing zu updaten, starten und stoppen
 
 - `Show-IntellixLogs.ps1`: Skript, um das Protokoll von Intelligent Indexing anzuzeigen
 
