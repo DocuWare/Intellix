@@ -3,7 +3,7 @@
 ## Einleitung
 
 Dieses Dokument beschreibt die Installation von DocuWare Intelligent Indexing
-einschlißlich notwendigen Komponenten. Anleitungen zur Konfiguration vonIntelligent Indexing und
+einschließlich notwendigen Komponenten. Anleitungen zur Konfiguration vonIntelligent Indexing und
 zur Arbeit mit Intelligent Indexing sind
 als gesonderte Dokumente im [DocuWare Knowledge Center](https://help.docuware.com) zu finden.
 
