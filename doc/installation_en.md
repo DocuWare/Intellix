@@ -80,7 +80,7 @@ so that the installation effort for Intelligent Indexing V2 is therefore very lo
 
 The Docker containers are:
 
-- __intellix-app__: The code for Intelligent Indexing
+- __intellix-app__: The Intelligent Indexing service
 - __intellix-solr__: The SolR full text search engine
 - __intellix-sql__: In case you do not want to use your SQL Server installation,
   we provide an SQL Express in a container.
@@ -204,8 +204,7 @@ It is important, that your SQL Server is configured like this:
 - SQL Server authentication must be enabled.
   The containers do not support integrated authentication.
 - A SQL Server account should be available for the setup script.
-  This account must have the permission to create a new database
-  and to create database object inside the new database.
+  This account must have the permission to create a new database.
 - The firewall must have the ports configured so that the Docker
   containers can connect to the database.
 
@@ -240,12 +239,12 @@ You can apply the following parameters:
   Intelligent Indexing will use to access the database.
   You should use a strong password which matches the
   [SQL Server password policy](https://docs.microsoft.com/en-us/sql/relational-databases/security/password-policy?view=sql-server-ver15).
-  These values must be specified only on the initial setup.
+  These values need be specified only on the initial setup.
 
   This SQL account with the specified credentials is created in the intellixv2 database,
   and no logins are created on your SQL Server.
   
-  :bulb: These values must be specified on the initial setup only.
+  :bulb: These values should be specified on the initial setup only.
   If you run the setup a second time, the values are not needed anymore.  
 
 - `IntellixAdminUser` and `IntellixAdminPassword`: These are the credentials that DocuWare
@@ -253,7 +252,7 @@ You can apply the following parameters:
   of the following 5 special characters, as these can cause problems in the connection file:
   `& < > " '`.
   
-  :bulb: These values must be specified on the initial setup only.
+  :bulb: These values should be specified on the initial setup only.
   If you run the setup a second time, the values are not needed anymore.
 
 - `LicenseFile`: The path to the license file. If the license file is not specified on the setup,
@@ -265,7 +264,7 @@ You can apply the following parameters:
   [DocuWare Partner Portal](http://go.docuware.com/partnerportal-login).
 
 - `SqlServerInstance`, `SqlServerInstanceUser` and `SqlServerInstancePassword`:
-  This value specifies the instance and the credentials to access your own SQL Server.
+  These values specify the instance and the credentials to access your own SQL Server.
   
   :warning: If you use the containerized SQL Server, you must not pass these parameters.
 
