@@ -54,7 +54,6 @@ $tmp | Remove-Item
 
 To install and run Intelligent Indexing, the content of the `scripts` directory is required.
 Copy this directory to a location that you want to use permanently.
-This directory will be referred to in the following as the _installation directory_.
 
 > :point_up: When you download the archive with a browser, you should consider unblocking
 > the archive before extracting the files.
@@ -68,15 +67,15 @@ This directory will be referred to in the following as the _installation directo
 >  Get-ChildItem -Recurse | Unblock-File
 >  ```
 
-An overview of the individual files can be found in the
-[Appendix](#overview-of-the-intelligent-indexing-setup-files).
+An overview of the individual files can be found
+[at the end of this document](#overview-of-the-intelligent-indexing-setup-files).
 You also need your DocuWare license file, which you can download from the
 [DocuWare Partner Portal](http://go.docuware.com/partnerportal-login).
 
 ### Docker Containerization
 
 Intelligent Indexing runs in Docker containers. A setup script configures the containers,
-so that the installation effort for Intelligent Indexing V2 is therefore very low.
+so that the installation effort for Intelligent Indexing Version 2 is therefore very low.
 
 The Docker containers are:
 
@@ -284,48 +283,48 @@ for the Web UI and the database user.
 If you do not like to generate random passwords, just modify the examples
 depending on your need.
 
-Simple Intelligent Indexing installation with Intelligent Indexing license file:
+- Simple Intelligent Indexing installation with license file:
+  
+  ```powershell
+  # Only necessary if the PowerShell execution policy is not 'Unrestricted.'
+  Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
-```powershell
-# Only necessary if the PowerShell execution policy is not 'Unrestricted.'
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+  $intellixAdminPassword = ./Get-RandomPassword.ps1
+  $intellixDbPassword = ./Get-RandomPassword.ps1
 
-$intellixAdminPassword = ./Get-RandomPassword.ps1
-$intellixDbPassword = ./Get-RandomPassword.ps1
+  ./setup/Setup-Intellix.ps1 `
+      -IntellixAdminUser intellix `
+      -IntellixAdminPassword $intellixAdminPassword `
+      -IntellixDbUser intellix `
+      -IntellixDbPassword $intellixDbPassword `
+      -LicenseFile 'c:\users\Administrator\Downloads\Peters Engineering_Enterprise.lic'
 
-./setup/Setup-Intellix.ps1 `
-    -IntellixAdminUser intellix `
-    -IntellixAdminPassword $intellixAdminPassword `
-    -IntellixDbUser intellix `
-    -IntellixDbPassword $intellixDbPassword `
-    -LicenseFile 'c:\users\Administrator\Downloads\Peters Engineering_Enterprise.lic'
+  Write-Output "Intelligent Indexing Web UI user: intellix"
+  Write-Output "Intelligent Indexing Web UI password: $intellixAdminPassword"
+  ```
 
-Write-Output "Intelligent Indexing Web UI user: intellix"
-Write-Output "Intelligent Indexing Web UI password: $intellixAdminPassword"
-```
+- Installing Intelligent Indexing with your own SQL Server,
+but without license file:
 
-Installing Intelligent Indexing with your own SQL Server,
-but without Intelligent Indexing license file:
+  ```powershell
+  # Only necessary if the PowerShell execution policy is not 'Unrestricted.'
+  Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
-```powershell
-# Only necessary if the PowerShell execution policy is not 'Unrestricted.'
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
+  $intellixAdminPassword = ./Get-RandomPassword.ps1
+  $intellixDbPassword = ./Get-RandomPassword.ps1
 
-$intellixAdminPassword = ./Get-RandomPassword.ps1
-$intellixDbPassword = ./Get-RandomPassword.ps1
+  ./setup/Setup-Intellix.ps1 `
+      -IntellixAdminUser intellix `
+      -IntellixAdminPassword $intellixAdminPassword `
+      -IntellixDbUser intellix `
+      -IntellixDbPassword $intellixDbPassword `
+      -SqlServerInstance my-sql-2019-box `
+      -SqlServerInstanceUser "sa" `
+      -SqlServerInstancePassword "Admin001"
 
-./setup/Setup-Intellix.ps1 `
-    -IntellixAdminUser intellix `
-    -IntellixAdminPassword $intellixAdminPassword `
-    -IntellixDbUser intellix `
-    -IntellixDbPassword $intellixDbPassword `
-    -SqlServerInstance my-sql-2019-box `
-    -SqlServerInstanceUser "sa" `
-    -SqlServerInstancePassword "Admin001"
-
-Write-Output "Intelligent Indexing Web UI user: intellix"
-Write-Output "Intelligent Indexing Web UI password: $intellixAdminPassword"
-```
+  Write-Output "Intelligent Indexing Web UI user: intellix"
+  Write-Output "Intelligent Indexing Web UI password: $intellixAdminPassword"
+  ```
 
 ## Installation of the IIS Web Server
 
@@ -499,7 +498,7 @@ DocuWare system to your old Intelligent Indexing system, but it can be reactivat
 by adding the organization again. Then right-click `Intelligent Indexing Service connections`
 on the left side and select `Install Intelligent Indexing Service file`.
 In the dialog that opens, select the `intelligent-indexing-connection.xml`
-file you edited. Then click `Apply` and close DocuWare Administration.
+file. Then click `Apply` and close the DocuWare Administration.
 
 > :point_up: When you upload the configuration file in the DocuWare Configuration, you may receive an error message, saying Intelligent Indexing cannot be connected.
 However, this message is misleading, and the connection is established. We fix this wrong message in a future version of DocuWare.
@@ -535,17 +534,13 @@ in many cases.
   with a containerized SQL Server. You can also continue with the installed SQL Server. Find the
   details at [Installation of the Database Server](#installation-of-the-database-server).
 
-## Appendix
-
-### Overview of the Intelligent Indexing Script Files
+## Overview of the Intelligent Indexing Script Files
 
 - `Install-Docker.ps1` and `Install-IIS.ps1`: Scripts for installing Docker and the IIS web server
 
 - `Update-Intellix.ps1`, `Start-Intellix.ps1`, `Stop-Intellix.ps1`: Scripts for updating,
   starting, and stopping Intelligent Indexing
 
-- `Show-IntellixLogs.ps1`: Scripts for displaying log outputs of Intelligent
-  Indexing and the SolR full text search
+- `Show-IntellixLogs.ps1`: Scripts for displaying log outputs of Intelligent Indexing 
 
-- `setup/Setup-Intellix.ps1`: Scripts for displaying log outputs of
-  Intelligent Indexing and the SolR full text search
+- `setup/Setup-Intellix.ps1`: Installation script

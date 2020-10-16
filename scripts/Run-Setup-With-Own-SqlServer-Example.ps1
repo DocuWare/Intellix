@@ -21,4 +21,6 @@ $intellixDbPassword = ./Get-RandomPassword.ps1
 if ($?) {
     Write-Output "Intelligent Indexing Web UI user: $intellixAdminUser"
     Write-Output "Intelligent Indexing Web UI password: $intellixAdminPassword"
+
+    ./Start-Intellix
 }
