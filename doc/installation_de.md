@@ -54,7 +54,7 @@ Verzeichnis an eine Stelle, die Sie dauerhaft verwenden wollen.
 
 > :bulb: Wenn Sie das Archiv mit einem Browser herunterladen, sollten Sie die heruntergeladene
 > Datei vor der Extraktion entsperren. Andernfalls werden Sie während der Installation wiederholt
-> gefragt, ob Sie den Installationsskripten vertrauen. können Rückrufe auftreten, wenn das Setup ausgeführt wird.
+> gefragt, ob Sie den Installationsskripten vertrauen. 
 > Um die Archivdatei zu entsperren, klicken Sie mit der rechten Maustaste auf das Archiv
 > und deaktivieren Sie die Blockierung im Fenster mit den Dateieigenschaften.
 >
