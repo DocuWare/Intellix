@@ -54,7 +54,7 @@ param(
 
 
 if ($SqlServerInstance) {
-  Write-Host "Intelligent indexing is set up on SQL Server instance $SqlServerInstance $SqlServerInstanceUser $SqlServerInstancePassword"
+  Write-Host "Intelligent indexing is set up on SQL Server instance $SqlServerInstance"
   if ((-not $SqlServerInstanceUser) -or (-not $SqlServerInstancePassword)) {
     Write-Error "There are no credentials for the SQL Server instance $SqlServerInstance specified. Please use the parameters SqlServerInstanceUser and SqlServerInstancePassword to specify the credentials to access the SQL Server."
     exit 1
