@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 withRestart=
 while [ $# -gt 0 ]; do
