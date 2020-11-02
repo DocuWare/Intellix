@@ -33,7 +33,7 @@ All commands in following instructions must be entered in the PowerShell. You ca
 PowerShell 5 or PowerShell 7.
 
 > :bulb: If you want to run the scripts in the PowerShell ISE, please ensure that
-> the current directory in the ISE is changed to the __scripts__ directory
+> the current directory in the ISE is changed to the __windows__ directory
 > the extracted setup files.
 
 ### Overview of the Required Files
@@ -52,7 +52,7 @@ Expand-Archive $tmp -DestinationPath master
 $tmp | Remove-Item
 ```
 
-To install and run Intelligent Indexing, the content of the `scripts` directory is required.
+To install and run Intelligent Indexing, the content of the `windows` directory is required.
 Copy this directory to a location that you want to use permanently.
 
 > :point_up: When you download the archive with a browser, you should consider unblocking

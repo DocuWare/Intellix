@@ -29,7 +29,7 @@ Alle Befehle in den folgenden Anweisungen müssen in PowerShell eingegeben werde
 Sie können PowerShell 5 oder PowerShell 7 verwenden.
 
 > :bulb: Wenn Sie die Skripte in der PowerShell ISE ausführen möchten,
-> wechseln Sie in der ISE zum Verzeichnis __scripts__
+> wechseln Sie in der ISE zum Verzeichnis __windows__
 > innerhalb des extrahierten Archivs.
 
 ### Überblick über die benötigten Dateien
@@ -49,7 +49,7 @@ $tmp | Remove-Item
 ```
 
 Zur Installation und zum Betrieb von Intelligent Indexing wird der
-Inhalt des Verzeichnisses `scripts` benötigt. Kopieren Sie dieses
+Inhalt des Verzeichnisses `windows` benötigt. Kopieren Sie dieses
 Verzeichnis an eine Stelle, die Sie dauerhaft verwenden wollen.
 
 > :bulb: Wenn Sie das Archiv mit einem Browser herunterladen, sollten Sie die heruntergeladene
