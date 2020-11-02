@@ -38,10 +38,10 @@ sudo apt-get install git -y
 git clone https://github.com/DocuWare/Intellix.git
 ```
 
-or get it as ZIP file and extract it:
+or get it as tarball file and extract it:
 
 ```bash
-tmp=$(mktemp) && curl -SL https://github.com/DocuWare/Intellix/archive/master.zip -o $tmp && unzip $tmp && rm $tmp
+curl -SL https://github.com/DocuWare/Intellix/tarball/master | tar tzvf -
 ```
 
 To install and run Intelligent Indexing, the content of the `linux` directory is required.
