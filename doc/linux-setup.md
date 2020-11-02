@@ -41,7 +41,7 @@ git clone https://github.com/DocuWare/Intellix.git
 or get it as tarball file and extract it:
 
 ```bash
-curl -SL https://github.com/DocuWare/Intellix/tarball/master | tar tzvf -
+curl -SL https://github.com/DocuWare/Intellix/tarball/master | tar xzvf -
 ```
 
 To install and run Intelligent Indexing, the content of the `linux` directory is required.
