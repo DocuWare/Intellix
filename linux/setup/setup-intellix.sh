@@ -111,7 +111,7 @@ for dir in "${intellixDirs[@]}"; do
 done
 
 
-touch intellix-license.env
+touch "$runPath/intellix-license.env"
 if ! [ -z "${licenseFileSource}" ] && [ -f "$licenseFileSource" ]; then
   cp "$licenseFileSource" /var/intellix/license/license.lic
   echo "LicenseFileLocation=/license/license.lic" > "$runPath/intellix-license.env"
