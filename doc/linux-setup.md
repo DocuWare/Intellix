@@ -107,7 +107,7 @@ configuration of the database server is needed. You do not need to care about th
 database setup and configuration - this is fully managed by the setup script.
 
 By default, the container is setup to run the SQL Server as Express edition. If needed, you can change this later by
-[https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables?view=sql-server-ver15](applying a product key).
+[applying a product key](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables?view=sql-server-ver15).
 
 ### Option 2: Use your own database server
 
