@@ -76,9 +76,9 @@ The installation is divided into the following steps:
 
 We assume that you start with a fresh Linux system. If Docker not installed, you can install it from the distribution's repository. See
 
-- installation instructions for [https://docs.docker.com/engine/install/debian/](Debian)
-- installation instructions for [https://docs.docker.com/engine/install/ubuntu/](Ubuntu)
-- installation instructions for [https://en.opensuse.org/Docker](openSUSE)
+- installation instructions for [Debian](https://docs.docker.com/engine/install/debian/)
+- installation instructions for [Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+- installation instructions for [openSUSE](https://en.opensuse.org/Docker)
 
 You must also install _docker-compose_:
 
