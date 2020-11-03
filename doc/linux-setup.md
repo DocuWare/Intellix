@@ -13,7 +13,7 @@ Intelligent Indexing are available as separate documents in the
 
 The following minimum requirements must be met for installation:
 
-- Ubuntu 20.04 or Debian 10. The installation may or may not work on other Linux versions.
+- A Linux machine. We recommend Ubuntu 20.04, Debian 10 or openSuse 15.2. The installation may or may not work on other Linux versions.
 - 2 processor cores
 - 4 GB RAM
 - Optional: Access to SQL Server 2019
@@ -34,7 +34,6 @@ Otherwise, you must set up a separate SQL server.
 To get the installation files, just clone our repository from Github:
 
 ```bash
-sudo apt-get install git -y
 git clone https://github.com/DocuWare/Intellix.git
 ```
 
@@ -75,17 +74,26 @@ The installation is divided into the following steps:
 
 ## Installation of the Docker Environment
 
-We assume that you start with a fresh Linux system. If Docker not installed, you can install it from the distribution's repository:
+We assume that you start with a fresh Linux system. If Docker not installed, you can install it from the distribution's repository. See
 
-```bash
-sudo apt-get install docker docker-compose -y
-```
+- installation instructions for [https://docs.docker.com/engine/install/debian/](Debian)
+- installation instructions for [https://docs.docker.com/engine/install/ubuntu/](Ubuntu)
+- installation instructions for [https://en.opensuse.org/Docker](openSUSE)
+
+You must also install _docker-compose_:
+
+- Debian and Ubuntu:
+  ```bash
+  sudo apt-get install docker-compose -y
+  ```
+- openSUSE:
+  ```bash
+  sudo apt-get install docker-compose -y
+  ```
 
 > **Warning**: If you installed Docker on Ubuntu with snap, please uninstall
 > the Docker snap. When Intelligent Indexing is installed, some volume mounts
 > are created in `/var`, where the Docker snap does not have access.
-
-If you want to install the recent version of Docker, consult the installation instructions for [Ubuntu](https://docs.docker.com/engine/install/ubuntu/) or [Debian](https://docs.docker.com/engine/install/debian/).
 
 In order to make the current user able to execute docker commands, it is convenient to add the current user to the group `docker`:
 
