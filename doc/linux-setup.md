@@ -244,6 +244,7 @@ depending on your need.
     --intellix-admin-password=$intellixAdminPassword \
     --intellix-db-user=intellix-sql \
     --intellix-db-password=$intellixDbPassword
+  
   echo "Intelligent Indexing Web UI user: intellix"
   echo "Intelligent Indexing Web UI password: $intellixAdminPassword"
   ```
