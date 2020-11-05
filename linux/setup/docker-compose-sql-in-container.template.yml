@@ -1,0 +1,62 @@
+version: "3.3"
+
+services:
+  intellix:
+    image: docuwarepublic.azurecr.io/intellix/app:2-debian
+    container_name: intellix-app
+    restart: unless-stopped
+    tty: true
+    env_file: 
+      - ../intellix.env
+      - intellix-database.env
+      - intellix-license.env
+    networks:
+      - intellix
+    ports:
+      - 80:80
+    volumes:
+      - type: bind
+        source: /var/intellix/files
+        target: /FileStorage
+      - type: bind
+        source: /var/intellix/license
+        target: /license
+    depends_on:
+      - solr
+      - sql
+
+  solr:
+    container_name: intellix-solr
+    image: solr:8
+    restart: unless-stopped
+    tty: true
+    networks:
+      - intellix
+    volumes:
+      - type: bind
+        source: /var/intellix/solr
+        target: /var/solr
+
+  sql:
+    container_name: intellix-sql
+    image: mcr.microsoft.com/mssql/server
+    restart: unless-stopped
+    tty: true
+    networks:
+      - intellix
+    volumes:
+      - type: bind
+        source: /var/intellix/sql/data
+        target: /var/opt/mssql/data
+      - type: bind
+        source: /var/intellix/sql/log
+        target: /var/opt/mssql/log
+      - type: bind
+        source: /var/intellix/sql/secrets
+        target: /var/opt/mssql/secrets
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+
+networks:
+  intellix:
