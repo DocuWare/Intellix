@@ -225,12 +225,15 @@ sudo ./start-intellix.sh
 
 There are two example scripts `run-setup-example.sh` and
 `run-setup-with-own-sqlserver-example.sh` provided. You can modify the scripts and use them
-to run the setup and start the service when the setup is finished.
+to run the setup and start the service when the setup is finished. These scripts contain
+instructions for stopping running Intelligent Indexing instances.
 
 In order to get strong passwords, these scripts use a password generator to generate passwords
 for the Web UI and the database user.
 If you do not like to generate random passwords, just modify the examples
 depending on your need.
+
+If you do not want to use the example scripts, you can run the setup like this:
 
 - Simple Intelligent Indexing installation with license file:
 
@@ -343,7 +346,7 @@ updated images and restart the service.
 Use the following script to check for and download any updates or hotfixes for Intelligent Indexing:
 
 ```bash
-./update-intellix.sh
+sudo ./update-intellix.sh
 ```
 
 You can run this script while Intelligent Indexing is running. The changes will not take effect until you
@@ -351,7 +354,7 @@ run `stop-intellix.sh` and `start-intellix.sh` after this script is finished.
 This services can be restarted immediately after the update if the `--with-restart` parameter is added:
 
 ```bash
-../update-intellix.sh --with-restart
+sudo ../update-intellix.sh --with-restart
 ```
 
 ### Restarting the Host Computer
