@@ -379,7 +379,7 @@ The setup generates a connection file for DocuWare. The installation directory
 contains this file at `./setup/run/intelligent-indexing-connection.xml`.
 
 This file contains the connection URL. In case your server is exposed with a different name
-than the machine name, or you configured the IIS to use `https`, you should change this URL in this file.
+than the machine name, or you configured a proxy in front of Intelligent Indexing, you should change this URL in this file.
 
 You can now upload the Intelligent Indexing connection file to your DocuWare installation to establish
 the connection with Intelligent Indexing. To do this, log in to DocuWare Administration and
