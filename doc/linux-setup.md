@@ -256,7 +256,6 @@ but without license file:
   intellixDbPassword=$(./random-password.sh)
   
   sudo ./setup/setup-intellix.sh \
-    --license-file='~/Peters Engineering_Enterprise.lic' \
     --intellix-admin-user=intellix \
     --intellix-admin-password=$intellixAdminPassword \
     --intellix-db-user=intellix-sql \
