@@ -16,13 +16,19 @@ Folgende Voraussetzungen müssen für die Installation erfüllt sein:
 - 4 GB RAM
 - Optional: Installierter SQL Server 2019
 
-Es wird empfohlen, Intelligent Indexing auf einem eigenen Server zu installieren,
-um bestmögliche Performance zu erreichen.
+Um bestmögliche Performance zu erreichen, emppfehlen wir,
+Intelligent Indexing auf einem eigenen Server 
+oder auf einer eigenen virtuellen Maschine zu installieren.
+Im Falle einer virtuellen Maschine empfehlen wir
+Hyper-V zu verwenden. Mit anderen Virtualisierungslösungen
+kann die Installation funktionieren oder Probleme bereiten.
+
 Um den Platzbedarf der Installation gering zu halten,
 sollte Intelligent Indexing auf Windows Server Core (Installation ohne grafische Benutzeroberfläche)
 installiert werden.
 Wenn Sie Intelligent Indexing zusammen mit anderen Diensten auf einem Computer installieren,
 sollten Sie sicherstellen, dass keine andere Anwendung Port 8080 verwendet.
+
 
 Die Installation erfordert Administratorrechte und eine Internetverbindung.
 Alle Befehle in den folgenden Anweisungen müssen in PowerShell eingegeben werden.
