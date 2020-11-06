@@ -16,8 +16,11 @@ The following minimum requirements must be met for installation:
 - 4 GB RAM
 - Optional: Access to SQL Server 2019
 
-It is recommended that you install Intelligent Indexing on a separate server to achieve
-the best possible performance. In order to keep the footprint of the installation small,
+To achieve the best possible performance we recommend to install
+Intelligent Indexing on a separate server or virtual machine.
+In the case of a virtual machine we recommend to use Hyper-V. Other hypervisors
+may or may not work with Intelligent Indexing.
+In order to keep the footprint of the installation small,
 you should take Windows Server Core (which is an installation without a graphical UI).
 If you install Intelligent Indexing on a machine together with other services,
 you should ensure that no other application is using port 8080.
