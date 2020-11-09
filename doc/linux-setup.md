@@ -170,7 +170,7 @@ You can apply the following parameters:
   Intelligent Indexing will use to access the database.
   You should use a strong password which matches the
   [SQL Server password policy](https://docs.microsoft.com/en-us/sql/relational-databases/security/password-policy?view=sql-server-ver15).
-  These values need be specified only on the initial setup.
+  These values need to be specified only on the initial setup.
 
   This SQL account with the specified credentials is created in the intellixv2 database,
   and no logins are created on your SQL Server.
