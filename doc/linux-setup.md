@@ -88,7 +88,7 @@ You must also install _docker-compose_:
   ```
 - openSUSE:
   ```bash
-  sudo apt-get install docker-compose -y
+  sudo zypper install docker-compose
   ```
 
 > **Warning**: If you installed Docker on Ubuntu with snap, please uninstall
