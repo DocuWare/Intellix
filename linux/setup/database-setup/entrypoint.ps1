@@ -64,6 +64,9 @@ for ($i = 0; $i -lt 10; $i++) {
         elseif ($err.Number -eq 0) {
             Write-Warning "The SQL Server cannot be reached. I will retry: $($ex.Message)"
         }
+        elseif (($err.Number -eq 18456) -and (-not $env:sqlServerInstance)) {
+            Write-Warning "The SQL Server password is not yet applied. This can happen if the initialization phase of the server is not completed. I will retry: $($ex.Message)"
+        }        
         else {
             Write-Warning "There is an SQL Server connection problem with number $($err.Number) of class $($err.Class)"
             if ((-not $transient.Contains($err.Number)) -and $err.Class -lt 17) {
