@@ -16,12 +16,11 @@ Folgende Voraussetzungen müssen für die Installation erfüllt sein:
 - 4 GB RAM
 - Optional: Installierter SQL Server 2019
 
-Um bestmögliche Performance zu erreichen, emppfehlen wir,
+Um bestmögliche Performance zu erreichen, empfehlen wir,
 Intelligent Indexing auf einem eigenen Server 
 oder auf einer eigenen virtuellen Maschine zu installieren.
-Im Falle einer virtuellen Maschine empfehlen wir
-Hyper-V zu verwenden. Mit anderen Virtualisierungslösungen
-kann die Installation funktionieren oder Probleme bereiten.
+Im Falle einer virtuellen Maschine wird ausschließlich
+Hyper-V unterstützt.
 
 Um den Platzbedarf der Installation gering zu halten,
 sollte Intelligent Indexing auf Windows Server Core (Installation ohne grafische Benutzeroberfläche)
