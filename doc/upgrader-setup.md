@@ -12,7 +12,7 @@ You can also first start with a blank IOPV2 system to train the new system consi
 The process of migrating your documents from IOPV1 to IOPV2 consists of the following steps:
 
 * Prepare both systems IOPV1 and IOPV2 to be fully functional. This means that the related database server/s is/are also up and running. If you are already using IOPV2 for some time, you should update IOPV2 as described in its [installation manual](windows-setup.md).
-* Download the Upgrader from [our GitHub repository](https://github.com/DocuWare/Intellix/upgrader.zip). Unzip the file to any location on a machine that can reach the IOPV1 and IOPV2 systems.
+* Download the Upgrader from [our GitHub repository](../upgrader.zip). Unzip the file to any location on a machine that can reach the IOPV1 and IOPV2 systems.
 * Prepare the configuration file `IntellixUpgraderConfigurations.xml` with all relevant settings.
 * Start the Upgrader. If there are errors during Upgrader operation, you should address them and rerun the Upgrader.
 
