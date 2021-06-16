@@ -208,7 +208,7 @@ This is an example of running the setup:
 
 ```bash
 sudo ./setup/setup-intellix.sh \
-    --license-file='~/Peters Engineering_Enterprise.lic' \
+    --license-file='/path/to/my/Peters Engineering_Enterprise.lic' \
     --intellix-admin-user=intellix \
     --intellix-admin-password=ddj749Kdhg-ddj_3+498djk34dj30sLcsdfBbvKl \
     --intellix-db-user=intellix-sql \
