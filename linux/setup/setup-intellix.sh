@@ -84,7 +84,7 @@ if [ ! -z "${intellixAdminUser}" ] && [ ! -z "${intellixAdminPassword}" ]; then
   echo '<?xml version="1.0"?>' > "$confPath"
   echo "<IntellixConnectionSetup CreatedAt=\"$now\" xmlns=\"http://dev.docuware.com/public/services/intellix\">" >> "$confPath"
   echo "    <ServiceUri>http://$fqdn/intellix-v2/</ServiceUri>" >> "$confPath"
-  echo "    <User$intellixAdminUser></User>" >> "$confPath"
+  echo "    <User>$intellixAdminUser</User>" >> "$confPath"
   echo "    <Password>$intellixAdminPassword</Password>" >> "$confPath"
   echo "    <ModelspaceName>Default_$intellixAdminUser</ModelspaceName>" >> "$confPath"
   echo "</IntellixConnectionSetup>" >> "$confPath"
