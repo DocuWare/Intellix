@@ -8,8 +8,8 @@ $temp = $env:TEMP
 Install-WindowsFeature -name Web-Server -IncludeManagementTools
 
 # Install WebPiCmd
-Invoke-WebRequest 'http://download.microsoft.com/download/C/F/F/CFF3A0B8-99D4-41A2-AE1A-496C08BEB904/WebPlatformInstaller_amd64_en-US.msi' -OutFile $temp/WebPlatformInstaller_amd64_en-US.msi
-Start-Process $temp/WebPlatformInstaller_amd64_en-US.msi '/qn' -PassThru | Wait-Process
+Invoke-WebRequest 'https://download.microsoft.com/download/8/4/9/849DBCF2-DFD9-49F5-9A19-9AEE5B29341A/WebPlatformInstaller_x64_en-US.msi' -OutFile $temp/WebPlatformInstaller_x64_en-US.msi
+Start-Process $temp/WebPlatformInstaller_x64_en-US.msi '/qn' -PassThru | Wait-Process
 
 # Install ARR
 & $Env:Programfiles'\Microsoft\Web Platform Installer\WebpiCmd.exe' /Install /Products:'UrlRewrite2' /AcceptEULA /Log:$temp/WebpiCmd_UrlRewrite.log

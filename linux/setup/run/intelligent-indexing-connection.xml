@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<IntellixConnectionSetup CreatedAt="2021-05-17T11:52:17" xmlns="http://dev.docuware.com/public/services/intellix">
+    <ServiceUri>http://chw-debian-dev/intellix-v2/</ServiceUri>
+    <Userintellix></User>
+    <Password>admin</Password>
+    <ModelspaceName>Default_intellix</ModelspaceName>
+</IntellixConnectionSetup>
