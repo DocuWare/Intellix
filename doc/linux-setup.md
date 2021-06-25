@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This documentation explains how to setup Intelligent On-Premise on an Ubuntu Host.
+This documentation explains how to setup Intelligent On-Premise on an Ubuntu or Debian host.
 This documentation is working for Ubuntu 20.04 and Debian 10.
 
 Instructions for configuring Intelligent Indexing and working with
