@@ -1,0 +1,40 @@
+version: "3.3"
+
+services:
+  intellix:
+    image: docuwarepublic.azurecr.io/intellix/app:2-alpine
+    container_name: intellix-app
+    restart: unless-stopped
+    tty: true
+    env_file: 
+      - ../intellix.env
+      - intellix-database.env
+      - intellix-license.env
+    networks:
+      - intellix
+    ports:
+      - 80:80
+    volumes:
+      - type: bind
+        source: /var/intellix/files
+        target: /FileStorage
+      - type: bind
+        source: /var/intellix/license
+        target: /license
+    depends_on:
+      - solr
+
+  solr:
+    container_name: intellix-solr
+    image: solr:8
+    restart: unless-stopped
+    tty: true
+    networks:
+      - intellix
+    volumes:
+      - type: bind
+        source: /var/intellix/solr
+        target: /var/solr
+
+networks:
+  intellix:
