@@ -1,4 +1,4 @@
-# Installationsanleitung Intelligent Indexing V2
+# Installationsanleitung Intelligent Indexing On Premises Version 2
 
 ## Einleitung
 
