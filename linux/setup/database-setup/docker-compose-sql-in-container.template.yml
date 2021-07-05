@@ -1,11 +1,34 @@
 version: "3.3"
 
 services:
+  sql:
+    image: mcr.microsoft.com/mssql/server
+    container_name: intellix-sql-setup
+    tty: true
+    networks:
+      - intellix
+    volumes:
+      - type: bind
+        source: /var/intellix/sql/data/
+        target: /var/opt/mssql/data
+      - type: bind
+        source: /var/intellix/sql/log/
+        target: /var/opt/mssql/log
+      - type: bind
+        source: /var/intellix/sql/secrets/
+        target: /var/opt/mssql/secrets
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Admin001
+      - MSSQL_PID=Express
+
   tools:
     container_name: intellix-sql-setup-tools
     build: .
     networks:
       - intellix
+    depends_on:
+      - sql
         
 networks:
   intellix:
