@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<schema name="example" version="1.5">
+
+  <types>
+    <!-- The StrField type is not analyzed, but indexed/stored verbatim. -->
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true" omitTermFreqAndPositions="true" omitPositions="true"/>
+
+    <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0" omitNorms="true" omitTermFreqAndPositions="true" omitPositions="true"/>
+
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0" omitNorms="true" omitTermFreqAndPositions="true" omitPositions="true"/>
+
+    <!-- A text field that only splits on whitespace for exact matching of words -->
+    <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+      </analyzer>
+    </fieldType>
+
+  </types>
+  <fields>
+
+    <field name="id" type="string" indexed="true" stored="true" required="true" />
+    <field name="terms" type="text_ws" indexed="true" stored="false" required="true" />
+    <field name="modelspace" type="int" indexed="true" stored="true" required="true" />
+    <field name="newidentifier" required="false" stored="true" indexed="true" type="string"/>
+    <field name="mappingId" required="true" stored="true" indexed="true" type="string"/>
+
+    <!-- This is neeeded for replication. -->
+    <field name="_version_" type="long" indexed="true" stored="true"/>
+
+    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
+        will be used if the name matches any of the patterns.
+        RESTRICTION: the glob-like pattern in the name attribute must have
+        a "*" only at the start or the end.
+        EXAMPLE:  name="*_i" will match any field ending in _i (like myid_i, z_i)
+        Longer patterns will be matched first.  if equal size patterns
+        both match, the first appearing in the schema will be used.  -->
+
+    <dynamicField name="storedValue_*" type="string" indexed="false" stored="true"/>
+  </fields>
+
+  <uniqueKey>id</uniqueKey>
+</schema>
