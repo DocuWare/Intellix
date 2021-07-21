@@ -156,7 +156,7 @@ which contains the database setup, is built and executed.
 
 The setup creates a directory structure at `/var/intellix`,
 which is used to persist the data for Intelligent Indexing.
-Please consider this directory in you backups, use junctions to mount this
+Please consider this directory in you backups, or mount this
 directory to an external storage.
 
 > :bulb: If you expect a high volume of documents,
