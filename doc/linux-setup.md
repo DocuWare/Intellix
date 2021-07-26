@@ -354,7 +354,7 @@ run `stop-intellix.sh` and `start-intellix.sh` after this script is finished.
 This services can be restarted immediately after the update if the `--with-restart` parameter is added:
 
 ```bash
-sudo ../update-intellix.sh --with-restart
+sudo ./update-intellix.sh --with-restart
 ```
 
 ### Restarting the Host Computer
