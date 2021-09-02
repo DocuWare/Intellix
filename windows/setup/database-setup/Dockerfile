@@ -1,6 +1,6 @@
-FROM docuwarepublic.azurecr.io/intellix/app as dbsrc
+FROM docuwarepublic.azurecr.io/test/intellix/app as dbsrc
 
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+FROM mcr.microsoft.com/powershell
 
 COPY prepare-tools-container.ps1 .
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]

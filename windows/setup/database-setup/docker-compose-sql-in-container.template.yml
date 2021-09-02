@@ -2,7 +2,7 @@ version: "3.5"
 
 services:
   sql:
-    image: docuwarepublic.azurecr.io/intellix/windows/mssql
+    image: docuwarepublic.azurecr.io/test/intellix/windows/mssql
     container_name: intellix-sql-setup
     tty: true
     networks:

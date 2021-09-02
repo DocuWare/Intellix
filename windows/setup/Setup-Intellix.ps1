@@ -160,7 +160,6 @@ else {
 }
 
 docker-compose -f $dbSetupPath pull
-docker pull docuwarepublic.azurecr.io/intellix/app
 
 docker-compose -f $dbSetupPath build
 if (!$?) {
