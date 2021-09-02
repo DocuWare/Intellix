@@ -1,6 +1,7 @@
+ARG WINVER
 FROM docuwarepublic.azurecr.io/test/intellix/app as dbsrc
 
-FROM mcr.microsoft.com/powershell
+FROM mcr.microsoft.com/windows/servercore:${WINVER}
 
 COPY prepare-tools-container.ps1 .
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
