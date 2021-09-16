@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   intellix:
-    image: docuwarepublic.azurecr.io/test/intellix/app
+    image: docuwarepublic.azurecr.io/intellix/app
     container_name: intellix-app
     restart: unless-stopped
     tty: false
@@ -28,7 +28,7 @@ services:
 
   solr:
     container_name: intellix-solr
-    image: docuwarepublic.azurecr.io/test/intellix/windows/solr:8
+    image: docuwarepublic.azurecr.io/intellix/windows/solr:8
     restart: unless-stopped
     tty: false
     networks:
@@ -40,7 +40,7 @@ services:
 
   sql:
     container_name: intellix-sql
-    image: docuwarepublic.azurecr.io/test/intellix/windows/mssql
+    image: docuwarepublic.azurecr.io/intellix/windows/mssql
     restart: unless-stopped
     tty: false
     networks:

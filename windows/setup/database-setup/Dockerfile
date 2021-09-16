@@ -1,5 +1,5 @@
 ARG WINVER
-FROM docuwarepublic.azurecr.io/test/intellix/app as dbsrc
+FROM docuwarepublic.azurecr.io/intellix/app as dbsrc
 
 FROM mcr.microsoft.com/windows/servercore:${WINVER}
 
