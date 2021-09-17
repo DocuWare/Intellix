@@ -160,9 +160,15 @@ else {
 }
 
 docker-compose -f $dbSetupPath pull
-docker pull docuwarepublic.azurecr.io/intellix/app
 
-docker-compose -f $dbSetupPath build
+$osBuildNumber = [System.Environment]::OSVersion.Version.Build
+switch ($osBuildNumber) {
+  20348 { $WINVER="ltsc2022" }
+  17763 { $WINVER="ltsc2019" }
+  Default {$WINVER="ltsc2022" }
+} 
+
+docker-compose -f $dbSetupPath build --build-arg WINVER=$WINVER
 if (!$?) {
   Write-Error "Could not build the database setup container. Exiting..."
   exit -1
