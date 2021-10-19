@@ -31,11 +31,7 @@ sollten Sie sicherstellen, dass keine andere Anwendung Port 8080 verwendet.
 
 Die Installation erfordert Administratorrechte und eine Internetverbindung.
 Alle Befehle in den folgenden Anweisungen müssen in PowerShell eingegeben werden.
-Sie können PowerShell 5 oder PowerShell 7 verwenden.
-
-> :bulb: Wenn Sie die Skripte in der PowerShell ISE ausführen möchten,
-> wechseln Sie in der ISE zum Verzeichnis __windows__
-> innerhalb des extrahierten Archivs.
+Sie können PowerShell 5 oder PowerShell 7 verwenden. PowerShell ISE wird nicht unterstützt.
 
 ### Überblick über die benötigten Dateien
 
