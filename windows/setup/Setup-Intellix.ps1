@@ -23,7 +23,7 @@
       -IntellixDbPassword <password of intellixv2 database user>  `
       -SqlServerInstance "my-sqlserver-2019" `
       -SqlServerInstanceUser "sa" `
-      -SqlServerInstanceUser <sa password >
+      -SqlServerInstancePassword <sa password>
 #>
 param(
   # The path to the license file
