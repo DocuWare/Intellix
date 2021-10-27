@@ -33,11 +33,7 @@ Otherwise, you must set up a separate SQL server.
 
 The installation requires administrator rights and internet connection.
 All commands in following instructions must be entered in the PowerShell. You can use
-PowerShell 5 or PowerShell 7.
-
-> :bulb: If you want to run the scripts in the PowerShell ISE, please ensure that
-> the current directory in the ISE is changed to the __windows__ directory
-> the extracted setup files.
+PowerShell 5 or PowerShell 7. PowerShell ISE is not supported.
 
 ### Overview of the Required Files
 
