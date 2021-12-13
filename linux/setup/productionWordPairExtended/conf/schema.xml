@@ -6,9 +6,9 @@
     <!-- The StrField type is not analyzed, but indexed/stored verbatim. -->
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true" omitTermFreqAndPositions="true" omitPositions="true"/>
 
-    <fieldType name="int" class="solr.IntPointField" precisionStep="0" positionIncrementGap="0" omitNorms="true" omitTermFreqAndPositions="true" omitPositions="true"/>
+    <fieldType name="int" class="solr.IntPointField" omitNorms="true" omitTermFreqAndPositions="true" omitPositions="true"/>
 
-    <fieldType name="long" class="solr.LongPointField" precisionStep="0" positionIncrementGap="0" omitNorms="true" omitTermFreqAndPositions="true" omitPositions="true"/>
+    <fieldType name="long" class="solr.LongPointField" omitNorms="true" omitTermFreqAndPositions="true" omitPositions="true"/>
 
     <!-- A text field that only splits on whitespace for exact matching of words -->
     <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
