@@ -1,5 +1,5 @@
 # Install NuGet Provider
-$existingNugetProvider = (Get-PackageProvider -Name NuGet) | Where-Object { ([System.Version]$_.Version) -gt ([System.Version]"1.8.5.201") } | Measure-Object
+$existingNugetProvider = (Get-PackageProvider -Name NuGet -Force) | Where-Object { ([System.Version]$_.Version) -gt ([System.Version]"1.8.5.201") } | Measure-Object
 if ($existingNugetProvider.Count -eq 0) {
     Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force    
 } else {
