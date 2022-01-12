@@ -1,5 +1,10 @@
 # Install NuGet Provider
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+$existingNugetProvider = (Get-PackageProvider -Name NuGet) | Where-Object { ([System.Version]$_.Version) -gt ([System.Version]"1.8.5.201") } | Measure-Object
+if ($existingNugetProvider.Count -eq 0) {
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force    
+} else {
+    Write-Host "PackageProvider NuGet is already installed."
+}
 
 # Install Docker
 Install-Module DockerMsftProvider -Force
