@@ -1,3 +1,5 @@
+$ProgressPreference = 'SilentlyContinue'
+
 # Install Mirantis runtime
 $script = Invoke-WebRequest https://get.mirantis.com/install.ps1
 Invoke-Expression $($script.Content)
