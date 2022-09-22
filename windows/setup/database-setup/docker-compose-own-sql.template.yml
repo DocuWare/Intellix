@@ -3,7 +3,7 @@ version: "3.5"
 services:
   tools:
     container_name: intellix-sql-setup-tools
-    build: .
+    image: docuwarepublic.azurecr.io/intellix/windows/db-setup
     networks:
       - intellix
         
