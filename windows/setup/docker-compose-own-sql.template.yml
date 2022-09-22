@@ -15,12 +15,8 @@ services:
     ports:
       - 8080:80
     volumes:
-      - type: bind
-        source: c:\ProgramData\IntellixV2\Files
-        target: c:\FileStorage
-      - type: bind
-        source: c:\ProgramData\IntellixV2\License
-        target: c:\license
+      - C:\ProgramData\IntellixV2\Files:C:\FileStorage
+      - C:\ProgramData\IntellixV2\License:C:\license
     depends_on:
       - solr
 
@@ -32,9 +28,7 @@ services:
     networks:
       - intellix
     volumes:
-      - type: bind
-        source: c:\ProgramData\IntellixV2\Solr\Data
-        target: C:\solr\server\solr\productionWordPairExtended\data
+      - C:\ProgramData\IntellixV2\Solr\Data:C:\solr\server\solr\productionWordPairExtended\data
 
 networks:
   intellix:

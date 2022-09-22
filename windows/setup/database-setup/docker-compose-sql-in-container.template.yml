@@ -8,9 +8,7 @@ services:
     networks:
       - intellix
     volumes:
-      - type: bind
-        source: C:\ProgramData\IntellixV2\SQL
-        target: c:\mssql
+      - C:\ProgramData\IntellixV2\SQL:C:\mssql
     environment:
       - ACCEPT_EULA=Y
       - sa_password=Admin001
@@ -19,9 +17,7 @@ services:
     container_name: intellix-sql-setup-tools
     image: docuwarepublic.azurecr.io/intellix/windows/db-setup
     volumes:
-      - type: bind
-        source: C:\ProgramData\IntellixV2\SQL
-        target: c:\mssql
+      - C:\ProgramData\IntellixV2\SQL:C:\mssql
     networks:
       - intellix
     depends_on:
