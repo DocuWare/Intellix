@@ -12,7 +12,7 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - sa_password=Admin001
-      - attach_dbs=[{'dbName':'intellixv2','dbFiles':['c:\\mssql\\intellixv2.mdf','c:\\mssql\\intellixv2.ldf']}]  
+      - attach_dbs=[{'dbName':'intellixv2','dbFiles':['c:\\mssql\\intellixv2.mdf','c:\\mssql\\intellixv2.ldf']}]
   tools:
     container_name: intellix-sql-setup-tools
     image: docuwarepublic.azurecr.io/intellix/windows/db-setup:2
