@@ -124,7 +124,7 @@ können Sie für den Scope auch `CurrentUser` oder `LocalMachine` verwenden.
 ## Installation der Docker Umgebung
 
 Intelligent Indexing läuft in Docker Containern.
-Dazu muss zuerst eine Docker Umgebung installiert werden.
+Dazu muss zuerst die _Mirantis container runtime_ installiert werden.
 Wechseln Sie in einer Powershell als Administrator in das
 Installationsverzeichnis und führen folgenden Befehl aus:
 
@@ -135,13 +135,15 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 .\Install-Docker.ps1
 ```
 
-Starten Sie anschließend den Host-Rechner neu:
+Womöglich muss nach der Ausführung des Skriptes der Host-Rechner neu gestartet werden. In diesem Fall führen Sie folgendes aus:
 
 ```powershell
 Restart-Computer
 ```
 
-Nach dem Neustart können Sie testen, ob die Docker-Umgebung und docker-compose korrekt installiert sind:
+Nach dem Neustart müssen Sie das Installations-Skript erneut ausführen, um die Installation der Docker-Umgebung abzuschließen. 
+
+Nun können Sie testen, ob die Docker-Umgebung und docker-compose korrekt installiert sind:
 
 ```powershell
 docker run --rm --name helloworld hello-world:nanoserver

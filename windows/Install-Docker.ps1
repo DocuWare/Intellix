@@ -1,14 +1,9 @@
-# Install NuGet Provider
-$existingNugetProvider = (Get-PackageProvider -Name NuGet -Force) | Where-Object { ([System.Version]$_.Version) -gt ([System.Version]"1.8.5.201") } | Measure-Object
-if ($existingNugetProvider.Count -eq 0) {
-    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force    
-} else {
-    Write-Host "PackageProvider NuGet is already installed."
-}
+$ProgressPreference = 'SilentlyContinue'
 
-# Install Docker
-Install-Module DockerMsftProvider -Force
-Install-Package Docker -ProviderName DockerMsftProvider -Force
+# Install Mirantis runtime
+$script = Invoke-WebRequest https://get.mirantis.com/install.ps1 -UseBasicParsing
+Invoke-Expression $($script.Content)
+
 
 # Install Docker-Compose
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

@@ -124,7 +124,7 @@ If you want to remove the block completely, you can also use
 
 ## Installation of the Docker Environment
 
-Intelligent Indexing runs in Docker containers. Therefore, a Docker environment
+Intelligent Indexing runs in Docker containers. Therefore, the Mirantis container runtime
 needs to be installed. Also `docker-compose` must be installed. We provide a script
 which executes the necessary steps.
 In PowerShell as administrator,
@@ -143,7 +143,9 @@ If the installation script reports that the computer should be restarted you can
 Restart-Computer
 ```
 
-After the reboot you can test if the Docker environment and docker-compose are installed correctly:
+If a reboot was required, you must run the installation script one more time. Only then the Docker installation finishes.
+
+Then you can test if the Docker environment and docker-compose are installed correctly:
 
 ```cmd
 docker run --rm --name helloworld hello-world:nanoserver

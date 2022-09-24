@@ -8,24 +8,20 @@ services:
     networks:
       - intellix
     volumes:
-      - type: bind
-        source: C:\ProgramData\IntellixV2\SQL
-        target: c:\mssql
+      - C:\ProgramData\IntellixV2\SQL:C:\mssql
     environment:
       - ACCEPT_EULA=Y
       - sa_password=Admin001
       - attach_dbs=[{'dbName':'intellixv2','dbFiles':['c:\\mssql\\intellixv2.mdf','c:\\mssql\\intellixv2.ldf']}]
   tools:
     container_name: intellix-sql-setup-tools
-    build: .
+    image: docuwarepublic.azurecr.io/intellix/windows/db-setup:2
     volumes:
-      - type: bind
-        source: C:\ProgramData\IntellixV2\SQL
-        target: c:\mssql
+      - C:\ProgramData\IntellixV2\SQL:C:\mssql
     networks:
       - intellix
     depends_on:
       - sql
-        
+
 networks:
   intellix:

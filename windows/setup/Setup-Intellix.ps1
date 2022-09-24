@@ -61,7 +61,7 @@ if ($SqlServerInstance) {
   }
 }
 
-Write-Verbose "Generating docker-compose file..."
+Write-Verbose "Generating docker compose file..."
 
 $runPath = "$PSScriptRoot/run"
 if (-not (Test-Path $runPath -PathType Container)) {
@@ -160,19 +160,6 @@ else {
 }
 
 docker-compose -f $dbSetupPath pull
-
-$osBuildNumber = [System.Environment]::OSVersion.Version.Build
-switch ($osBuildNumber) {
-  20348 { $WINVER="ltsc2022" }
-  17763 { $WINVER="ltsc2019" }
-  Default {$WINVER="ltsc2022" }
-} 
-
-docker-compose -f $dbSetupPath build --build-arg WINVER=$WINVER
-if (!$?) {
-  Write-Error "Could not build the database setup container. Exiting..."
-  exit -1
-}
 
 docker-compose -f $dbSetupPath run --rm -e intellixUserName=$IntellixAdminUser -e intellixUserPassword=$IntellixAdminPassword -e intellixDbUser=$IntellixDbUser -e intellixDbPassword=$IntellixDbPassword -e sqlServerInstance=$SqlServerInstance -e sqlServerInstanceUser=$SqlServerInstanceUser -e sqlServerInstancePassword=$SqlServerInstancePassword tools --exit-code-from tools
 if (!$?) {
