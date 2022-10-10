@@ -47,3 +47,5 @@ services:
 
 networks:
   intellix:
+    external:
+      name: nat
