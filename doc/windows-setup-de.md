@@ -203,8 +203,8 @@ Laden Sie es herunter und folgen Sie den Anweisungen zum Einrichten.
 Es ist wichtig, dass Ihr SQL Server folgendermaßen konfiguriert ist:
 
 - TCP-Verbindungen an Port 1433.
-- UDP-Verbindungen an Port 1434.
-- Der _SQL Server Browser_-Dienst muss laufen.
+- UDP-Verbindungen an Port 1434, falls _named instances_ verwendet.
+- Der _SQL Server Browser_-Dienst muss laufen, falls _named instances_ verwendet.
 - Die SQL Server-Authentifizierung muss aktiviert sein.
   Die Container unterstützen keine integrierte Authentifizierung.
 - Für das Setup-Skript sollte ein SQL Server-Konto verfügbar sein.
