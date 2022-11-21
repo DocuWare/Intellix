@@ -3,7 +3,7 @@ version: "3.3"
 services:
   tools:
     container_name: intellix-sql-setup-tools
-    build: .
+    image: docuwarepublic.azurecr.io/intellix/linux/db-setup:2
     networks:
       - intellix
         

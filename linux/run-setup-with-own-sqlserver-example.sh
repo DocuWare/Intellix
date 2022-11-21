@@ -7,9 +7,9 @@ fi
 
 
 intellixAdminUser='intellix'
-intellixAdminPassword=$(./random-password.sh)
+intellixAdminPassword='Admin001'
 intellixDbUser='intellix'
-intellixDbPassword=$(./random-password.sh)
+intellixDbPassword='Admin001'
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -32,7 +32,7 @@ done
     --intellix-admin-password=$intellixAdminPassword \
     --intellix-db-user=intellix \
     --intellix-db-password=$intellixDbPassword \
-    --sql-server-instance="win-2019.fritz.box" \
+    --sql-server-instance="10.1.30.53" \
     --sql-server-instance-user="sa" \
     --sql-server-instance-password="Admin001"
 
