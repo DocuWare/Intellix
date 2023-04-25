@@ -7,13 +7,14 @@ $temp = $env:TEMP
 # Install IIS
 Install-WindowsFeature -name Web-Server -IncludeManagementTools
 
-# Install WebPiCmd
-Invoke-WebRequest 'https://download.microsoft.com/download/8/4/9/849DBCF2-DFD9-49F5-9A19-9AEE5B29341A/WebPlatformInstaller_x64_en-US.msi' -OutFile $temp/WebPlatformInstaller_x64_en-US.msi
-Start-Process $temp/WebPlatformInstaller_x64_en-US.msi '/qn' -PassThru | Wait-Process
-
 # Install ARR
-& $Env:Programfiles'\Microsoft\Web Platform Installer\WebpiCmd.exe' /Install /Products:'UrlRewrite2' /AcceptEULA /Log:$temp/WebpiCmd_UrlRewrite.log
-& $Env:Programfiles'\Microsoft\Web Platform Installer\WebpiCmd.exe' /Install /Products:'ARRv3_0' /AcceptEULA /Log:$temp/WebpiCmd_ARR.log
+# Download URL Rewrite
+curl.exe -L 'https://download.microsoft.com/download/1/2/8/128E2E22-C1B9-44A4-BE2A-5859ED1D4592/rewrite_amd64_en-US.msi' -o "$($env:TEMP)/rewrite_amd64_en-US.msi"
+# Download ARR3
+curl.exe -L 'https://go.microsoft.com/fwlink/?LinkID=615136' -o "$($env:TEMP)/requestRouter_amd64.msi"
+
+Start-Process "$($env:TEMP)/rewrite_amd64_en-US.msi" '/qn' -PassThru | Wait-Process
+Start-Process "$($env:TEMP)/requestRouter_amd64.msi" '/qn' -PassThru | Wait-Process
 
 # Create server farm in IIS
 & $Env:WinDir\system32\inetsrv\appcmd.exe set config -section:webFarms /+"[name='Intellix']" /commit:apphost
