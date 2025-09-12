@@ -11,7 +11,7 @@ als gesonderte Dokumente im [DocuWare Knowledge Center](https://help.docuware.co
 
 Folgende Voraussetzungen müssen für die Installation erfüllt sein:
 
-- Windows Server 2019 oder Windows Server 2022 (Standard oder Datacenter Edition)
+- Windows Server 2025 oder Windows Server 2022 (Standard oder Datacenter Edition)
 - 2 Prozessorkerne
 - 4 GB RAM
 - Optional: Installierter SQL Server 2019

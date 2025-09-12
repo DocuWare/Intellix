@@ -11,7 +11,7 @@ Intelligent Indexing are available as separate documents in the
 
 The following minimum requirements must be met for installation:
 
-- Windows Server 2019 or Windows Server 2022 (Standard or Datacenter Edition)
+- Windows Server 2025 or Windows Server 2022 (Standard or Datacenter Edition)
 - 2 processor cores
 - 4 GB RAM
 - Optional: Access to SQL Server 2019
