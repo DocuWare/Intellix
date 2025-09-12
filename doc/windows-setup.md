@@ -45,6 +45,7 @@ You can also download and extract the file with the following PowerShell script.
 First switch to the target directory for the download with PowerShell:
 
 ```powershell
+$ProgressPreference = 'SilentlyContinue'
 $tmp = New-TemporaryFile | Rename-Item -NewName { $_ -replace 'tmp$', 'zip' } -PassThru
 Invoke-WebRequest https://github.com/DocuWare/Intellix/archive/master.zip -OutFile $tmp
 Expand-Archive $tmp -DestinationPath master

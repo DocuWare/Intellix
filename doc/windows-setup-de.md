@@ -43,6 +43,7 @@ Sie können die Datei auch mit folgendem Powershell-Skript herunterladen und ext
 Wechseln Sie zuvor mit der Powershell in das Zielverzeichnis für den Download:
 
 ```powershell
+$ProgressPreference = 'SilentlyContinue'
 $tmp = New-TemporaryFile | Rename-Item -NewName { $_ -replace 'tmp$', 'zip' } -PassThru
 Invoke-WebRequest https://github.com/DocuWare/Intellix/archive/master.zip -OutFile $tmp
 Expand-Archive $tmp -DestinationPath master
