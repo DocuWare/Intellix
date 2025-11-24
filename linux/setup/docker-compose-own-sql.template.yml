@@ -26,7 +26,7 @@ services:
 
   solr:
     container_name: intellix-solr
-    image: solr:8
+    image: solr:9
     restart: unless-stopped
     tty: true
     networks:
