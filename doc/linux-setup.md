@@ -20,7 +20,7 @@ The following minimum requirements must be met for installation:
 - A Linux machine with x86_64 / amd64 architecture. We recommend Ubuntu LTS or Debian LTS. The installation may or may not work on other Linux versions.
 - 4 processor cores
 - 8 GB RAM
-- Optional: Access to SQL Server 2019
+- Optional: Access to SQL Server 2022
 
 It is recommended that you install Intelligent Indexing on a separate server to achieve
 the best possible performance.
@@ -29,7 +29,7 @@ you should ensure that no other application is using port 80.
 
 Intelligent Indexing can be used in combination with all
 [supported DocuWare Versions](https://support.docuware.com/en-US/support/docuware-support-lifecycle-policy/).
-If you use SQL Server 2019 for your DocuWare system or for an existing
+If you use SQL Server 2022 for your DocuWare system or for an existing
 Intelligent Indexing installation, you can also use it for Intelligent Indexing V2.
 Otherwise, you must set up a separate SQL server.
 
