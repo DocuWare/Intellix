@@ -17,7 +17,7 @@ Intelligent Indexing are available as separate documents in the
 
 The following minimum requirements must be met for installation:
 
-- A Linux machine with x86_64 / amd64 architecture. We recommend Ubuntu LTS or Debian LTS. The installation may or may not work on other Linux versions.
+- A Linux machine with x86_64 / amd64 architecture. We recommend Ubuntu LTS or Debian. The installation may or may not work on other Linux versions.
 - 4 processor cores
 - 8 GB RAM
 - Optional: Access to SQL Server 2022
