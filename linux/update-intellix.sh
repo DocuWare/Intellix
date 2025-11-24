@@ -14,7 +14,7 @@ done
 scriptRoot=$(readlink -f "$0")
 scriptRoot=$(dirname "$scriptRoot")
 
-docker-compose -f "$scriptRoot/setup/run/docker-compose.yml" pull
+docker compose -f "$scriptRoot/setup/run/docker-compose.yml" pull
 
 if [ -n "$withRestart" ] ; then
     "$scriptRoot/stop-intellix.sh"
