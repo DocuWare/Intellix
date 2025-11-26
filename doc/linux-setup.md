@@ -7,7 +7,7 @@
 ## Introduction
 
 This documentation explains how to setup Intelligent Indexing On Premises on an Ubuntu or Debian host.
-This documentation is working for Ubuntu 20.04 and Debian 10.
+This documentation is working for Ubuntu and Debian.
 
 Instructions for configuring Intelligent Indexing and working with
 Intelligent Indexing are available as separate documents in the
@@ -17,10 +17,10 @@ Intelligent Indexing are available as separate documents in the
 
 The following minimum requirements must be met for installation:
 
-- A Linux machine with x86_64 / amd64 architecture. We recommend Ubuntu 20.04, Debian 10 or openSUSE 15.2. The installation may or may not work on other Linux versions.
-- 2 processor cores
-- 4 GB RAM
-- Optional: Access to SQL Server 2019
+- A Linux machine with x86_64 / amd64 architecture. We recommend Ubuntu LTS or Debian. The installation may or may not work on other Linux versions.
+- 4 processor cores
+- 8 GB RAM
+- Optional: Access to SQL Server 2022
 
 It is recommended that you install Intelligent Indexing on a separate server to achieve
 the best possible performance.
@@ -29,7 +29,7 @@ you should ensure that no other application is using port 80.
 
 Intelligent Indexing can be used in combination with all
 [supported DocuWare Versions](https://support.docuware.com/en-US/support/docuware-support-lifecycle-policy/).
-If you use SQL Server 2019 for your DocuWare system or for an existing
+If you use SQL Server 2022 for your DocuWare system or for an existing
 Intelligent Indexing installation, you can also use it for Intelligent Indexing V2.
 Otherwise, you must set up a separate SQL server.
 
@@ -84,16 +84,12 @@ We assume that you start with a fresh Linux system. If Docker not installed, you
 - installation instructions for [Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
 - installation instructions for [openSUSE](https://en.opensuse.org/Docker)
 
-You must also install _docker-compose_:
+Please ensure that the _docker compose_ plugin is installed
 
-- Debian and Ubuntu:
-  ```bash
-  sudo apt-get install docker-compose -y
-  ```
-- openSUSE:
-  ```bash
-  sudo zypper install docker-compose
-  ```
+```bash
+docker compose
+```
+
 
 > **Warning**: If you installed Docker on Ubuntu with snap, please uninstall
 > the Docker snap. When Intelligent Indexing is installed, some volume mounts

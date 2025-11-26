@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   sql:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: intellix-sql-setup
     tty: true
     networks:

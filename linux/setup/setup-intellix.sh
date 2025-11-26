@@ -132,8 +132,8 @@ else
   dbSetupPath="$dbSetupDir/docker-compose-sql-in-container.template.yml"
 fi
 
-docker-compose -f "$dbSetupPath" pull
-docker-compose -f "$dbSetupPath" run --rm \
+docker compose -f "$dbSetupPath" pull
+docker compose -f "$dbSetupPath" run --rm \
   -e intellixUserName=$intellixAdminUser \
   -e intellixUserPassword=$intellixAdminPassword \
   -e intellixDbUser=$intellixDbUser \
@@ -146,11 +146,11 @@ err=$?
 
 
 if [ $err -eq 0 ]; then
-  docker-compose -f "$dbSetupPath" down
+  docker compose -f "$dbSetupPath" down
   err=$?
 fi
 
-docker-compose -f "$scriptRoot/run/docker-compose.yml" pull
+docker compose -f "$scriptRoot/run/docker-compose.yml" pull
 
 if [ $err -eq 0 ]; then
   echo "Start Intelligent Indexing with './start-intellix.sh"
