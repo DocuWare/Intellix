@@ -1,5 +1,3 @@
-version: "3.3"
-
 services:
   intellix:
     image: docuwarepublic.azurecr.io/intellix/app:2-alpine
