@@ -1,5 +1,3 @@
-version: "3.3"
-
 services:
   tools:
     container_name: intellix-sql-setup-tools
